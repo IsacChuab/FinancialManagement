@@ -1,12 +1,15 @@
 import { BrowserRouter } from 'react-router-dom';
 import Pages from './pages';
+import ThemeProvider from './providers/ThemeProvider';
 
 function App() {
   return (
     <div>
-      <BrowserRouter>
-        <Pages />
-      </BrowserRouter>
+      <ThemeProvider>
+        <BrowserRouter>
+          <Pages />
+        </BrowserRouter>
+      </ThemeProvider>
     </div>
   );
 }

@@ -20,6 +20,7 @@
     "turbo": "^2.5.8"
   },
   "dependencies": {
-    "react-router-dom": "^7.9.5"
+    "react-router-dom": "^7.9.5",
+    "zustand": "^5.0.8"
   }
 }
