@@ -1,0 +1,5 @@
+
+> api@1.0.0 dev /home/isac/Documents/projetos/financial/packages/api
+> tsx watch src/index.ts
+
+API listening on 4000
