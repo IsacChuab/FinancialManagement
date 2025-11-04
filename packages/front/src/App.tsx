@@ -1,11 +1,12 @@
-import Financial from './pages/financial';
-import Login from './pages/login';
+import { BrowserRouter } from 'react-router-dom';
+import Pages from './pages';
 
 function App() {
   return (
     <div>
-      <Login />
-      <Financial />
+      <BrowserRouter>
+        <Pages />
+      </BrowserRouter>
     </div>
   );
 }
