@@ -1,15 +1,69 @@
-import { Button } from 'antd';
-import { useTheme } from '../../hooks/theme';
+import { Button, Divider, Form, Input } from 'antd';
+import type { User } from '../../interfaces/User';
+import trpc from '../../utils/trpc';
 
 const Login = () => {
-  const { mode, setMode } = useTheme();
+  const [form] = Form.useForm();
+
+  const submit = async (values: User) => {
+    console.log('submit', values);
+    const result = await trpc.hello.query();
+
+    console.log('result', result);
+  };
+
+  const createUser = () => {
+    const values = form.getFieldsValue();
+    console.log('createUser', values);
+  };
 
   return (
-    <div>
-      <h1 className="text-lime-900 text-6xl">Login</h1>
-      <Button type="primary" onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}>
-        {mode === 'light' ? 'Dark Mode' : 'Light Mode'}
-      </Button>
+    <div className="w-full h-220 flex justify-center items-center">
+      <div className="w-100 h-110 flex flex-col justify-around rounded-2xl border border-gray-300 p-8 shadow-md bg-white">
+        <h1 className="text-4xl mb-6 text-center">Login</h1>
+
+        <Form
+          form={form}
+          onFinish={submit}
+          layout="vertical"
+          className="w-full h-full flex flex-col justify-around"
+        >
+          <Form.Item
+            name="user"
+            label="Username"
+            rules={[
+              { required: true, message: 'Digite seu usuário' },
+              { type: 'email', message: 'Digite um email válido' },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={[{ required: true, message: 'Digite sua senha' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <div className="flex justify-between">
+            <a href="/">Forgot Password</a>
+
+            <Form.Item className="text-center">
+              <Button htmlType="submit" type="primary">
+                Login
+              </Button>
+            </Form.Item>
+          </div>
+        </Form>
+
+        <div className="w-full">
+          <Divider />
+          <Button onClick={createUser} type="primary" className="w-full py-2!">
+            Criar uma conta
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

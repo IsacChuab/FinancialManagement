@@ -2,7 +2,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 const AuthRequired = () => {
   // const { user } = useAuth();
-  const user = true;
+  const user = false;
 
   if (!user) {
     console.log('User is not authenticated');

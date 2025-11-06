@@ -1,0 +1,22 @@
+import { Button } from 'antd';
+import { useTheme } from '../hooks/theme';
+import { MdLightMode } from 'react-icons/md';
+import { MdOutlineNightlightRound } from 'react-icons/md';
+
+const ThemeButton = () => {
+  const { mode, setMode } = useTheme();
+
+  return (
+    <div className="fixed right-1 top-1 ">
+      <Button
+        className="rounded-full!"
+        type="primary"
+        onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
+      >
+        {mode === 'light' ? <MdOutlineNightlightRound /> : <MdLightMode />}
+      </Button>
+    </div>
+  );
+};
+
+export default ThemeButton;
