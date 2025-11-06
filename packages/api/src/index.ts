@@ -4,7 +4,7 @@ import cors from 'cors';
 import './auth';
 // import authRouter from './auth';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
-import { appRouter } from './trpcRouter.js';
+import { appRouter } from './AppRoutes/index.js';
 // import { connectDB } from './db';
 
 const app = express();

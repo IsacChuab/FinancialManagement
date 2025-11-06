@@ -1,0 +1,9 @@
+import { trpc } from '../trpcRouter.js';
+import { userValidator } from './userValidators.js';
+
+export const userRouter = trpc.router({
+  newUser: trpc.procedure.input(userValidator).mutation(({ input }) => {
+    console.log(input);
+    return { message: `Usuário ${input} criado!` };
+  }),
+});

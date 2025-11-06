@@ -1,19 +1,24 @@
 import { Button, Divider, Form, Input } from 'antd';
-import type { User } from '../../interfaces/User';
 import trpc from '../../utils/trpc';
+import type { UserInput } from '../../../../api/src/user/userValidators';
 
 const Login = () => {
   const [form] = Form.useForm();
 
-  const submit = async (values: User) => {
+  const submit = async (values: UserInput) => {
     console.log('submit', values);
-    const result = await trpc.hello.query();
-
-    console.log('result', result);
   };
 
-  const createUser = () => {
+  const createUser = async () => {
     const values = form.getFieldsValue();
+
+    if (!values?.user && !values?.password) {
+      alert('Please enter your username and password');
+      return;
+    }
+    console.log(values);
+
+    await trpc.user.newUser.mutate(values);
     console.log('createUser', values);
   };
 
@@ -29,8 +34,8 @@ const Login = () => {
           className="w-full h-full flex flex-col justify-around"
         >
           <Form.Item
-            name="user"
-            label="Username"
+            name="userEmail"
+            label="User Email"
             rules={[
               { required: true, message: 'Digite seu usuário' },
               { type: 'email', message: 'Digite um email válido' },
