@@ -1,0 +1,46 @@
+import mongoose, { type Document, Schema } from 'mongoose';
+
+export interface IUser {
+  id: string;
+  password: string;
+  email: string;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date;
+}
+
+export interface IUserModel extends Document, Omit<IUser, 'id'> {}
+
+const UserSchema = new Schema<IUserModel>(
+  {
+    password: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
+    deletedAt: { type: Date },
+  },
+  {
+    collection: 'users',
+    toJSON: {
+      transform(_, ret: any) {
+        ret.id = ret._id;
+
+        delete ret._id;
+        delete ret.password;
+        delete ret.__v;
+      },
+    },
+    toObject: {
+      transform(_, ret: any) {
+        ret.id = ret._id;
+        ret.createdAt = ret.createdAt.toISOString();
+        ret.updatedAt = ret.updatedAt.toISOString();
+        delete ret._id;
+        delete ret.password;
+        delete ret.__v;
+      },
+    },
+  },
+);
+
+export const User = mongoose.model<IUserModel>('users', UserSchema);

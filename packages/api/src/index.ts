@@ -1,16 +1,15 @@
 import express from 'express';
 import cors from 'cors';
-// import passport from 'passport';
+import 'dotenv/config';
 import './auth';
 // import authRouter from './auth';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { appRouter } from './AppRoutes/index.js';
-// import { connectDB } from './db';
+import { connectDB } from './db.js';
 
 const app = express();
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
-// app.use(passport.initialize());
 
 // app.use('/auth', authRouter);
 
@@ -25,6 +24,6 @@ app.use(
 const PORT = process.env.PORT || 4000;
 
 (async () => {
-  // await connectDB();
+  await connectDB();
   app.listen(PORT, () => console.log(`API listening on ${PORT}`));
 })();

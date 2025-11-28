@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const userValidator = z.object({
-  userEmail: z.email(),
+  email: z.email(),
   password: z.string().min(3).max(10),
 });
 

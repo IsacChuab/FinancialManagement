@@ -34,7 +34,7 @@ const Login = () => {
           className="w-full h-full flex flex-col justify-around"
         >
           <Form.Item
-            name="userEmail"
+            name="email"
             label="User Email"
             rules={[
               { required: true, message: 'Digite seu usuário' },

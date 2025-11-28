@@ -1,11 +1,11 @@
-// import { MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
 
-// const url = process.env.MONGO_URL!;
-// const client = new MongoClient(url);
-
-// export async function connectDB() {
-//   await client.connect();
-//   return client.db();
-// }
-
-// export default client;
+export async function connectDB() {
+  try {
+    await mongoose.connect(process.env.MONGO_URL!);
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error);
+    process.exit(1);
+  }
+}
