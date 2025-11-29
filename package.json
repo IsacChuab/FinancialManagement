@@ -20,6 +20,10 @@
     "turbo": "^2.5.8"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.11",
+    "@trpc/client": "^11.7.1",
+    "@trpc/server": "^11.7.1",
+    "@trpc/tanstack-react-query": "^11.7.2",
     "react-router-dom": "^7.9.5",
     "zustand": "^5.0.8"
   }

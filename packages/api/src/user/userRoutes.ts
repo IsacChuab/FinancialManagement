@@ -6,4 +6,7 @@ export const userRouter = trpc.router({
   newUser: trpc.procedure.input(userValidator).mutation(({ input }) => {
     return userService.createUser(input);
   }),
+  login: trpc.procedure.input(userValidator).mutation(({ input }) => {
+    return userService.login(input);
+  }),
 });

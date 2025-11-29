@@ -1,13 +1,21 @@
 import { Button, Divider, Form, Input } from 'antd';
-import trpc from '../../utils/trpc';
 import type { UserInput } from '../../../../api/src/user/userValidators';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
+import trpc from '../../utils/trpc';
 
 const Login = () => {
+  const queryClient = useQueryClient();
   const [form] = Form.useForm();
 
-  const submit = async (values: UserInput) => {
-    console.log('submit', values);
-  };
+  const submit = useMutation({
+    mutationFn: async (values: UserInput) => {
+      const response = await trpc.user.login.mutate(values);
+      console.log('responseeee', response);
+      if (response) {
+        queryClient.setQueryData(['user'], response);
+      }
+    },
+  });
 
   const createUser = async () => {
     const values = form.getFieldsValue();
@@ -29,7 +37,7 @@ const Login = () => {
 
         <Form
           form={form}
-          onFinish={submit}
+          onFinish={submit.mutateAsync}
           layout="vertical"
           className="w-full h-full flex flex-col justify-around"
         >

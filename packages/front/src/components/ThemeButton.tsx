@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import { useTheme } from '../hooks/theme';
 import { MdLightMode } from 'react-icons/md';
 import { MdOutlineNightlightRound } from 'react-icons/md';
@@ -8,13 +8,15 @@ const ThemeButton = () => {
 
   return (
     <div className="fixed right-1 top-1 ">
-      <Button
-        className="rounded-full!"
-        type="primary"
-        onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
-      >
-        {mode === 'light' ? <MdOutlineNightlightRound /> : <MdLightMode />}
-      </Button>
+      <Tooltip title="Change Theme">
+        <Button
+          className="rounded-full!"
+          type="primary"
+          onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
+        >
+          {mode === 'light' ? <MdOutlineNightlightRound /> : <MdLightMode />}
+        </Button>
+      </Tooltip>
     </div>
   );
 };

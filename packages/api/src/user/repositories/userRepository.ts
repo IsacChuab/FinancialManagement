@@ -1,4 +1,4 @@
-import { IUserModel } from './userModel.js';
+import { IUserModel, User } from './userModel.js';
 
 class UserRepository {
   public async save(user: IUserModel) {
@@ -6,6 +6,10 @@ class UserRepository {
       await user.save();
     }
     return user;
+  }
+
+  public async findByEmail(email: string) {
+    return await User.findOne({ email });
   }
 }
 
