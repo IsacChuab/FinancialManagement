@@ -1,29 +1,19 @@
 import express from 'express';
-import cors from 'cors';
 import 'dotenv/config';
 import './auth';
-// import authRouter from './auth';
-import { createExpressMiddleware } from '@trpc/server/adapters/express';
-import { appRouter } from './AppRoutes/index.js';
 import { connectDB } from './db.js';
+import { listen } from './server.js';
 
 const app = express();
-app.use(cors({ origin: true, credentials: true }));
-app.use(express.json());
-
-// app.use('/auth', authRouter);
-
-app.use(
-  '/trpc',
-  createExpressMiddleware({
-    router: appRouter,
-    createContext: () => ({}),
-  }),
-);
-
-const PORT = process.env.PORT || 4000;
 
 (async () => {
-  await connectDB();
-  app.listen(PORT, () => console.log(`API listening on ${PORT}`));
+  console.log(`Starting Server`);
+
+  try {
+    await Promise.all([connectDB()]);
+    await listen();
+  } catch (error) {
+    console.error('Error starting API:', error);
+    process.exit(1);
+  }
 })();

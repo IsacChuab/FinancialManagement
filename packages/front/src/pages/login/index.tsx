@@ -1,7 +1,7 @@
 import { Button, Divider, Form, Input } from 'antd';
 import type { UserInput } from '../../../../api/src/user/userValidators';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
-import trpc from '../../utils/trpc';
+import { trpc } from '../../utils/trpc';
 
 const Login = () => {
   const queryClient = useQueryClient();
@@ -9,7 +9,7 @@ const Login = () => {
 
   const submit = useMutation({
     mutationFn: async (values: UserInput) => {
-      const response = await trpc.user.login.mutate(values);
+      const response = trpc.auth.login.useQuery(values); // ta quase, ajeitar requisição
       console.log('responseeee', response);
       if (response) {
         queryClient.setQueryData(['user'], response);
@@ -18,16 +18,15 @@ const Login = () => {
   });
 
   const createUser = async () => {
-    const values = form.getFieldsValue();
-
-    if (!values?.user && !values?.password) {
-      alert('Please enter your username and password');
-      return;
-    }
-    console.log(values);
-
-    await trpc.user.newUser.mutate(values);
-    console.log('createUser', values);
+    console.log('createUser');
+    // const values = form.getFieldsValue();
+    // if (!values?.user && !values?.password) {
+    //   alert('Please enter your username and password');
+    //   return;
+    // }
+    // console.log(values);
+    // await trpc.user.newUser.mutate(values);
+    // console.log('createUser', values);
   };
 
   return (
