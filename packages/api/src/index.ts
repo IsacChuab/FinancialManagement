@@ -1,10 +1,7 @@
-import express from 'express';
 import 'dotenv/config';
 import './auth';
 import { connectDB } from './db.js';
 import { listen } from './server.js';
-
-const app = express();
 
 (async () => {
   console.log(`Starting Server`);

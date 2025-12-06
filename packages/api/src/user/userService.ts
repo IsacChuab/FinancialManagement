@@ -18,7 +18,6 @@ class UserService {
   }
 
   public async login({ email, password }: UserInput) {
-    console.log('cheguei aqui');
     const user = await userRepository.findByEmail(email);
 
     if (!user) {
@@ -31,7 +30,6 @@ class UserService {
       throw new Error('Invalid password');
     }
 
-    console.log('loguei');
     return { message: 'User logged in successfully', user: user.email };
   }
 }

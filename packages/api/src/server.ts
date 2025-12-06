@@ -8,7 +8,6 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(cors({ origin: true }));
-app.use(express.urlencoded({ extended: true }));
 app.set('trust proxy', true);
 
 app.get('/', (_req, res) => {

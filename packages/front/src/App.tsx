@@ -4,6 +4,7 @@ import ThemeProvider from './providers/ThemeProvider';
 import ThemeButton from './components/ThemeButton';
 import LogoutButton from './components/LogoutButton';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { trpc, trpcClient } from './utils/trpc';
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -32,14 +33,16 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <BrowserRouter>
-          <ThemeButton />
-          <LogoutButton />
+      <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <ThemeProvider>
+          <BrowserRouter>
+            <ThemeButton />
+            <LogoutButton />
 
-          <Pages />
-        </BrowserRouter>
-      </ThemeProvider>
+            <Pages />
+          </BrowserRouter>
+        </ThemeProvider>
+      </trpc.Provider>
     </QueryClientProvider>
   );
 }

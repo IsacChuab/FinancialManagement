@@ -11,10 +11,10 @@ export const trpcClient = trpc.createClient({
   links: [
     httpBatchLink({
       url: `http://localhost:4000/trpc`,
+      transformer: superJSON,
       headers: () => ({
         authorization: `Bearer ${localStorage.getItem('token')}`,
       }),
-      transformer: superJSON,
     }),
   ],
 });

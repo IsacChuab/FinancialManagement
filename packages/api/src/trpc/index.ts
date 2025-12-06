@@ -10,7 +10,7 @@ const trpc = initTRPC.context<Context>().create({
 const errorMiddleware = trpc.middleware(async ({ next }) => {
   const result = await next();
 
-  if ('error' in result && result.error) {
+  if (!result.ok) {
     console.trace(result.error);
   }
 
