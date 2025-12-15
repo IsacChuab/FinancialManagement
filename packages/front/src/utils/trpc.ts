@@ -12,9 +12,12 @@ export const trpcClient = trpc.createClient({
     httpBatchLink({
       url: `http://localhost:4000/trpc`,
       transformer: superJSON,
-      headers: () => ({
-        authorization: `Bearer ${localStorage.getItem('token')}`,
-      }),
+      fetch(url, options) {
+        return fetch(url, {
+          ...options,
+          credentials: 'include',
+        });
+      },
     }),
   ],
 });

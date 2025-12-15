@@ -1,16 +1,13 @@
 import { Button, Divider, Form, Input } from 'antd';
-import { useQueryClient } from '@tanstack/react-query';
 import { trpc } from '../../utils/trpc';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
   const submit = trpc.auth.login.useMutation({
-    onSuccess: (data) => {
-      queryClient.setQueryData(['user'], data);
+    onSuccess: () => {
       navigate('/financial');
     },
     onError: (error) => {

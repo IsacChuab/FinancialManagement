@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import './auth';
 import { connectDB } from './db.js';
 import { listen } from './server.js';
 

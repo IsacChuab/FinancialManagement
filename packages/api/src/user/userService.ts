@@ -2,6 +2,7 @@ import { User } from './repositories/userModel.js';
 import { userRepository } from './repositories/userRepository.js';
 import { UserInput } from './userValidators.js';
 import crypto from 'node:crypto';
+import { generateToken } from '../utils/token.js';
 
 class UserService {
   public async createUser({ email, password }: UserInput) {
@@ -30,7 +31,21 @@ class UserService {
       throw new Error('Invalid password');
     }
 
-    return { message: 'User logged in successfully', user: user.email };
+    const token = generateToken(user.id, user.email);
+
+    return { user: { id: user.id, email: user.email }, token };
+  }
+
+  public async findById(email: string) {
+    const user = await userRepository.findByEmail(email);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const token = generateToken(user.id, user.email);
+
+    return { user: { id: user.id, email: user.email }, token };
   }
 }
 

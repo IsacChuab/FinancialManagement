@@ -1,12 +1,17 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { trpc } from '../utils/trpc';
 
 const AuthRequired = () => {
-  // const { user } = useAuth();
-  const user = true;
+  const navigate = useNavigate();
 
-  if (!user) {
-    console.log('User is not authenticated');
-    return <Navigate to="/" replace />;
+  const { data, isLoading, isError, error } = trpc.auth.me.useQuery();
+
+  if (isLoading) return;
+
+  if (isError || !data) {
+    console.log('Error:', error);
+    navigate('/');
+    return;
   }
 
   return <Outlet />;

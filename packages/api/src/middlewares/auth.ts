@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import { middleware } from '../trpc/index.js';
-import { authService } from '../auth/services/auth.js';
+import { validateToken } from '../utils/token.js';
 
 export const authMiddleware = () =>
   middleware(({ ctx, next }) => {
@@ -9,7 +9,7 @@ export const authMiddleware = () =>
     }
 
     try {
-      const { id, email } = authService.validateToken(ctx.token);
+      const { id, email } = validateToken(ctx.token);
 
       return next({
         ctx: {
