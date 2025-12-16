@@ -14,7 +14,7 @@ export function validateToken(token: string) {
 export function generateToken(id: string, email: string) {
   try {
     const token = jwt.sign({ id, email }, process.env.JWT_SECRET!, {
-      expiresIn: '1m',
+      expiresIn: '1w',
     });
 
     return token;
