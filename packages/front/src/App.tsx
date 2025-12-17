@@ -1,8 +1,6 @@
 import { BrowserRouter } from 'react-router-dom';
 import Pages from './pages';
 import ThemeProvider from './providers/ThemeProvider';
-import ThemeButton from './components/ThemeButton';
-import LogoutButton from './components/LogoutButton';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { trpc, trpcClient } from './utils/trpc';
 
@@ -36,9 +34,6 @@ function App() {
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <ThemeProvider>
           <BrowserRouter>
-            <ThemeButton />
-            <LogoutButton />
-
             <Pages />
           </BrowserRouter>
         </ThemeProvider>

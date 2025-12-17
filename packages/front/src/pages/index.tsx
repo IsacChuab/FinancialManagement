@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import Login from './login';
 import Financial from './financial';
 import AuthRequired from '../components/AuthRequired';
+import Layout from '../theme/Layout';
 
 const Pages = () => {
   return (
@@ -9,7 +10,9 @@ const Pages = () => {
       <Route path="/" element={<Login />} />
 
       <Route element={<AuthRequired />}>
-        <Route path="/financial" element={<Financial />} />
+        <Route element={<Layout />}>
+          <Route path="/financial" element={<Financial />} />
+        </Route>
       </Route>
     </Routes>
   );

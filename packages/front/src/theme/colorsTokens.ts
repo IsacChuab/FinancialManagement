@@ -1,6 +1,7 @@
 export const lightTokens = {
   // Cores principais
-  colorPrimary: '#898989',
+  colorPrimary: '53D388',
+  defaultBg: '#FF0000',
   colorSuccess: '#898989',
   colorWarning: '#898989',
   colorError: '#898989',

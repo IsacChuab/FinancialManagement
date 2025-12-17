@@ -54,21 +54,33 @@ const Financial = () => {
       key: 'currentDate',
     },
     {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+    },
+    {
+      title: 'Current Date',
+      dataIndex: 'currentDate',
+      key: 'currentDate',
+    },
+    {
       title: 'Actions',
       dataIndex: '',
       key: 'actions',
       render: () => (
         <div>
-          <Button type="primary">Edit</Button>
+          <Button type="default">Edit</Button>
         </div>
       ),
     },
   ];
 
   return (
-    <div>
-      <h1 className="text-lime-900 text-6xl">Dashboard</h1>
-      <Table dataSource={fakeData} columns={columns} />
+    <div className="">
+      <div className="">
+        <h1 className="text-4xl">Contas Mensal</h1>
+        <Table dataSource={fakeData} columns={columns} pagination={false} />
+      </div>
     </div>
   );
 };

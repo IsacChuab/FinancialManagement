@@ -14,13 +14,13 @@ const LogoutButton = () => {
   };
 
   return (
-    <div className="fixed right-15 top-1 ">
+    <>
       <Tooltip title="Logout">
         <Button className="rounded-full!" type="primary" onClick={handleLogout}>
           <MdOutlineLogout />
         </Button>
       </Tooltip>
-    </div>
+    </>
   );
 };
 

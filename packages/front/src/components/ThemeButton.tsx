@@ -7,7 +7,7 @@ const ThemeButton = () => {
   const { mode, setMode } = useTheme();
 
   return (
-    <div className="fixed right-1 top-1 ">
+    <>
       <Tooltip title="Change Theme">
         <Button
           className="rounded-full!"
@@ -17,7 +17,7 @@ const ThemeButton = () => {
           {mode === 'light' ? <MdOutlineNightlightRound /> : <MdLightMode />}
         </Button>
       </Tooltip>
-    </div>
+    </>
   );
 };
 
