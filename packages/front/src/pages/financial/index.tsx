@@ -1,10 +1,11 @@
 import { Button, Table } from 'antd';
+import { AiOutlineArrowRight, AiOutlinePlusCircle } from 'react-icons/ai';
 
 const Financial = () => {
   const fakeData = [
     {
       key: '1',
-      name: 'Água',
+      name: 'Cartão de crédito',
       startDate: '2023-01-01',
       currentInstallment: 'Vitalício',
       finalInstallment: '10',
@@ -64,6 +65,11 @@ const Financial = () => {
       key: 'currentDate',
     },
     {
+      title: 'Current Date',
+      dataIndex: 'currentDate',
+      key: 'currentDate',
+    },
+    {
       title: 'Actions',
       dataIndex: '',
       key: 'actions',
@@ -76,11 +82,22 @@ const Financial = () => {
   ];
 
   return (
-    <div className="">
-      <div className="">
+    <div className="flex flex-col gap-4">
+      <div className="flex justify-between items-center">
         <h1 className="text-4xl">Contas Mensal</h1>
-        <Table dataSource={fakeData} columns={columns} pagination={false} />
+
+        <div className="flex gap-3">
+          <Button type="default">
+            Adicionar Conta <AiOutlinePlusCircle />
+          </Button>
+
+          <Button type="default">
+            Próximo Mês <AiOutlineArrowRight />
+          </Button>
+        </div>
       </div>
+
+      <Table dataSource={fakeData} columns={columns} pagination={false} />
     </div>
   );
 };
