@@ -97,7 +97,7 @@ const Financial = () => {
         </div>
       </div>
 
-      <Table dataSource={fakeData} columns={columns} pagination={false} />
+      <Table dataSource={fakeData} columns={columns} pagination={false} className="bg-amber-500" />
     </div>
   );
 };
