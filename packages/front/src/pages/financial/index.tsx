@@ -1,24 +1,42 @@
+import { useState } from 'react';
+
 import { Button, Table } from 'antd';
 import { AiOutlineArrowRight, AiOutlinePlusCircle } from 'react-icons/ai';
+import AddBill from '../../components/AddBillForms';
 
 const Financial = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const fakeData = [
     {
       key: '1',
-      name: 'Cartão de crédito',
+      name: 'Água',
       startDate: '2023-01-01',
       currentInstallment: 'Vitalício',
-      finalInstallment: '10',
-      value: 10.24,
+      finalInstallment: 'Vitalício',
+      value: 50.24,
+      valueInstallment: null,
       currentDate: '2023-02-01',
     },
     {
       key: '2',
-      name: 'Luz',
+      name: 'Moto',
       startDate: '2023-02-01',
-      currentInstallment: '3',
-      finalInstallment: '10',
-      value: 15.5,
+      currentInstallment: '1',
+      finalInstallment: '3',
+      value: 365.5,
+      valueInstallment: 188.3,
+      currentDate: '2023-03-01',
+    },
+
+    {
+      key: '3',
+      name: 'lanche',
+      startDate: '2023-02-01',
+      currentInstallment: '1',
+      finalInstallment: '1',
+      value: 35.5,
+      valueInstallment: null,
       currentDate: '2023-03-01',
     },
   ];
@@ -30,9 +48,9 @@ const Financial = () => {
       key: 'name',
     },
     {
-      title: 'Start Date',
-      dataIndex: 'startDate',
-      key: 'startDate',
+      title: 'Value',
+      dataIndex: 'value',
+      key: 'value',
     },
     {
       title: 'Current Installment',
@@ -45,12 +63,12 @@ const Financial = () => {
       key: 'finalInstallment',
     },
     {
-      title: 'Value',
-      dataIndex: 'value',
-      key: 'value',
+      title: 'Value Installment',
+      dataIndex: 'valueInstallment',
+      key: 'valueInstallment',
     },
     {
-      title: 'Current Date',
+      title: 'Expire Date',
       dataIndex: 'currentDate',
       key: 'currentDate',
     },
@@ -58,16 +76,6 @@ const Financial = () => {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-    },
-    {
-      title: 'Current Date',
-      dataIndex: 'currentDate',
-      key: 'currentDate',
-    },
-    {
-      title: 'Current Date',
-      dataIndex: 'currentDate',
-      key: 'currentDate',
     },
     {
       title: 'Actions',
@@ -82,22 +90,24 @@ const Financial = () => {
   ];
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 p-4">
       <div className="flex justify-between items-center">
         <h1 className="text-4xl">Contas Mensal</h1>
 
         <div className="flex gap-3">
-          <Button type="default">
+          <Button type="primary" onClick={() => setIsOpen(true)}>
             Adicionar Conta <AiOutlinePlusCircle />
           </Button>
 
           <Button type="default">
-            Próximo Mês <AiOutlineArrowRight />
+            Finalizar Mês <AiOutlineArrowRight />
           </Button>
         </div>
       </div>
 
-      <Table dataSource={fakeData} columns={columns} pagination={false} className="bg-amber-500" />
+      <Table dataSource={fakeData} columns={columns} pagination={false} />
+
+      <AddBill isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };
