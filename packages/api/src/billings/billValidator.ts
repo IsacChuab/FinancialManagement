@@ -1,19 +1,34 @@
 import { z } from 'zod';
 
-const debitSchema = z.object({
+const baseInputs = {
   name: z.string().min(3),
   amount: z.number().min(0.01),
+};
+
+const debitSchema = z.object({
+  type: z.literal('debit'),
+  ...baseInputs,
 });
 
-const creditSchema = debitSchema.extend({
+const creditSchema = z.object({
+  type: z.literal('credit'),
   valueInstallment: z.number().min(0.01),
   dueDate: z.date(),
   currentInstallment: z.number().min(1),
   totalInstallments: z.number().min(1),
+  ...baseInputs,
 });
 
-const vitalSchema = debitSchema.extend({
+const vitalSchema = z.object({
+  type: z.literal('vital'),
   dueDate: z.date(),
+  ...baseInputs,
 });
 
-export type BillInput = z.infer<typeof debitSchema | typeof creditSchema | typeof vitalSchema>;
+export const billInputSchema = z.discriminatedUnion('type', [
+  debitSchema,
+  creditSchema,
+  vitalSchema,
+]);
+
+export type BillInput = z.infer<typeof billInputSchema>;

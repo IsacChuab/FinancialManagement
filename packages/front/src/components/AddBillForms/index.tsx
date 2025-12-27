@@ -4,16 +4,8 @@ import type { CheckboxGroupProps } from 'antd/es/checkbox';
 import BaseFields from './BaseFields';
 import DueDateFields from './DueDateFields';
 import InstallmentFields from './InstallmentFields';
-
-type FieldsForm = {
-  name: string;
-  amount: string;
-  type: 'debit' | 'credit' | 'vital';
-  dueDate: string;
-  valueInstallment: string;
-  currentInstallment: number;
-  totalInstallments: number;
-};
+import type { BillInput } from '../../../../api/src/billings/billValidator';
+import { trpc } from '../../utils/trpc';
 
 const AddBill = ({
   isOpen,
@@ -23,7 +15,8 @@ const AddBill = ({
   setIsOpen: (isOpen: boolean) => void;
 }) => {
   const [option, setOption] = useState<'debit' | 'credit' | 'vital'>('debit');
-  const [form] = Form.useForm<FieldsForm>();
+  const [form] = Form.useForm<BillInput>();
+  const newBill = trpc.bill.newBill.useMutation();
 
   const options: CheckboxGroupProps<string>['options'] = [
     { label: 'Débito', value: 'debit' },
@@ -35,23 +28,33 @@ const AddBill = ({
     setOption(value);
   };
 
-  const submitForm = () => {
-    console.log('forms result', form.getFieldsValue());
-    form.submit();
+  const handleSetDateValue = (value: Date) => {
+    form.setFieldValue('dueDate', value);
+  };
+
+  const submitForm = (values: BillInput) => {
+    newBill.mutate(values);
   };
 
   return (
     <Modal
       title="Adicionar Conta"
       onCancel={() => setIsOpen(false)}
-      onOk={submitForm}
+      onOk={() => form.submit()}
       open={isOpen}
     >
-      <Form form={form} layout="vertical" className="w-full">
+      <Form
+        form={form}
+        layout="vertical"
+        className="w-full"
+        onFinish={submitForm}
+        initialValues={{ type: 'debit' }}
+      >
         <BaseFields />
 
         <Form.Item className="col-span-2" name="type">
           <Radio.Group
+            name="type"
             block
             options={options}
             defaultValue="debit"
@@ -62,7 +65,9 @@ const AddBill = ({
         </Form.Item>
 
         <div className="grid grid-cols-2 gap-4">
-          {(option === 'credit' || option === 'vital') && <DueDateFields option={option} />}
+          {(option === 'credit' || option === 'vital') && (
+            <DueDateFields option={option} setDateValue={handleSetDateValue} />
+          )}
 
           {option === 'credit' && <InstallmentFields />}
         </div>

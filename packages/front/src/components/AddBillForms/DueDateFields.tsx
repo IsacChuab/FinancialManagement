@@ -1,7 +1,14 @@
-import { DatePicker, Form } from 'antd';
+import { Form } from 'antd';
 import { cn } from '../../utils/cn';
+import DatePickerForm from '../DatePicker';
 
-const DueDateFields = ({ option }: { option: string }) => {
+const DueDateFields = ({
+  option,
+  setDateValue,
+}: {
+  option: string;
+  setDateValue: (value: Date) => void;
+}) => {
   return (
     <Form.Item
       className={cn({ 'col-span-2': option === 'vital' })}
@@ -14,7 +21,7 @@ const DueDateFields = ({ option }: { option: string }) => {
         },
       ]}
     >
-      <DatePicker className="w-full" format="DD/MM/YYYY" />
+      <DatePickerForm onChange={(date) => setDateValue(date)} />
     </Form.Item>
   );
 };

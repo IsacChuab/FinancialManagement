@@ -1,6 +1,5 @@
-import { Form } from 'antd';
+import { Form, InputNumber } from 'antd';
 import MaskedInput from '../../utils/MaskedInput';
-import Input from 'antd/es/input/Input';
 import { useState } from 'react';
 
 const InstallmentFields = () => {
@@ -25,6 +24,7 @@ const InstallmentFields = () => {
         <MaskedInput
           id="valueInstallment"
           name="valueInstallment"
+          type="number"
           prefix="R$"
           message={''}
           onChange={(value: string | number) => handleInputChange(value)}
@@ -40,13 +40,9 @@ const InstallmentFields = () => {
             required: true,
             message: 'Insira a parcela atual',
           },
-          {
-            min: 1,
-            message: 'A parcela atual deve ser maior ou igual a 1',
-          },
         ]}
       >
-        <Input type="number" />
+        <InputNumber min={1} className="w-full!" />
       </Form.Item>
 
       <Form.Item
@@ -57,13 +53,9 @@ const InstallmentFields = () => {
             required: true,
             message: 'Insira a quantidade de parcelas',
           },
-          {
-            min: 1,
-            message: 'O total de parcelas deve ser maior ou igual a 1',
-          },
         ]}
       >
-        <Input type="number" />
+        <InputNumber min={1} className="w-full!" />
       </Form.Item>
     </>
   );

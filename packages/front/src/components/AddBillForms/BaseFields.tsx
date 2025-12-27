@@ -25,6 +25,7 @@ const BaseFields = () => {
         rules={[{ required: true, message: 'Por favor, insira um valor' }]}
       >
         <MaskedInput
+          type="number"
           id="total"
           name="amount"
           prefix="R$"
