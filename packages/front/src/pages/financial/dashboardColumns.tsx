@@ -5,15 +5,15 @@ import dayjs from 'dayjs';
 const typeEnum = {
   debit: {
     label: 'Débito',
-    color: '#24117a',
+    color: '#20d0f7',
   },
   credit: {
     label: 'Crédito',
-    color: '#c97f08',
+    color: '#b622f5',
   },
   vital: {
     label: 'Vitalício',
-    color: '#038539',
+    color: '#00ab22',
   },
 };
 
@@ -24,11 +24,11 @@ const statusEnum = {
   },
   late: {
     label: 'Atrasado',
-    color: '#c97f08',
+    color: '#c40606',
   },
   pendent: {
     label: 'Pendente',
-    color: '#038539',
+    color: '#f0a01f',
   },
 };
 
