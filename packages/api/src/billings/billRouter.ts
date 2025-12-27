@@ -3,11 +3,11 @@ import { billService } from './billService.js';
 import { billInputSchema } from './billValidator.js';
 
 export const billRouter = router({
-  newBill: procedure.input(billInputSchema).mutation(async ({ input }) => {
-    return billService.createBill(input);
+  newBill: procedure.input(billInputSchema).mutation(async ({ input, ctx }) => {
+    return billService.createBill(input, ctx.user.id);
   }),
 
-  allBills: procedure.query(async () => {
-    return billService.getAllActiveBills();
+  allBills: procedure.query(async ({ ctx }) => {
+    return billService.getAllActiveBills(ctx.user.id);
   }),
 });

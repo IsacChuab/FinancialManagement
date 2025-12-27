@@ -6,6 +6,7 @@ import DueDateFields from './DueDateFields';
 import InstallmentFields from './InstallmentFields';
 import type { BillInput } from '../../../../api/src/billings/billValidator';
 import { trpc } from '../../utils/trpc';
+import { checkStatusBill } from '../../utils/functions';
 
 const AddBill = ({
   isOpen,
@@ -15,6 +16,7 @@ const AddBill = ({
   setIsOpen: (isOpen: boolean) => void;
 }) => {
   const [option, setOption] = useState<'debit' | 'credit' | 'vital'>('debit');
+  const [isPaid, setIsPaid] = useState<boolean>(false);
   const [form] = Form.useForm<BillInput>();
   const newBill = trpc.bill.newBill.useMutation();
 
@@ -28,12 +30,18 @@ const AddBill = ({
     setOption(value);
   };
 
-  const handleSetDateValue = (value: Date) => {
+  const handleSetFormValue = (value: Date) => {
     form.setFieldValue('dueDate', value);
   };
 
   const submitForm = (values: BillInput) => {
-    newBill.mutate(values);
+    if (values.type === 'debit') {
+      newBill.mutate({ ...values, status: 'paid' });
+      return;
+    }
+
+    const status = checkStatusBill(isPaid, form.getFieldValue('dueDate'));
+    newBill.mutate({ ...values, status });
   };
 
   return (
@@ -48,7 +56,7 @@ const AddBill = ({
         layout="vertical"
         className="w-full"
         onFinish={submitForm}
-        initialValues={{ type: 'debit' }}
+        initialValues={{ type: 'debit', status: false }}
       >
         <BaseFields />
 
@@ -65,11 +73,13 @@ const AddBill = ({
         </Form.Item>
 
         <div className="grid grid-cols-2 gap-4">
-          {(option === 'credit' || option === 'vital') && (
-            <DueDateFields option={option} setDateValue={handleSetDateValue} />
+          {option === 'vital' && (
+            <DueDateFields setDateValue={handleSetFormValue} setIsPaid={setIsPaid} />
           )}
 
-          {option === 'credit' && <InstallmentFields />}
+          {option === 'credit' && (
+            <InstallmentFields setDateValue={handleSetFormValue} setIsPaid={setIsPaid} />
+          )}
         </div>
       </Form>
     </Modal>

@@ -2,6 +2,7 @@ import mongoose, { type Document, Schema } from 'mongoose';
 
 export interface Bill {
   id: string;
+  userId: mongoose.Schema.Types.ObjectId;
   amount: number;
   currentInstallment: number;
   dueDate: Date;
@@ -13,12 +14,14 @@ export interface Bill {
   updatedAt: Date;
   deletedAt?: Date;
   isActive: boolean;
+  status: string;
 }
 
 export interface BillModel extends Document, Omit<Bill, 'id'> {}
 
 const BillSchema = new Schema<BillModel>(
   {
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     amount: { type: Number, required: true },
     currentInstallment: { type: Number },
     dueDate: { type: Date, index: 1 },
@@ -30,6 +33,7 @@ const BillSchema = new Schema<BillModel>(
     updatedAt: { type: Date, default: Date.now },
     deletedAt: { type: Date },
     isActive: { type: Boolean, default: true, index: 1 },
+    status: { type: String, required: true },
   },
   {
     collection: 'bills',

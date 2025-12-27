@@ -3,9 +3,10 @@ import { Bill } from './repositories/billModel.js';
 import { billRepository } from './repositories/billRepository.js';
 
 class BillService {
-  public async createBill(input: BillInput) {
+  public async createBill(input: BillInput, userId: string) {
     const billObject = new Bill({
       ...input,
+      userId: userId,
       isActive: true,
     });
 
@@ -14,8 +15,8 @@ class BillService {
     return { message: 'Bill created successfully', bill: billObject };
   }
 
-  public async getAllActiveBills() {
-    return await billRepository.findActives();
+  public async getAllActiveBills(userId: string) {
+    return await billRepository.findActives(userId);
   }
 }
 

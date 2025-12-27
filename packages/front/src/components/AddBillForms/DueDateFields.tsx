@@ -1,28 +1,34 @@
-import { Form } from 'antd';
-import { cn } from '../../utils/cn';
+import { Form, Switch } from 'antd';
 import DatePickerForm from '../DatePicker';
 
 const DueDateFields = ({
-  option,
   setDateValue,
+  setIsPaid,
 }: {
-  option: string;
   setDateValue: (value: Date) => void;
+  setIsPaid: (isPaid: boolean) => void;
 }) => {
   return (
-    <Form.Item
-      className={cn({ 'col-span-2': option === 'vital' })}
-      label="Dia do Vencimento"
-      name="dueDate"
-      rules={[
-        {
-          required: true,
-          message: 'Insira uma data de vencimento',
-        },
-      ]}
-    >
-      <DatePickerForm onChange={(date) => setDateValue(date)} />
-    </Form.Item>
+    <>
+      <Form.Item
+        className="col-span-2"
+        label="Dia do Vencimento"
+        name="dueDate"
+        rules={[
+          {
+            required: true,
+            message: 'Insira uma data de vencimento',
+          },
+        ]}
+      >
+        <DatePickerForm onChange={(date) => setDateValue(date)} />
+      </Form.Item>
+
+      <span className="flex gap-2">
+        <Switch onChange={(checked) => setIsPaid(checked)} />
+        Esta conta está paga?
+      </span>
+    </>
   );
 };
 

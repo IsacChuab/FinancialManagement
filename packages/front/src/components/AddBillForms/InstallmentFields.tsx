@@ -1,8 +1,16 @@
-import { Form, InputNumber } from 'antd';
-import MaskedInput from '../../utils/MaskedInput';
 import { useState } from 'react';
 
-const InstallmentFields = () => {
+import { Form, InputNumber, Switch } from 'antd';
+import MaskedInput from '../../utils/MaskedInput';
+import DatePickerForm from '../DatePicker';
+
+const InstallmentFields = ({
+  setDateValue,
+  setIsPaid,
+}: {
+  setDateValue: (value: Date) => void;
+  setIsPaid: (isPaid: boolean) => void;
+}) => {
   const [value, setValue] = useState<string | number>();
 
   const handleInputChange = (event: string | number) => {
@@ -11,6 +19,19 @@ const InstallmentFields = () => {
 
   return (
     <>
+      <Form.Item
+        label="Dia do Vencimento"
+        name="dueDate"
+        rules={[
+          {
+            required: true,
+            message: 'Insira uma data de vencimento',
+          },
+        ]}
+      >
+        <DatePickerForm onChange={(date) => setDateValue(date)} />
+      </Form.Item>
+
       <Form.Item
         label="Valor Parcela"
         name="valueInstallment"
@@ -57,6 +78,11 @@ const InstallmentFields = () => {
       >
         <InputNumber min={1} className="w-full!" />
       </Form.Item>
+
+      <span className="flex gap-2">
+        <Switch onChange={(checked) => setIsPaid(checked)} />
+        Esta conta está paga?
+      </span>
     </>
   );
 };

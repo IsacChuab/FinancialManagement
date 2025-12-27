@@ -3,6 +3,7 @@ import { z } from 'zod';
 const baseInputs = {
   name: z.string().min(3),
   amount: z.number().min(0.01),
+  status: z.string(),
 };
 
 const debitSchema = z.object({

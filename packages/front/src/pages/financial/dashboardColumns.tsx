@@ -17,6 +17,21 @@ const typeEnum = {
   },
 };
 
+const statusEnum = {
+  paid: {
+    label: 'Pago',
+    color: '#53D388',
+  },
+  late: {
+    label: 'Atrasado',
+    color: '#c97f08',
+  },
+  pendent: {
+    label: 'Pendente',
+    color: '#038539',
+  },
+};
+
 export const columns = [
   {
     title: 'Tipo',
@@ -50,8 +65,8 @@ export const columns = [
   },
   {
     title: 'Parcela Final',
-    dataIndex: 'finalInstallment',
-    key: 'finalInstallment',
+    dataIndex: 'totalInstallments',
+    key: 'totalInstallments',
     render: (finalInstallment: number) => (finalInstallment ? finalInstallment : '-'),
   },
   {
@@ -71,6 +86,14 @@ export const columns = [
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
+    render: (status: 'paid' | 'late' | 'pendent') => {
+      const statusItem = statusEnum[status];
+      return (
+        <Tag color={statusItem.color} key={status}>
+          {statusItem.label}
+        </Tag>
+      );
+    },
   },
   {
     title: 'Actions',

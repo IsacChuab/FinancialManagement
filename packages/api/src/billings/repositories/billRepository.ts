@@ -5,11 +5,12 @@ class BillRepository {
     if (bill.isNew || bill.isModified()) {
       await bill.save();
     }
+
     return bill;
   }
 
-  public async findActives() {
-    return await Bill.find({ isActive: true });
+  public async findActives(userId: string) {
+    return await Bill.find({ isActive: true, userId });
   }
 }
 
