@@ -8,13 +8,13 @@ export interface Bill {
   dueDate: Date;
   name: string;
   totalInstallments: number;
-  type: string;
+  type: 'debit' | 'credit' | 'vital';
   valueInstallment: number;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
   isActive: boolean;
-  status: string;
+  status: 'paid' | 'pending' | 'late';
 }
 
 export interface BillModel extends Document, Omit<Bill, 'id'> {}
@@ -27,13 +27,13 @@ const BillSchema = new Schema<BillModel>(
     dueDate: { type: Date, index: 1 },
     name: { type: String, required: true },
     totalInstallments: { type: Number },
-    type: { type: String, required: true, index: 1 },
+    type: { type: String, enum: ['debit', 'credit', 'vital'], required: true, index: 1 },
     valueInstallment: { type: Number },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     deletedAt: { type: Date },
     isActive: { type: Boolean, default: true, index: 1 },
-    status: { type: String, required: true },
+    status: { type: String, enum: ['paid', 'pending', 'late'], required: true },
   },
   {
     collection: 'bills',

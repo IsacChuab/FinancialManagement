@@ -6,6 +6,7 @@ import superJSON from 'superjson';
 export const trpc = createTRPCReact<TrpcRouter>();
 
 export type RouterOutput = inferRouterOutputs<TrpcRouter>;
+export type Bill = RouterOutput['bill']['allBills'][number];
 
 export const trpcClient = trpc.createClient({
   links: [

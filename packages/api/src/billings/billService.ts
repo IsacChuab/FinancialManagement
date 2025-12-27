@@ -12,7 +12,7 @@ class BillService {
 
     await billRepository.save(billObject);
 
-    return { message: 'Bill created successfully', bill: billObject };
+    return billObject;
   }
 
   public async getAllActiveBills(userId: string) {

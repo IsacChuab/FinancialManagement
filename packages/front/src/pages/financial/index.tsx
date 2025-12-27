@@ -9,7 +9,7 @@ import { columns } from './dashboardColumns';
 
 const Financial = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { data } = trpc.bill.allBills.useQuery();
+  const { data, isPending } = trpc.bill.allBills.useQuery();
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -27,7 +27,7 @@ const Financial = () => {
         </div>
       </div>
 
-      <Table dataSource={data} columns={columns} pagination={false} />
+      <Table dataSource={data} columns={columns} pagination={false} loading={isPending} />
 
       <AddBill isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
