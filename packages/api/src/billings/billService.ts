@@ -1,3 +1,5 @@
+import { addActionsToBill } from '../utils/actionsBill.js';
+import { BillWithActions } from './billTypes.js';
 import { BillInput } from './billValidator.js';
 import { Bill } from './repositories/billModel.js';
 import { billRepository } from './repositories/billRepository.js';
@@ -12,21 +14,15 @@ class BillService {
 
     await billRepository.save(billObject);
 
-    return billObject;
+    const formattedBill = addActionsToBill(billObject);
+
+    return formattedBill;
   }
 
   public async getAllActiveBills(userId: string) {
     const data = await billRepository.findActives(userId);
 
-    const formattedData = data.map((item) => {
-      return {
-        ...item,
-        actions:
-          item.status === 'paid'
-            ? ['checkPendent', 'edit', 'delete']
-            : ['checkPaid', 'edit', 'delete'],
-      };
-    });
+    const formattedData = data.map(addActionsToBill);
 
     return formattedData;
   }

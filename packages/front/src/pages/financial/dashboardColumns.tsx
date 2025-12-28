@@ -1,4 +1,4 @@
-import { Dropdown, Tag } from 'antd';
+import { Dropdown, Tag, type TableColumnProps } from 'antd';
 import { formatBrlMoney } from '../../utils/functions';
 import dayjs from 'dayjs';
 import type { Bill } from '../../utils/trpc';
@@ -7,7 +7,7 @@ import { actionEnum, statusEnum, typeEnum } from './billEnums';
 
 type ActionKey = 'checkPaid' | 'checkPendent' | 'edit' | 'delete';
 
-export const columns = [
+export const columns: TableColumnProps<Bill>[] = [
   {
     title: 'Tipo',
     dataIndex: 'type',

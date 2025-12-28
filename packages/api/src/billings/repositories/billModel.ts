@@ -1,6 +1,6 @@
 import mongoose, { type Document, Schema } from 'mongoose';
 
-export interface Bill {
+export interface IBill {
   id: string;
   userId: mongoose.Schema.Types.ObjectId;
   amount: number;
@@ -17,7 +17,7 @@ export interface Bill {
   status: 'paid' | 'pending' | 'late';
 }
 
-export interface BillModel extends Document, Omit<Bill, 'id'> {}
+export interface BillModel extends Document, Omit<IBill, 'id'> {}
 
 const BillSchema = new Schema<BillModel>(
   {
