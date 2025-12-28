@@ -81,7 +81,7 @@ const AddBill = ({
         layout="vertical"
         className="w-full"
         onFinish={submitForm}
-        initialValues={{ type: 'debit', status: false }}
+        initialValues={{ type: 'debit' }}
         disabled={isPending}
       >
         <BaseFields />

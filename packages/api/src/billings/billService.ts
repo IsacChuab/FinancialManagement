@@ -16,7 +16,19 @@ class BillService {
   }
 
   public async getAllActiveBills(userId: string) {
-    return await billRepository.findActives(userId);
+    const data = await billRepository.findActives(userId);
+
+    const formattedData = data.map((item) => {
+      return {
+        ...item,
+        actions:
+          item.status === 'paid'
+            ? ['checkPendent', 'edit', 'delete']
+            : ['checkPaid', 'edit', 'delete'],
+      };
+    });
+
+    return formattedData;
   }
 }
 

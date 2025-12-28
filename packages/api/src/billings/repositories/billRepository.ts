@@ -10,7 +10,7 @@ class BillRepository {
   }
 
   public async findActives(userId: string) {
-    return await Bill.find({ isActive: true, userId }).sort({ type: 1 });
+    return await Bill.find({ isActive: true, userId }).sort({ type: 1 }).lean();
   }
 }
 

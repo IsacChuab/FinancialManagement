@@ -1,36 +1,11 @@
-import { Button, Tag } from 'antd';
+import { Dropdown, Tag } from 'antd';
 import { formatBrlMoney } from '../../utils/functions';
 import dayjs from 'dayjs';
+import type { Bill } from '../../utils/trpc';
+import { AiOutlineBars } from 'react-icons/ai';
+import { actionEnum, statusEnum, typeEnum } from './billEnums';
 
-const typeEnum = {
-  debit: {
-    label: 'Débito',
-    color: '#20d0f7',
-  },
-  credit: {
-    label: 'Crédito',
-    color: '#b622f5',
-  },
-  vital: {
-    label: 'Vitalício',
-    color: '#00ab22',
-  },
-};
-
-const statusEnum = {
-  paid: {
-    label: 'Pago',
-    color: '#53D388',
-  },
-  late: {
-    label: 'Atrasado',
-    color: '#c40606',
-  },
-  pendent: {
-    label: 'Pendente',
-    color: '#f0a01f',
-  },
-};
+type ActionKey = 'checkPaid' | 'checkPendent' | 'edit' | 'delete';
 
 export const columns = [
   {
@@ -58,26 +33,21 @@ export const columns = [
     render: (amount: number) => formatBrlMoney(amount),
   },
   {
-    title: 'Parcela Atual',
+    title: 'Estágio',
     dataIndex: 'currentInstallment',
     key: 'currentInstallment',
-    render: (currentInstallment: number) => (currentInstallment ? currentInstallment : '-'),
+    render: (_, data: Bill) =>
+      data.currentInstallment ? `${data.currentInstallment} de ${data.totalInstallments}` : '-',
   },
   {
-    title: 'Parcela Final',
-    dataIndex: 'totalInstallments',
-    key: 'totalInstallments',
-    render: (finalInstallment: number) => (finalInstallment ? finalInstallment : '-'),
-  },
-  {
-    title: 'Valor da Parcela',
+    title: 'Parcela',
     dataIndex: 'valueInstallment',
     key: 'valueInstallment',
     render: (valueInstallment: number) =>
       valueInstallment ? formatBrlMoney(valueInstallment) : '-',
   },
   {
-    title: 'Data de Vencimento',
+    title: 'Vencimento',
     dataIndex: 'dueDate',
     key: 'dueDate',
     render: (dueDate: Date) => (dueDate ? dayjs(dueDate).format('DD/MM/YYYY') : '-'),
@@ -96,13 +66,20 @@ export const columns = [
     },
   },
   {
-    title: 'Actions',
-    dataIndex: '',
+    title: 'Ações',
+    dataIndex: 'actions',
     key: 'actions',
-    render: () => (
-      <div>
-        <Button type="default">Edit</Button>
-      </div>
-    ),
+    align: 'center',
+    render: (actions: ActionKey[]) => {
+      const items = actionEnum?.filter(
+        (action) => action?.key && actions.includes(action.key as ActionKey),
+      );
+
+      return (
+        <Dropdown menu={{ items }} className="cursor-pointer m-auto">
+          <AiOutlineBars />
+        </Dropdown>
+      );
+    },
   },
 ];

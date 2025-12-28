@@ -27,7 +27,13 @@ const Financial = () => {
         </div>
       </div>
 
-      <Table dataSource={data} columns={columns} pagination={false} loading={isPending} />
+      <Table
+        dataSource={data}
+        columns={columns}
+        pagination={false}
+        loading={isPending}
+        scroll={{ y: 'calc(100vh - 300px)' }}
+      />
 
       <AddBill isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
