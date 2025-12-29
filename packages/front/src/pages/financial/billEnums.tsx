@@ -37,13 +37,13 @@ export const actionEnum = (billId: string, actions: BillActions): MenuProps['ite
     key: 'checkPaid',
     label: 'Marcar Pago',
     icon: <AiOutlineCheck />,
-    onClick: () => actions.checkPaid(billId),
+    onClick: () => actions.updateStatus(billId, 'paid'),
   },
   {
     key: 'checkPending',
     label: 'Marcar Pendente',
     icon: <AiOutlineDollar />,
-    onClick: () => actions.checkPending(billId),
+    onClick: () => actions.updateStatus(billId, 'pending'),
   },
   {
     key: 'edit',
