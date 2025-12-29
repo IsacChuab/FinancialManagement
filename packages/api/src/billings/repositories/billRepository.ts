@@ -16,6 +16,10 @@ class BillRepository {
   public async findById(id: string) {
     return await Bill.findById(id);
   }
+
+  public async delete(id: string) {
+    await Bill.findByIdAndDelete(id);
+  }
 }
 
 export const billRepository = new BillRepository();

@@ -55,6 +55,6 @@ export const actionEnum = (billId: string, actions: BillActions): MenuProps['ite
     key: 'delete',
     label: 'Excluir',
     icon: <AiFillDelete />,
-    onClick: () => console.log('delete', billId),
+    onClick: () => actions.deleteBill(billId),
   },
 ];

@@ -28,6 +28,16 @@ export function useBillActions() {
     },
   });
 
+  const deleteBillMutation = trpc.bill.deleteBill.useMutation({
+    onSuccess: (data) => {
+      utils.bill.allBills.setData(undefined, (oldData) => {
+        if (!oldData) return [];
+
+        return oldData.filter((bill) => bill.id !== data.id);
+      });
+    },
+  });
+
   function newBill(data: BillInput, isPaid: boolean) {
     if (data.type === 'debit') {
       newBillMutation.mutate({ ...data, status: 'paid' });
@@ -43,7 +53,7 @@ export function useBillActions() {
   }
 
   function deleteBill(billId: string) {
-    console.log('Delete bill', billId);
+    deleteBillMutation.mutate({ id: billId });
   }
 
   function editBill(billId: string, data: BillWithActions) {

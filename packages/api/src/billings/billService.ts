@@ -43,6 +43,28 @@ class BillService {
 
     return addActionsToBill(savedBill);
   }
+
+  public async deleteBill(id: string, userId: string) {
+    const billObject = await billRepository.findById(id);
+
+    if (!billObject) {
+      throw new Error('Bill not found');
+    }
+
+    if (billObject.userId.toString() !== userId) {
+      throw new Error('Unauthorized');
+    }
+
+    if (!billObject.isActive) {
+      return { id };
+    }
+
+    billObject.isActive = false;
+    billObject.deletedAt = new Date();
+    await billRepository.save(billObject);
+
+    return { id };
+  }
 }
 
 export const billService = new BillService();

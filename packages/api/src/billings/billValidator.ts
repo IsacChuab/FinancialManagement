@@ -42,3 +42,7 @@ export const billUpdateStatusSchema = z.object({
 });
 
 export type BillUpdateStatus = z.infer<typeof billUpdateStatusSchema>;
+
+export const billDeleteSchema = z.object({
+  id: z.string(),
+});
