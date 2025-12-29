@@ -1,23 +1,27 @@
 import { Form, Modal, Radio, Button } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { CheckboxGroupProps } from 'antd/es/checkbox';
 import BaseFields from './BaseFields';
 import DueDateFields from './DueDateFields';
 import InstallmentFields from './InstallmentFields';
 import type { BillInput } from '../../../../api/src/billings/billValidator';
 import { useBillActions } from '../../hooks/useBillActions';
+import type { BillWithActions } from '../../../../api/src/billings/billTypes';
+import dayjs from 'dayjs';
 
 const AddBill = ({
   isOpen,
-  setIsOpen,
+  closeModal,
+  billToEdit,
 }: {
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  closeModal: () => void;
+  billToEdit: BillWithActions;
 }) => {
   const [option, setOption] = useState<'debit' | 'credit' | 'vital'>('debit');
   const [isPaid, setIsPaid] = useState<boolean>(false);
   const [form] = Form.useForm<BillInput>();
-  const { newBill, isPending } = useBillActions();
+  const { newBill, isPending, updateBill } = useBillActions();
 
   const options: CheckboxGroupProps<string>['options'] = [
     { label: 'Débito', value: 'debit' },
@@ -29,23 +33,40 @@ const AddBill = ({
     setOption(value);
   };
 
-  const handleSetFormValue = (value: Date) => {
+  const handleSetDateValue = (value: Date) => {
     form.setFieldValue('dueDate', value);
   };
 
   const submitForm = (values: BillInput) => {
+    if (billToEdit) {
+      updateBill(billToEdit.id, { ...values }, isPaid);
+      closeModal();
+      return;
+    }
+
     newBill(values, isPaid);
-    setIsOpen(false);
+    closeModal();
   };
+
+  useEffect(() => {
+    if (billToEdit) {
+      form.setFieldsValue(billToEdit);
+      setOption(billToEdit.type);
+      return;
+    }
+
+    form.resetFields();
+    setOption('debit');
+  }, [billToEdit, form]);
 
   return (
     <Modal
       title="Adicionar Conta"
-      onCancel={() => setIsOpen(false)}
-      onOk={() => form.submit()}
+      onCancel={closeModal}
+      onOk={form.submit}
       open={isOpen}
       footer={[
-        <Button key="cancel" onClick={() => setIsOpen(false)}>
+        <Button key="cancel" onClick={closeModal}>
           Cancelar
         </Button>,
 
@@ -84,11 +105,19 @@ const AddBill = ({
 
         <div className="grid grid-cols-2 gap-4">
           {option === 'vital' && (
-            <DueDateFields setDateValue={handleSetFormValue} setIsPaid={setIsPaid} />
+            <DueDateFields
+              setDateValue={handleSetDateValue}
+              setIsPaid={setIsPaid}
+              dateEdit={billToEdit && dayjs(billToEdit.dueDate)}
+            />
           )}
 
           {option === 'credit' && (
-            <InstallmentFields setDateValue={handleSetFormValue} setIsPaid={setIsPaid} />
+            <InstallmentFields
+              setDateValue={handleSetDateValue}
+              setIsPaid={setIsPaid}
+              dateEdit={billToEdit && dayjs(billToEdit.dueDate)}
+            />
           )}
         </div>
       </Form>

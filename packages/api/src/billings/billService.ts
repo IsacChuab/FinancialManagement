@@ -1,6 +1,5 @@
-import mongoose from 'mongoose';
 import { addActionsToBill } from '../utils/actionsBill.js';
-import { BillInput, BillUpdateStatus } from './billValidator.js';
+import { BillInput, BillUpdate, BillUpdateStatus } from './billValidator.js';
 import { Bill } from './repositories/billModel.js';
 import { billRepository } from './repositories/billRepository.js';
 
@@ -25,6 +24,30 @@ class BillService {
     const formattedData = data.map(addActionsToBill);
 
     return formattedData;
+  }
+
+  public async updateBill(input: BillUpdate, userId: string) {
+    const billObject = await billRepository.findById(input.id);
+
+    if (!billObject) {
+      throw new Error('Bill not found');
+    }
+
+    if (billObject.userId.toString() !== userId) {
+      throw new Error('Unauthorized');
+    }
+
+    const updateBill = {
+      userId: billObject.userId,
+      createdAt: billObject.createdAt,
+      updatedAt: new Date(),
+      isActive: true,
+      ...input,
+    };
+
+    const savedBill = await billRepository.replace(billObject._id, updateBill);
+
+    return addActionsToBill(savedBill!);
   }
 
   public async updateStatus(input: BillUpdateStatus, userId: string) {

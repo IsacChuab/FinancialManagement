@@ -3,13 +3,16 @@ import { useState } from 'react';
 import { Form, InputNumber, Switch } from 'antd';
 import MaskedInput from '../../utils/MaskedInput';
 import DatePickerForm from '../DatePicker';
+import type { Dayjs } from 'dayjs';
 
 const InstallmentFields = ({
   setDateValue,
   setIsPaid,
+  dateEdit,
 }: {
   setDateValue: (value: Date) => void;
   setIsPaid: (isPaid: boolean) => void;
+  dateEdit: Dayjs | null;
 }) => {
   const [value, setValue] = useState<string | number>();
 
@@ -29,7 +32,7 @@ const InstallmentFields = ({
           },
         ]}
       >
-        <DatePickerForm onChange={(date) => setDateValue(date)} />
+        <DatePickerForm onChange={(date) => setDateValue(date)} date={dateEdit} />
       </Form.Item>
 
       <Form.Item

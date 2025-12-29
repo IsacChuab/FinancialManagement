@@ -18,7 +18,7 @@ export interface IBill {
   status: BillStatus;
 }
 
-export interface BillModel extends Document, Omit<IBill, 'id'> {}
+export interface BillModel extends Document<mongoose.Types.ObjectId>, Omit<IBill, 'id'> {}
 
 const BillSchema = new Schema<BillModel>(
   {

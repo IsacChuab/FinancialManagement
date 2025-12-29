@@ -1,6 +1,11 @@
 import { procedure, router } from '../trpc/index.js';
 import { billService } from './billService.js';
-import { billDeleteSchema, billInputSchema, billUpdateStatusSchema } from './billValidator.js';
+import {
+  billIdSchema,
+  billInputSchema,
+  billUpdateSchema,
+  billUpdateStatusSchema,
+} from './billValidator.js';
 
 export const billRouter = router({
   newBill: procedure.input(billInputSchema).mutation(async ({ input, ctx }) => {
@@ -11,11 +16,11 @@ export const billRouter = router({
     return billService.getAllActiveBills(ctx.user.id);
   }),
 
-  // updateBill: procedure.input(billInputSchema).mutation(async ({ input, ctx }) => {
-  //   return billService.updateBill(input, ctx.user.id);
-  // }),
+  updateBill: procedure.input(billUpdateSchema).mutation(async ({ input, ctx }) => {
+    return billService.updateBill(input, ctx.user.id);
+  }),
 
-  deleteBill: procedure.input(billDeleteSchema).mutation(async ({ input, ctx }) => {
+  deleteBill: procedure.input(billIdSchema).mutation(async ({ input, ctx }) => {
     return billService.deleteBill(input.id, ctx.user.id);
   }),
 

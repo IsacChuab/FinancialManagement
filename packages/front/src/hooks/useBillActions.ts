@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { BillStatus, BillWithActions } from '../../../api/src/billings/billTypes';
 import type { BillInput } from '../../../api/src/billings/billValidator';
 import { checkStatusBill } from '../utils/functions';
@@ -5,6 +6,7 @@ import { trpc } from '../utils/trpc';
 
 export function useBillActions() {
   const utils = trpc.useUtils();
+  const [editingBill, setEditingBill] = useState<BillWithActions | null>(null);
 
   const updateStatusMutation = trpc.bill.updateStatus.useMutation({
     onSuccess: (data) => {
@@ -38,6 +40,18 @@ export function useBillActions() {
     },
   });
 
+  const updateBillMutation = trpc.bill.updateBill.useMutation({
+    onSuccess: (updatedBill) => {
+      utils.bill.allBills.setData(undefined, (old) => {
+        if (!old) return [updatedBill];
+        return old.map((bill) => {
+          if (bill.id === updatedBill.id) return updatedBill;
+          return bill;
+        });
+      });
+    },
+  });
+
   function newBill(data: BillInput, isPaid: boolean) {
     if (data.type === 'debit') {
       newBillMutation.mutate({ ...data, status: 'paid' });
@@ -56,8 +70,22 @@ export function useBillActions() {
     deleteBillMutation.mutate({ id: billId });
   }
 
-  function editBill(billId: string, data: BillWithActions) {
-    console.log('Delete bill', billId, data);
+  function updateBill(billId: string, data: BillInput, isPaid: boolean) {
+    if (data.type === 'debit') {
+      updateBillMutation.mutate({ id: billId, ...data, status: 'paid' });
+      return;
+    }
+
+    const status = checkStatusBill(isPaid, data.dueDate);
+    updateBillMutation.mutate({ id: billId, ...data, status });
+  }
+
+  function clearEdit() {
+    setEditingBill(null);
+  }
+
+  function startEdit(bill: BillWithActions) {
+    setEditingBill(bill);
   }
 
   return {
@@ -65,7 +93,10 @@ export function useBillActions() {
     isPending: newBillMutation.isPending,
     updateStatus,
     deleteBill,
-    editBill,
+    updateBill,
+    editingBill,
+    startEdit,
+    clearEdit,
   };
 }
 

@@ -1,18 +1,20 @@
 import { Dropdown, Tag, type TableColumnProps } from 'antd';
 import { formatBrlMoney } from '../../utils/functions';
 import dayjs from 'dayjs';
-import type { Bill } from '../../utils/trpc';
 import { AiOutlineBars } from 'react-icons/ai';
 import { actionEnum, statusEnum, typeEnum } from './billEnums';
 import type { BillActions } from '../../hooks/useBillActions';
+import type { BillWithActions } from '../../../../api/src/billings/billTypes';
 
 type ActionKey = 'checkPaid' | 'checkPending' | 'edit' | 'delete';
 
 export const columns = ({
   billActions,
+  handleEdit,
 }: {
   billActions: BillActions;
-}): TableColumnProps<Bill>[] => [
+  handleEdit: (bill: BillWithActions) => void;
+}): TableColumnProps<BillWithActions>[] => [
   {
     title: 'Tipo',
     dataIndex: 'type',
@@ -41,7 +43,7 @@ export const columns = ({
     title: 'Estágio',
     dataIndex: 'currentInstallment',
     key: 'currentInstallment',
-    render: (_, data: Bill) =>
+    render: (_, data: BillWithActions) =>
       data.currentInstallment ? `${data.currentInstallment} de ${data.totalInstallments}` : '-',
   },
   {
@@ -75,8 +77,8 @@ export const columns = ({
     dataIndex: 'actions',
     key: 'actions',
     align: 'center',
-    render: (actions: ActionKey[], record: Bill) => {
-      const items = actionEnum(record.id, billActions)?.filter(
+    render: (actions: ActionKey[], record: BillWithActions) => {
+      const items = actionEnum(record, billActions, handleEdit)?.filter(
         (action) => action?.key && actions.includes(action.key as ActionKey),
       );
 

@@ -1,9 +1,15 @@
 import { z } from 'zod';
 
+const billStatusEnum = z.enum(['paid', 'pending', 'late']);
+
+export const billIdSchema = z.object({
+  id: z.string(),
+});
+
 const baseInputs = {
   name: z.string().min(3),
   amount: z.number().min(0.01),
-  status: z.string(),
+  status: billStatusEnum,
 };
 
 const debitSchema = z.object({
@@ -32,9 +38,10 @@ export const billInputSchema = z.discriminatedUnion('type', [
   vitalSchema,
 ]);
 
-export type BillInput = z.infer<typeof billInputSchema>;
+export const billUpdateSchema = billInputSchema.and(billIdSchema);
+export type BillUpdate = z.infer<typeof billUpdateSchema>;
 
-const billStatusEnum = z.enum(['paid', 'pending', 'late']);
+export type BillInput = z.infer<typeof billInputSchema>;
 
 export const billUpdateStatusSchema = z.object({
   id: z.string(),
@@ -42,7 +49,3 @@ export const billUpdateStatusSchema = z.object({
 });
 
 export type BillUpdateStatus = z.infer<typeof billUpdateStatusSchema>;
-
-export const billDeleteSchema = z.object({
-  id: z.string(),
-});

@@ -1,6 +1,7 @@
 import type { MenuProps } from 'antd';
 import { AiFillDelete, AiFillEdit, AiOutlineCheck, AiOutlineDollar } from 'react-icons/ai';
 import type { BillActions } from '../../hooks/useBillActions';
+import type { BillWithActions } from '../../../../api/src/billings/billTypes';
 
 export const typeEnum = {
   debit: {
@@ -32,29 +33,33 @@ export const statusEnum = {
   },
 };
 
-export const actionEnum = (billId: string, actions: BillActions): MenuProps['items'] => [
+export const actionEnum = (
+  bill: BillWithActions,
+  actions: BillActions,
+  handleEdit: (bill: BillWithActions) => void,
+): MenuProps['items'] => [
   {
     key: 'checkPaid',
     label: 'Marcar Pago',
     icon: <AiOutlineCheck />,
-    onClick: () => actions.updateStatus(billId, 'paid'),
+    onClick: () => actions.updateStatus(bill.id, 'paid'),
   },
   {
     key: 'checkPending',
     label: 'Marcar Pendente',
     icon: <AiOutlineDollar />,
-    onClick: () => actions.updateStatus(billId, 'pending'),
+    onClick: () => actions.updateStatus(bill.id, 'pending'),
   },
   {
     key: 'edit',
     label: 'Editar',
     icon: <AiFillEdit />,
-    onClick: () => console.log('edit', billId),
+    onClick: () => handleEdit(bill),
   },
   {
     key: 'delete',
     label: 'Excluir',
     icon: <AiFillDelete />,
-    onClick: () => actions.deleteBill(billId),
+    onClick: () => actions.deleteBill(bill.id),
   },
 ];

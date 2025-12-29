@@ -7,11 +7,22 @@ import { trpc } from '../../utils/trpc';
 import AddBill from '../../components/AddBillForms';
 import { columns } from './dashboardColumns';
 import { useBillActions } from '../../hooks/useBillActions';
+import type { BillWithActions } from '../../../../api/src/billings/billTypes';
 
 const Financial = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, isPending } = trpc.bill.allBills.useQuery();
   const billActions = useBillActions();
+
+  const handleEdit = (bill: BillWithActions) => {
+    billActions.startEdit(bill);
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+    billActions.clearEdit();
+  };
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -31,13 +42,13 @@ const Financial = () => {
 
       <Table
         dataSource={data}
-        columns={columns({ billActions })}
+        columns={columns({ billActions, handleEdit })}
         pagination={false}
         loading={isPending}
         scroll={{ y: 'calc(100vh - 300px)' }}
       />
 
-      <AddBill isOpen={isOpen} setIsOpen={setIsOpen} />
+      <AddBill isOpen={isOpen} closeModal={closeModal} billToEdit={billActions.editingBill} />
     </div>
   );
 };
