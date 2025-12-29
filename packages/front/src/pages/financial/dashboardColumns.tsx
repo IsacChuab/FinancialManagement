@@ -4,10 +4,15 @@ import dayjs from 'dayjs';
 import type { Bill } from '../../utils/trpc';
 import { AiOutlineBars } from 'react-icons/ai';
 import { actionEnum, statusEnum, typeEnum } from './billEnums';
+import type { BillActions } from '../../hooks/useBillActions';
 
-type ActionKey = 'checkPaid' | 'checkPendent' | 'edit' | 'delete';
+type ActionKey = 'checkPaid' | 'checkPending' | 'edit' | 'delete';
 
-export const columns: TableColumnProps<Bill>[] = [
+export const columns = ({
+  billActions,
+}: {
+  billActions: BillActions;
+}): TableColumnProps<Bill>[] => [
   {
     title: 'Tipo',
     dataIndex: 'type',
@@ -56,7 +61,7 @@ export const columns: TableColumnProps<Bill>[] = [
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
-    render: (status: 'paid' | 'late' | 'pendent') => {
+    render: (status: 'paid' | 'late' | 'pending') => {
       const statusItem = statusEnum[status];
       return (
         <Tag color={statusItem.color} key={status}>
@@ -70,8 +75,8 @@ export const columns: TableColumnProps<Bill>[] = [
     dataIndex: 'actions',
     key: 'actions',
     align: 'center',
-    render: (actions: ActionKey[]) => {
-      const items = actionEnum?.filter(
+    render: (actions: ActionKey[], record: Bill) => {
+      const items = actionEnum(record.id, billActions)?.filter(
         (action) => action?.key && actions.includes(action.key as ActionKey),
       );
 

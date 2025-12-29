@@ -15,7 +15,7 @@ export function addActionsToBill(bill: BillModel): BillWithActions {
     ...plain,
     actions:
       plain.status === 'paid'
-        ? ['checkPendent', 'edit', 'delete']
+        ? ['checkPending', 'edit', 'delete']
         : ['checkPaid', 'edit', 'delete'],
   };
 }

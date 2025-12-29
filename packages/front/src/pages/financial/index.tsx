@@ -6,10 +6,12 @@ import { trpc } from '../../utils/trpc';
 
 import AddBill from '../../components/AddBillForms';
 import { columns } from './dashboardColumns';
+import { useBillActions } from '../../hooks/useBillActions';
 
 const Financial = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, isPending } = trpc.bill.allBills.useQuery();
+  const billActions = useBillActions();
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -29,7 +31,7 @@ const Financial = () => {
 
       <Table
         dataSource={data}
-        columns={columns}
+        columns={columns({ billActions })}
         pagination={false}
         loading={isPending}
         scroll={{ y: 'calc(100vh - 300px)' }}

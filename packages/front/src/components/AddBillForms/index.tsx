@@ -5,8 +5,7 @@ import BaseFields from './BaseFields';
 import DueDateFields from './DueDateFields';
 import InstallmentFields from './InstallmentFields';
 import type { BillInput } from '../../../../api/src/billings/billValidator';
-import { trpc } from '../../utils/trpc';
-import { checkStatusBill } from '../../utils/functions';
+import { useBillActions } from '../../hooks/useBillActions';
 
 const AddBill = ({
   isOpen,
@@ -18,17 +17,7 @@ const AddBill = ({
   const [option, setOption] = useState<'debit' | 'credit' | 'vital'>('debit');
   const [isPaid, setIsPaid] = useState<boolean>(false);
   const [form] = Form.useForm<BillInput>();
-
-  const utils = trpc.useUtils();
-  const { isPending, mutate } = trpc.bill.newBill.useMutation({
-    onSuccess: (newBill) => {
-      setIsOpen(false);
-      utils.bill.allBills.setData(undefined, (old) => {
-        if (!old) return [newBill];
-        return [...old, newBill];
-      });
-    },
-  });
+  const { newBill, isPending } = useBillActions();
 
   const options: CheckboxGroupProps<string>['options'] = [
     { label: 'Débito', value: 'debit' },
@@ -45,13 +34,8 @@ const AddBill = ({
   };
 
   const submitForm = (values: BillInput) => {
-    if (values.type === 'debit') {
-      mutate({ ...values, status: 'paid' });
-      return;
-    }
-
-    const status = checkStatusBill(isPaid, form.getFieldValue('dueDate'));
-    mutate({ ...values, status });
+    newBill(values, isPaid);
+    setIsOpen(false);
   };
 
   return (

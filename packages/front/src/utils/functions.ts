@@ -17,5 +17,5 @@ export const checkStatusBill = (isPaid: boolean, dueDate: Date) => {
     return 'late';
   }
 
-  return 'pendent';
+  return 'pending';
 };

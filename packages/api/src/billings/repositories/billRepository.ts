@@ -12,6 +12,10 @@ class BillRepository {
   public async findActives(userId: string) {
     return await Bill.find({ isActive: true, userId }).sort({ type: 1 });
   }
+
+  public async findById(id: string) {
+    return await Bill.findById(id);
+  }
 }
 
 export const billRepository = new BillRepository();

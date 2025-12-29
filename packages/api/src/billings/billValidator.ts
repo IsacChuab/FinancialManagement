@@ -33,3 +33,12 @@ export const billInputSchema = z.discriminatedUnion('type', [
 ]);
 
 export type BillInput = z.infer<typeof billInputSchema>;
+
+const billStatusEnum = z.enum(['paid', 'pending', 'late']);
+
+export const billUpdateStatusSchema = z.object({
+  id: z.string(),
+  status: billStatusEnum,
+});
+
+export type BillUpdateStatus = z.infer<typeof billUpdateStatusSchema>;

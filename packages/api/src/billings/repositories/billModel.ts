@@ -1,4 +1,5 @@
 import mongoose, { type Document, Schema } from 'mongoose';
+import { BillStatus, BillType } from '../billTypes.js';
 
 export interface IBill {
   id: string;
@@ -8,13 +9,13 @@ export interface IBill {
   dueDate: Date;
   name: string;
   totalInstallments: number;
-  type: 'debit' | 'credit' | 'vital';
+  type: BillType;
   valueInstallment: number;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
   isActive: boolean;
-  status: 'paid' | 'pending' | 'late';
+  status: BillStatus;
 }
 
 export interface BillModel extends Document, Omit<IBill, 'id'> {}
