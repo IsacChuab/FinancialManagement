@@ -16,7 +16,7 @@ const AddBill = ({
 }: {
   isOpen: boolean;
   closeModal: () => void;
-  billToEdit: BillWithActions;
+  billToEdit?: BillWithActions;
 }) => {
   const [option, setOption] = useState<'debit' | 'credit' | 'vital'>('debit');
   const [isPaid, setIsPaid] = useState<boolean>(false);

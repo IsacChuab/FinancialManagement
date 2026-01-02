@@ -6,7 +6,7 @@ import { trpc } from '../utils/trpc';
 
 export function useBillActions() {
   const utils = trpc.useUtils();
-  const [editingBill, setEditingBill] = useState<BillWithActions | null>(null);
+  const [editingBill, setEditingBill] = useState<BillWithActions | undefined>(undefined);
 
   const updateStatusMutation = trpc.bill.updateStatus.useMutation({
     onSuccess: (data) => {
@@ -52,6 +52,12 @@ export function useBillActions() {
     },
   });
 
+  const closeMonthMutation = trpc.bill.closeMonth.useMutation({
+    onSuccess: () => {
+      utils.bill.allBills.invalidate();
+    },
+  });
+
   function newBill(data: BillInput, isPaid: boolean) {
     if (data.type === 'debit') {
       newBillMutation.mutate({ ...data, status: 'paid' });
@@ -81,11 +87,15 @@ export function useBillActions() {
   }
 
   function clearEdit() {
-    setEditingBill(null);
+    setEditingBill(undefined);
   }
 
   function startEdit(bill: BillWithActions) {
     setEditingBill(bill);
+  }
+
+  function closeMonth(data: BillWithActions[]) {
+    closeMonthMutation.mutate(data);
   }
 
   return {
@@ -97,6 +107,7 @@ export function useBillActions() {
     editingBill,
     startEdit,
     clearEdit,
+    closeMonth,
   };
 }
 

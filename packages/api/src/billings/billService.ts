@@ -2,6 +2,7 @@ import { addActionsToBill } from '../utils/actionsBill.js';
 import { BillInput, BillUpdate, BillUpdateStatus } from './billValidator.js';
 import { Bill } from './repositories/billModel.js';
 import { billRepository } from './repositories/billRepository.js';
+import dayjs from 'dayjs';
 
 class BillService {
   public async createBill(input: BillInput, userId: string) {
@@ -87,6 +88,84 @@ class BillService {
     await billRepository.save(billObject);
 
     return { id };
+  }
+
+  public async closeMonth(data: BillUpdate[], userId: string) {
+    const billIds = data.map((bill) => bill.id);
+    const unauthorizedBills = await billRepository.findUnauthorizedBills(billIds, userId);
+
+    if (unauthorizedBills.length > 0) {
+      throw new Error('Unauthorized Action');
+    }
+
+    await Promise.all([
+      this.closeDebitBills(data),
+      this.closeVitalBills(data),
+      this.closeCreditBills(data),
+    ]);
+  }
+
+  private async closeDebitBills(data: BillUpdate[]) {
+    const debitIds = data.filter((bill) => bill.type === 'debit').map((bill) => bill.id);
+
+    if (debitIds.length === 0) {
+      return;
+    }
+
+    await billRepository.updateManyByIds(debitIds, { isActive: false });
+  }
+
+  private async closeCreditBills(data: BillUpdate[]) {
+    const creditIds = data.filter((bill) => bill.type === 'credit').map((bill) => bill.id);
+    const currentDate = dayjs().toDate();
+
+    if (creditIds.length === 0) {
+      return;
+    }
+
+    const bills = await billRepository.findByIds(creditIds);
+
+    bills.forEach((bill) => {
+      const nextInstallment = bill.currentInstallment + 1;
+      const nextDueDate = dayjs(bill.dueDate).add(1, 'month').toDate();
+
+      if (nextInstallment > bill.totalInstallments) {
+        bill.isActive = false;
+        return;
+      }
+
+      if (nextDueDate >= currentDate) {
+        bill.status = 'pending';
+      }
+
+      bill.currentInstallment = nextInstallment;
+      bill.dueDate = nextDueDate;
+    });
+
+    await billRepository.bulkUpdate(bills);
+  }
+
+  private async closeVitalBills(data: BillUpdate[]) {
+    const vitalIds = data.filter((bill) => bill.type === 'vital').map((bill) => bill.id);
+    const currentDate = dayjs().toDate();
+
+    if (vitalIds.length === 0) {
+      return;
+    }
+
+    const vitalBillsToUpdate = await billRepository.findByIds(vitalIds);
+
+    vitalBillsToUpdate.forEach((bill) => {
+      const nextDueDate = dayjs(bill.dueDate).add(1, 'month').toDate();
+
+      if (nextDueDate >= currentDate) {
+        bill.status = 'pending';
+      }
+
+      bill.dueDate = nextDueDate;
+    });
+
+    await billRepository.bulkUpdate(vitalBillsToUpdate);
   }
 }
 

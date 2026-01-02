@@ -5,6 +5,7 @@ import {
   billInputSchema,
   billUpdateSchema,
   billUpdateStatusSchema,
+  closeMonthSchema,
 } from './billValidator.js';
 
 export const billRouter = router({
@@ -26,5 +27,9 @@ export const billRouter = router({
 
   updateStatus: procedure.input(billUpdateStatusSchema).mutation(async ({ input, ctx }) => {
     return billService.updateStatus(input, ctx.user.id);
+  }),
+
+  closeMonth: procedure.input(closeMonthSchema).mutation(async ({ input, ctx }) => {
+    return billService.closeMonth(input, ctx.user.id);
   }),
 });

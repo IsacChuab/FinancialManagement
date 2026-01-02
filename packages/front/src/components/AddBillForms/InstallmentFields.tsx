@@ -12,7 +12,7 @@ const InstallmentFields = ({
 }: {
   setDateValue: (value: Date) => void;
   setIsPaid: (isPaid: boolean) => void;
-  dateEdit: Dayjs | null;
+  dateEdit?: Dayjs;
 }) => {
   const [value, setValue] = useState<string | number>();
 

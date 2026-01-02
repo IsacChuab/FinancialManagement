@@ -24,6 +24,12 @@ const Financial = () => {
     billActions.clearEdit();
   };
 
+  const handleCloseMonth = () => {
+    if (!data) return;
+
+    billActions.closeMonth(data);
+  };
+
   return (
     <div className="flex flex-col gap-4 p-4">
       <div className="flex justify-between items-center">
@@ -34,7 +40,7 @@ const Financial = () => {
             Adicionar Conta <AiOutlinePlusCircle />
           </Button>
 
-          <Button type="default">
+          <Button type="default" onClick={handleCloseMonth} disabled={!data}>
             Finalizar Mês <AiOutlineArrowRight />
           </Button>
         </div>

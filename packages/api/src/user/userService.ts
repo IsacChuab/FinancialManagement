@@ -6,6 +6,12 @@ import { generateToken } from '../utils/token.js';
 
 class UserService {
   public async createUser({ email, password }: UserInput) {
+    const user = await userRepository.findByEmail(email);
+
+    if (user) {
+      throw new Error('User already exists');
+    }
+
     const hashPass = crypto.createHash('sha256').update(password).digest('hex');
 
     const userObject = new User({
@@ -13,9 +19,11 @@ class UserService {
       password: hashPass,
     });
 
-    await userRepository.save(userObject);
+    const savedUser = await userRepository.save(userObject);
 
-    return { message: 'User created successfully', user: userObject.email };
+    const token = generateToken(savedUser.id, savedUser.email);
+
+    return { user: { id: savedUser.id, email: savedUser.email }, token };
   }
 
   public async login({ email, password }: UserInput) {

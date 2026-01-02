@@ -15,16 +15,23 @@ const Login = () => {
     },
   });
 
-  const createUser = async () => {
-    console.log('createUser');
-    // const values = form.getFieldsValue();
-    // if (!values?.user && !values?.password) {
-    //   alert('Please enter your username and password');
-    //   return;
-    // }
-    // console.log(values);
-    // await trpc.user.newUser.mutate(values);
-    // console.log('createUser', values);
+  const createUser = trpc.auth.createUser.useMutation({
+    onSuccess: () => {
+      navigate('/financial');
+    },
+    onError: (error) => {
+      console.error('Error logging in:', error);
+    },
+  });
+
+  const handleCreateUser = async () => {
+    const values = form.getFieldsValue();
+    if (!values?.user && !values?.password) {
+      form.submit();
+      return;
+    }
+
+    await createUser.mutateAsync(values);
   };
 
   return (
@@ -69,7 +76,7 @@ const Login = () => {
 
         <div className="w-full">
           <Divider />
-          <Button onClick={createUser} type="primary" className="w-full py-2!">
+          <Button onClick={handleCreateUser} type="primary" className="w-full py-2!">
             Criar uma conta
           </Button>
         </div>

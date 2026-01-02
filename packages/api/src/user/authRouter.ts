@@ -17,6 +17,19 @@ export const authRouter = router({
     return userLogged;
   }),
 
+  createUser: publicProcedure.input(userValidator).mutation(async ({ input, ctx }) => {
+    const userCreated = await userService.createUser(input);
+
+    ctx.res.cookie('token', userCreated.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return userCreated;
+  }),
+
   logout: procedure.mutation(async ({ ctx }) => {
     ctx.res.cookie('token', '', {
       httpOnly: true,
