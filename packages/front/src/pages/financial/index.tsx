@@ -3,6 +3,7 @@ import { AiOutlineArrowRight, AiOutlinePlusCircle } from 'react-icons/ai';
 
 import { Button, Table } from 'antd';
 import { trpc } from '../../utils/trpc';
+import dayjs from '../../utils/dayjs';
 
 import AddBill from '../../components/AddBillForms';
 import { columns } from './dashboardColumns';
@@ -13,6 +14,7 @@ const Financial = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, isPending } = trpc.bill.allBills.useQuery();
   const billActions = useBillActions();
+  const currentMonth = dayjs().format('MMMM');
 
   const handleEdit = (bill: BillWithActions) => {
     billActions.startEdit(bill);
@@ -33,14 +35,14 @@ const Financial = () => {
   return (
     <div className="flex flex-col gap-4 p-4">
       <div className="flex justify-between items-center">
-        <h1 className="text-4xl">Contas Mensal</h1>
+        <h1 className="text-4xl">Contas do mês de {currentMonth}</h1>
 
         <div className="flex gap-3">
           <Button type="primary" onClick={() => setIsOpen(true)}>
             Adicionar Conta <AiOutlinePlusCircle />
           </Button>
 
-          <Button type="default" onClick={handleCloseMonth} disabled={!data}>
+          <Button type="default" onClick={handleCloseMonth} disabled={!data?.length}>
             Finalizar Mês <AiOutlineArrowRight />
           </Button>
         </div>
