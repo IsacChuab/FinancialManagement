@@ -83,11 +83,9 @@ const ChangePassowrd = ({
             { required: true, message: 'Por favor, confirme a nova senha' },
             ({ getFieldValue }) => ({
               validator(_, value) {
-                if (!value || getFieldValue('newPassword') === value) {
-                  return Promise.resolve();
+                if (!value || getFieldValue('newPassword') !== value) {
+                  return Promise.reject(new Error('As senhas não coincidem'));
                 }
-
-                return Promise.reject(new Error('As senhas não coincidem'));
               },
             }),
           ]}
