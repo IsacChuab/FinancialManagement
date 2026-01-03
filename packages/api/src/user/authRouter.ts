@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { procedure, publicProcedure, router } from '../trpc/index.js';
 import { userService } from './userService.js';
-import { userValidator } from './userValidators.js';
+import { changePasswordValidator, userValidator } from './userValidators.js';
 
 export const authRouter = router({
   login: publicProcedure.input(userValidator).mutation(async ({ input, ctx }) => {
@@ -30,6 +30,18 @@ export const authRouter = router({
     return userCreated;
   }),
 
+  me: procedure.query(async ({ ctx }) => {
+    if (!ctx.user) throw new TRPCError({ code: 'UNAUTHORIZED' });
+
+    return userService.findById(ctx.user.email);
+  }),
+
+  changePassword: procedure.input(changePasswordValidator).mutation(async ({ input, ctx }) => {
+    if (!ctx.user) throw new TRPCError({ code: 'UNAUTHORIZED' });
+
+    return userService.changePassword(ctx.user.email, input);
+  }),
+
   logout: procedure.mutation(async ({ ctx }) => {
     ctx.res.cookie('token', '', {
       httpOnly: true,
@@ -37,11 +49,5 @@ export const authRouter = router({
       sameSite: 'lax',
       maxAge: 0,
     });
-  }),
-
-  me: procedure.query(async ({ ctx }) => {
-    if (!ctx.user) throw new TRPCError({ code: 'UNAUTHORIZED' });
-
-    return userService.findById(ctx.user.email);
   }),
 });

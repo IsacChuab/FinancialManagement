@@ -1,6 +1,6 @@
 import { User } from './repositories/userModel.js';
 import { userRepository } from './repositories/userRepository.js';
-import { UserInput } from './userValidators.js';
+import { ChangePasswordInput, UserInput } from './userValidators.js';
 import crypto from 'node:crypto';
 import { generateToken } from '../utils/token.js';
 
@@ -50,6 +50,29 @@ class UserService {
     if (!user) {
       throw new Error('User not found');
     }
+
+    const token = generateToken(user.id, user.email);
+
+    return { user: { id: user.id, email: user.email }, token };
+  }
+
+  public async changePassword(email: string, input: ChangePasswordInput) {
+    const user = await userRepository.findByEmail(email);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const hashCurrentPass = crypto.createHash('sha256').update(input.currentPassword).digest('hex');
+
+    if (user.password !== hashCurrentPass) {
+      throw new Error('Invalid password');
+    }
+
+    const hashNewPass = crypto.createHash('sha256').update(input.newPassword).digest('hex');
+    user.password = hashNewPass;
+
+    await userRepository.save(user);
 
     const token = generateToken(user.id, user.email);
 

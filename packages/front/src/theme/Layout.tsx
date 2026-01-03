@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import Dropdown from 'antd/es/dropdown/dropdown';
@@ -9,8 +10,11 @@ import Logo from '../assets/zc logo.png';
 import { FaUserGear } from 'react-icons/fa6';
 import { MdLightMode, MdOutlineLogout, MdOutlineNightlightRound } from 'react-icons/md';
 import { LiaUserEditSolid } from 'react-icons/lia';
+import ChangePassowrd from '../components/ChangePasswordForms';
 
 const Layout = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const { mode, setMode } = useTheme();
   const navigate = useNavigate();
   const logout = trpc.auth.logout.useMutation();
@@ -22,8 +26,9 @@ const Layout = () => {
   };
   const items: MenuProps['items'] = [
     {
-      key: '1',
+      key: 'editPassword',
       icon: <LiaUserEditSolid />,
+      onClick: () => setIsOpen(true),
       label: 'Editar senha',
     },
     {
@@ -55,6 +60,8 @@ const Layout = () => {
       <main className="grow w-full m-auto max-w-7xl ">
         <Outlet />
       </main>
+
+      <ChangePassowrd isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };

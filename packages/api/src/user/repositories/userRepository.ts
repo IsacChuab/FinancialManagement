@@ -5,6 +5,7 @@ class UserRepository {
     if (user.isNew || user.isModified()) {
       await user.save();
     }
+
     return user;
   }
 
