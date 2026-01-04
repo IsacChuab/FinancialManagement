@@ -10,7 +10,7 @@ import Logo from '../assets/zc logo.png';
 import { FaUserGear } from 'react-icons/fa6';
 import { MdLightMode, MdOutlineLogout, MdOutlineNightlightRound } from 'react-icons/md';
 import { LiaUserEditSolid } from 'react-icons/lia';
-import ChangePassowrd from '../components/ChangePasswordForms';
+import ChangePassowrd from '../components/ChangePassword';
 
 const Layout = () => {
   const [isOpen, setIsOpen] = useState(false);

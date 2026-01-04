@@ -1,18 +1,18 @@
 import { User } from './repositories/userModel.js';
 import { userRepository } from './repositories/userRepository.js';
-import { ChangePasswordInput, UserInput } from './userValidators.js';
+import { ChangePasswordInput, CreateUserInput, LoginInput } from './userValidators.js';
 import crypto from 'node:crypto';
 import { generateToken } from '../utils/token.js';
 
 class UserService {
-  public async createUser({ email, password }: UserInput) {
+  public async createUser({ email, newPassword }: CreateUserInput) {
     const user = await userRepository.findByEmail(email);
 
     if (user) {
       throw new Error('User already exists');
     }
 
-    const hashPass = crypto.createHash('sha256').update(password).digest('hex');
+    const hashPass = crypto.createHash('sha256').update(newPassword).digest('hex');
 
     const userObject = new User({
       email,
@@ -26,7 +26,7 @@ class UserService {
     return { user: { id: savedUser.id, email: savedUser.email }, token };
   }
 
-  public async login({ email, password }: UserInput) {
+  public async login({ email, password }: LoginInput) {
     const user = await userRepository.findByEmail(email);
 
     if (!user) {

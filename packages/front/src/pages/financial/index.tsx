@@ -5,7 +5,7 @@ import { Button, Table } from 'antd';
 import { trpc } from '../../utils/trpc';
 import dayjs from '../../utils/dayjs';
 
-import AddBill from '../../components/AddBillForms';
+import AddBill from '../../components/AddBill';
 import { columns } from './dashboardColumns';
 import { useBillActions } from '../../hooks/useBillActions';
 import type { BillWithActions } from '../../../../api/src/billings/billTypes';

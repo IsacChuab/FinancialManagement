@@ -3,6 +3,7 @@ import Password from 'antd/es/input/Password';
 
 import type { ChangePasswordInput } from '../../../../api/src/user/userValidators';
 import { trpc } from '../../utils/trpc';
+import NewPassword from '../NewPassword';
 
 const ChangePassowrd = ({
   isOpen,
@@ -23,6 +24,7 @@ const ChangePassowrd = ({
   });
 
   const submitForm = (values: ChangePasswordInput) => {
+    console.log('aqui', values);
     changePassMutation.mutate(values);
   };
 
@@ -48,14 +50,7 @@ const ChangePassowrd = ({
         </Button>,
       ]}
     >
-      <Form
-        form={form}
-        layout="vertical"
-        className="w-full"
-        onFinish={submitForm}
-        initialValues={{ type: 'debit' }}
-        disabled={false}
-      >
+      <Form form={form} layout="vertical" className="w-full" onFinish={submitForm} disabled={false}>
         <Form.Item
           label="Senha atual"
           name="currentPassword"
@@ -64,34 +59,7 @@ const ChangePassowrd = ({
           <Password />
         </Form.Item>
 
-        <Form.Item
-          label="Nova senha"
-          name="newPassword"
-          rules={[
-            { required: true, message: 'Por favor, insira uma nova senha' },
-            { min: 3, max: 10, message: 'A senha deve ter entre 3 e 10 caracteres' },
-          ]}
-        >
-          <Password />
-        </Form.Item>
-
-        <Form.Item
-          label="Confirmar nova senha"
-          name="confirmNewPassword"
-          dependencies={['newPassword']}
-          rules={[
-            { required: true, message: 'Por favor, confirme a nova senha' },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue('newPassword') !== value) {
-                  return Promise.reject(new Error('As senhas não coincidem'));
-                }
-              },
-            }),
-          ]}
-        >
-          <Password />
-        </Form.Item>
+        <NewPassword />
       </Form>
     </Modal>
   );

@@ -1,10 +1,15 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { Button, Divider, Form, Input } from 'antd';
 import { trpc } from '../../utils/trpc';
-import { useNavigate } from 'react-router-dom';
+
+import CreateAccount from '../../components/CreateAccount';
 
 const Login = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [isOpenCreateAccount, setIsOpenCreateAccount] = useState(false);
 
   const submit = trpc.auth.login.useMutation({
     onSuccess: () => {
@@ -14,25 +19,6 @@ const Login = () => {
       console.error('Error logging in:', error);
     },
   });
-
-  const createUser = trpc.auth.createUser.useMutation({
-    onSuccess: () => {
-      navigate('/financial');
-    },
-    onError: (error) => {
-      console.error('Error logging in:', error);
-    },
-  });
-
-  const handleCreateUser = async () => {
-    const values = form.getFieldsValue();
-    if (!values?.user && !values?.password) {
-      form.submit();
-      return;
-    }
-
-    await createUser.mutateAsync(values);
-  };
 
   return (
     <div className="w-full h-220 flex justify-center items-center">
@@ -76,10 +62,16 @@ const Login = () => {
 
         <div className="w-full">
           <Divider />
-          <Button onClick={handleCreateUser} type="primary" className="w-full py-2!">
+          <Button
+            onClick={() => setIsOpenCreateAccount(true)}
+            type="primary"
+            className="w-full py-2!"
+          >
             Criar uma conta
           </Button>
         </div>
+
+        <CreateAccount isOpen={isOpenCreateAccount} setIsOpen={setIsOpenCreateAccount} />
       </div>
     </div>
   );

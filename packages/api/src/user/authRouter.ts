@@ -1,10 +1,10 @@
 import { TRPCError } from '@trpc/server';
 import { procedure, publicProcedure, router } from '../trpc/index.js';
 import { userService } from './userService.js';
-import { changePasswordValidator, userValidator } from './userValidators.js';
+import { changePasswordValidator, createUserValidator, loginValidator } from './userValidators.js';
 
 export const authRouter = router({
-  login: publicProcedure.input(userValidator).mutation(async ({ input, ctx }) => {
+  login: publicProcedure.input(loginValidator).mutation(async ({ input, ctx }) => {
     const userLogged = await userService.login(input);
 
     ctx.res.cookie('token', userLogged.token, {
@@ -17,7 +17,7 @@ export const authRouter = router({
     return userLogged;
   }),
 
-  createUser: publicProcedure.input(userValidator).mutation(async ({ input, ctx }) => {
+  createUser: publicProcedure.input(createUserValidator).mutation(async ({ input, ctx }) => {
     const userCreated = await userService.createUser(input);
 
     ctx.res.cookie('token', userCreated.token, {
