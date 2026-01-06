@@ -54,7 +54,10 @@ const CreateAccount = ({
         <Form.Item
           label="E-mail"
           name="email"
-          rules={[{ required: true, message: 'Por favor, insira um e-mail válido' }]}
+          rules={[
+            { required: true, message: 'Campo obrigatório' },
+            { type: 'email', message: 'Por favor, insira um e-mail válido' },
+          ]}
         >
           <Input />
         </Form.Item>

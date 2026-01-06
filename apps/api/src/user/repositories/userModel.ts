@@ -7,6 +7,8 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
+  code?: string;
+  expiresAt?: Date;
 }
 
 export interface IUserModel extends Document, Omit<IUser, 'id'> {}
@@ -18,6 +20,8 @@ const UserSchema = new Schema<IUserModel>(
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     deletedAt: { type: Date },
+    code: { type: String },
+    expiresAt: { type: Date },
   },
   {
     collection: 'users',

@@ -1,7 +1,14 @@
 import { TRPCError } from '@trpc/server';
 import { procedure, publicProcedure, router } from '../trpc/index.js';
 import { userService } from './userService.js';
-import { changePasswordValidator, createUserValidator, loginValidator } from './userValidators.js';
+import {
+  changePasswordValidator,
+  createUserValidator,
+  firstStepForgotPasswordValidator,
+  loginValidator,
+  secondStepForgotPasswordValidator,
+  thirdStepForgotPasswordValidator,
+} from './userValidators.js';
 
 export const authRouter = router({
   login: publicProcedure.input(loginValidator).mutation(async ({ input, ctx }) => {
@@ -29,6 +36,26 @@ export const authRouter = router({
 
     return userCreated;
   }),
+
+  firstStepForgotPassword: publicProcedure
+    .input(firstStepForgotPasswordValidator)
+    .mutation(async ({ input }) => {
+      const user = await userService.firstStepForgotPassword(input.email);
+
+      return user;
+    }),
+
+  secondStepForgotPassword: publicProcedure
+    .input(secondStepForgotPasswordValidator)
+    .mutation(async ({ input }) => {
+      return await userService.secondStepForgotPassword(input.email, input.code);
+    }),
+
+  thirdStepForgotPassword: publicProcedure
+    .input(thirdStepForgotPasswordValidator)
+    .mutation(async ({ input }) => {
+      return await userService.thirdStepForgotPassword(input.email, input.newPassword);
+    }),
 
   me: procedure.query(async ({ ctx }) => {
     if (!ctx.user) throw new TRPCError({ code: 'UNAUTHORIZED' });

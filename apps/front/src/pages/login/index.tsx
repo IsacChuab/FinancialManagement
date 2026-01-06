@@ -5,11 +5,13 @@ import { Button, Divider, Form, Input } from 'antd';
 import { trpc } from '../../utils/trpc';
 
 import CreateAccount from '../../components/CreateAccount';
+import ForgotPassword from '../../components/ForgotPassword';
 
 const Login = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [isOpenCreateAccount, setIsOpenCreateAccount] = useState(false);
+  const [isOpenForgotPassword, setIsOpenForgotPassword] = useState(false);
 
   const submit = trpc.auth.login.useMutation({
     onSuccess: () => {
@@ -50,7 +52,7 @@ const Login = () => {
           </Form.Item>
 
           <div className="flex justify-between">
-            <a href="/">Forgot Password</a>
+            <a onClick={() => setIsOpenForgotPassword(true)}>Forgot Password</a>
 
             <Form.Item className="text-center">
               <Button htmlType="submit" type="primary">
@@ -72,6 +74,7 @@ const Login = () => {
         </div>
 
         <CreateAccount isOpen={isOpenCreateAccount} setIsOpen={setIsOpenCreateAccount} />
+        <ForgotPassword isOpen={isOpenForgotPassword} setIsOpen={setIsOpenForgotPassword} />
       </div>
     </div>
   );

@@ -12,6 +12,10 @@ class UserRepository {
   public async findByEmail(email: string) {
     return await User.findOne({ email });
   }
+
+  public async validatePasswordResetCode(email: string, code: string) {
+    return await User.findOne({ email, code, expiresAt: { $gt: new Date() } });
+  }
 }
 
 export const userRepository = new UserRepository();
