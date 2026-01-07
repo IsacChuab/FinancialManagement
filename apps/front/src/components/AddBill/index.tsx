@@ -1,4 +1,4 @@
-import { Form, Modal, Radio, Button } from 'antd';
+import { Form, Modal, Radio, Button, type RadioChangeEvent } from 'antd';
 import { useEffect, useState } from 'react';
 import type { CheckboxGroupProps } from 'antd/es/checkbox';
 import BaseFields from './BaseFields';
@@ -29,8 +29,8 @@ const AddBill = ({
     { label: 'Vitalícia', value: 'vital' },
   ];
 
-  const handleChangeOption = (value: 'debit' | 'credit' | 'vital') => {
-    setOption(value);
+  const handleChangeOption = (value: RadioChangeEvent) => {
+    setOption(value.target.value as 'debit' | 'credit' | 'vital');
   };
 
   const handleSetDateValue = (value: Date) => {
@@ -99,7 +99,7 @@ const AddBill = ({
             defaultValue="debit"
             optionType="button"
             buttonStyle="solid"
-            onChange={(type) => handleChangeOption(type.target.value)}
+            onChange={handleChangeOption}
           />
         </Form.Item>
 
