@@ -1,20 +1,24 @@
-import type { MenuProps } from 'antd';
 import { AiFillDelete, AiFillEdit, AiOutlineCheck, AiOutlineDollar } from 'react-icons/ai';
 import type { BillActions } from '../../hooks/useBillActions';
 import type { BillWithActions } from '../../../../api/src/billings/billTypes';
+import { MdCalendarMonth, MdOutlineAttachMoney } from 'react-icons/md';
+import { FaRegCreditCard } from 'react-icons/fa6';
 
 export const typeEnum = {
   debit: {
     label: 'Débito',
     color: '#20d0f7',
+    icon: <MdOutlineAttachMoney />,
   },
   credit: {
     label: 'Crédito',
     color: '#b622f5',
+    icon: <FaRegCreditCard />,
   },
   vital: {
     label: 'Vitalício',
     color: '#00ab22',
+    icon: <MdCalendarMonth />,
   },
 };
 
@@ -37,29 +41,65 @@ export const actionEnum = (
   bill: BillWithActions,
   actions: BillActions,
   handleEdit: (bill: BillWithActions) => void,
-): MenuProps['items'] => [
+) => [
   {
     key: 'checkPaid',
-    label: 'Marcar Pago',
+    label: 'Quitar',
     icon: <AiOutlineCheck />,
+    actionCard: (
+      <div
+        key="checkPaid"
+        className="flex items-center gap-2 justify-center"
+        onClick={() => actions.updateStatus(bill.id, 'paid')}
+      >
+        Quitar
+      </div>
+    ),
     onClick: () => actions.updateStatus(bill.id, 'paid'),
   },
   {
     key: 'checkPending',
-    label: 'Marcar Pendente',
+    label: 'Em aberto',
     icon: <AiOutlineDollar />,
+    actionCard: (
+      <div
+        key="checkPending"
+        className="flex items-center gap-2 justify-center"
+        onClick={() => actions.updateStatus(bill.id, 'pending')}
+      >
+        Em aberto
+      </div>
+    ),
     onClick: () => actions.updateStatus(bill.id, 'pending'),
   },
   {
     key: 'edit',
     label: 'Editar',
     icon: <AiFillEdit />,
+    actionCard: (
+      <div
+        key="edit"
+        className="flex items-center gap-2 justify-center"
+        onClick={() => handleEdit(bill)}
+      >
+        Editar
+      </div>
+    ),
     onClick: () => handleEdit(bill),
   },
   {
     key: 'delete',
     label: 'Excluir',
     icon: <AiFillDelete />,
+    actionCard: (
+      <div
+        key="delete"
+        className="flex items-center gap-2 justify-center"
+        onClick={() => actions.deleteBill(bill.id)}
+      >
+        Excluir
+      </div>
+    ),
     onClick: () => actions.deleteBill(bill.id),
   },
 ];

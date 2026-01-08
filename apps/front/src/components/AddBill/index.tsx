@@ -40,11 +40,15 @@ const AddBill = ({
   const submitForm = (values: BillInput) => {
     if (billToEdit) {
       updateBill(billToEdit.id, { ...values }, isPaid);
+      form.resetFields();
       closeModal();
+      setOption('debit');
       return;
     }
 
     newBill(values, isPaid);
+    form.resetFields();
+    setOption('debit');
     closeModal();
   };
 

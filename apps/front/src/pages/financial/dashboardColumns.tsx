@@ -6,7 +6,7 @@ import { actionEnum, statusEnum, typeEnum } from './billEnums';
 import type { BillActions } from '../../hooks/useBillActions';
 import type { BillWithActions } from '../../../../api/src/billings/billTypes';
 
-type ActionKey = 'checkPaid' | 'checkPending' | 'edit' | 'delete';
+export type ActionKey = 'checkPaid' | 'checkPending' | 'edit' | 'delete';
 
 export const columns = ({
   billActions,

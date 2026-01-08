@@ -1,3 +1,5 @@
+import dayjs from '../utils/dayjs';
+
 export const formatBrlMoney = (value = 0) => {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -13,7 +15,7 @@ export const checkStatusBill = (isPaid: boolean, dueDate: Date) => {
     return 'paid';
   }
 
-  if (currentDate > dueDate) {
+  if (dayjs(currentDate).format('YYYY-MM-DD') > dayjs(dueDate).format('YYYY-MM-DD')) {
     return 'late';
   }
 
