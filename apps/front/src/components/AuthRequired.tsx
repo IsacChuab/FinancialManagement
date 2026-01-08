@@ -3,15 +3,14 @@ import { trpc } from '../utils/trpc';
 
 const AuthRequired = () => {
   const navigate = useNavigate();
-
   const { data, isLoading, isError, error } = trpc.auth.me.useQuery();
 
   if (isLoading) return;
 
   if (isError || !data) {
     console.log('Error:', error);
-    navigate('/');
-    return;
+
+    void navigate('/');
   }
 
   return <Outlet />;

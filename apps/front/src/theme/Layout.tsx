@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import Dropdown from 'antd/es/dropdown/dropdown';
@@ -43,6 +43,14 @@ const Layout = () => {
       label: 'Sair',
     },
   ];
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('theme');
+
+    if (storedTheme) {
+      setMode(storedTheme as 'light' | 'dark');
+    }
+  }, [setMode]);
 
   return (
     <div className="flex flex-col min-h-screen">

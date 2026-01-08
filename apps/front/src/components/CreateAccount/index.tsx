@@ -16,16 +16,14 @@ const CreateAccount = ({
   const navigate = useNavigate();
 
   const createUserMutation = trpc.auth.createUser.useMutation({
-    onSuccess: () => {
-      navigate('/financial');
-    },
+    onSuccess: () => navigate('/financial'),
     onError: (error) => {
       console.error('Error logging in:', error);
     },
   });
 
-  const submitForm = async (values: CreateUserInput) => {
-    await createUserMutation.mutateAsync(values);
+  const submitForm = (values: CreateUserInput) => {
+    createUserMutation.mutate(values);
   };
 
   return (

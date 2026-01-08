@@ -14,22 +14,24 @@ const Login = () => {
   const [isOpenForgotPassword, setIsOpenForgotPassword] = useState(false);
 
   const submit = trpc.auth.login.useMutation({
-    onSuccess: () => {
-      navigate('/financial');
-    },
+    onSuccess: () => navigate('/financial'),
     onError: (error) => {
       console.error('Error logging in:', error);
     },
   });
 
+  const handleSubmit = (values: { email: string; password: string }) => {
+    submit.mutate(values);
+  };
+
   return (
     <div className="w-full h-220 flex justify-center items-center">
-      <div className="w-100 h-110 flex flex-col justify-around rounded-2xl border border-gray-300 p-8 shadow-md bg-white">
+      <div className="w-100 h-110 flex flex-col justify-around rounded-2xl border border-gray-300 p-8 shadow-md">
         <h1 className="text-4xl mb-6 text-center">Login</h1>
 
         <Form
           form={form}
-          onFinish={(values) => submit.mutateAsync(values)}
+          onFinish={handleSubmit}
           layout="vertical"
           className="w-full h-full flex flex-col justify-around"
         >
