@@ -6,7 +6,7 @@ import type { MenuProps } from 'antd';
 import { trpc } from '../utils/trpc';
 import { useTheme } from '../hooks/theme';
 
-import Logo from '../assets/zc logo.png';
+import Logo from '../assets/zc_logo.png';
 import { FaUserGear } from 'react-icons/fa6';
 import { MdLightMode, MdOutlineLogout, MdOutlineNightlightRound } from 'react-icons/md';
 import { LiaUserEditSolid } from 'react-icons/lia';
@@ -17,13 +17,12 @@ const Layout = () => {
 
   const { mode, setMode } = useTheme();
   const navigate = useNavigate();
-  const logout = trpc.auth.logout.useMutation();
+  const logout = trpc.auth.logout.useMutation({ onSuccess: () => navigate('/') });
 
   const handleLogout = () => {
     logout.mutate();
-
-    navigate('/');
   };
+
   const items: MenuProps['items'] = [
     {
       key: 'editPassword',
