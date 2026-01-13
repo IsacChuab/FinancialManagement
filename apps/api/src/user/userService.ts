@@ -24,7 +24,12 @@ class UserService {
 
     const token = generateToken(savedUser.id, savedUser.email);
 
-    return { user: { id: savedUser.id, email: savedUser.email }, token };
+    return {
+      success: true,
+      message: 'Usuário criado com sucesso',
+      user: { id: savedUser.id, email: savedUser.email },
+      token,
+    };
   }
 
   public async login({ email, password }: LoginInput) {
@@ -77,7 +82,12 @@ class UserService {
 
     const token = generateToken(user.id, user.email);
 
-    return { user: { id: user.id, email: user.email }, token };
+    return {
+      success: true,
+      message: 'Senha alterada com sucesso',
+      user: { id: user.id, email: user.email },
+      token,
+    };
   }
 
   public async firstStepForgotPassword(email: string) {

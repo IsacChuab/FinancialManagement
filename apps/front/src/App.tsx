@@ -3,6 +3,7 @@ import Pages from './pages';
 import ThemeProvider from './providers/ThemeProvider';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { trpc, trpcClient } from './utils/trpc';
+import { NotificationProvider } from './providers/NotificationProvider';
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -33,9 +34,11 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <ThemeProvider>
-          <BrowserRouter>
-            <Pages />
-          </BrowserRouter>
+          <NotificationProvider>
+            <BrowserRouter>
+              <Pages />
+            </BrowserRouter>
+          </NotificationProvider>
         </ThemeProvider>
       </trpc.Provider>
     </QueryClientProvider>

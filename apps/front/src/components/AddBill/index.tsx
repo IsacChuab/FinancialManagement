@@ -52,6 +52,12 @@ const AddBill = ({
     closeModal();
   };
 
+  const handleCancel = () => {
+    form.resetFields();
+    setOption('debit');
+    closeModal();
+  };
+
   useEffect(() => {
     if (billToEdit) {
       form.setFieldsValue(billToEdit);
@@ -66,11 +72,11 @@ const AddBill = ({
   return (
     <Modal
       title="Adicionar Conta"
-      onCancel={closeModal}
+      onCancel={handleCancel}
       onOk={form.submit}
       open={isOpen}
       footer={[
-        <Button key="cancel" onClick={closeModal}>
+        <Button key="cancel" onClick={handleCancel}>
           Cancelar
         </Button>,
 

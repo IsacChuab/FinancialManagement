@@ -9,12 +9,14 @@ export function useBillActions() {
   const [editingBill, setEditingBill] = useState<BillWithActions | undefined>(undefined);
 
   const updateStatusMutation = trpc.bill.updateStatus.useMutation({
-    onSuccess: (data) => {
+    onSuccess: (response) => {
+      const { formattedBill } = response;
+
       utils.bill.allBills.setData(undefined, (oldData) => {
         if (!oldData) return oldData;
 
         return oldData.map((bill) => {
-          if (bill.id === data.id) return data;
+          if (bill.id === formattedBill.id) return formattedBill;
           return bill;
         });
       });
@@ -22,30 +24,36 @@ export function useBillActions() {
   });
 
   const newBillMutation = trpc.bill.newBill.useMutation({
-    onSuccess: (newBill) => {
+    onSuccess: (response) => {
+      const { formattedBill } = response;
+
       utils.bill.allBills.setData(undefined, (old) => {
-        if (!old) return [newBill];
-        return [...old, newBill];
+        if (!old) return [formattedBill];
+        return [...old, formattedBill];
       });
     },
   });
 
   const deleteBillMutation = trpc.bill.deleteBill.useMutation({
-    onSuccess: (data) => {
+    onSuccess: (response) => {
+      const { id } = response;
+
       utils.bill.allBills.setData(undefined, (oldData) => {
         if (!oldData) return [];
 
-        return oldData.filter((bill) => bill.id !== data.id);
+        return oldData.filter((bill) => bill.id !== id);
       });
     },
   });
 
   const updateBillMutation = trpc.bill.updateBill.useMutation({
-    onSuccess: (updatedBill) => {
+    onSuccess: (response) => {
+      const { formattedBill } = response;
+
       utils.bill.allBills.setData(undefined, (old) => {
-        if (!old) return [updatedBill];
+        if (!old) return [formattedBill];
         return old.map((bill) => {
-          if (bill.id === updatedBill.id) return updatedBill;
+          if (bill.id === formattedBill.id) return formattedBill;
           return bill;
         });
       });

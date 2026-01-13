@@ -16,7 +16,7 @@ class BillService {
 
     const formattedBill = addActionsToBill(billObject);
 
-    return formattedBill;
+    return { success: true, message: 'Conta criada com sucesso', formattedBill };
   }
 
   public async getAllActiveBills(userId: string) {
@@ -48,7 +48,9 @@ class BillService {
 
     const savedBill = await billRepository.replace(billObject._id, updateBill);
 
-    return addActionsToBill(savedBill!);
+    const formattedBill = addActionsToBill(savedBill!);
+
+    return { success: true, message: 'Conta atualizada com sucesso', formattedBill };
   }
 
   public async updateStatus(input: BillUpdateStatus, userId: string) {
@@ -65,7 +67,9 @@ class BillService {
     billObject.status = input.status;
     const savedBill = await billRepository.save(billObject);
 
-    return addActionsToBill(savedBill);
+    const formattedBill = addActionsToBill(savedBill);
+
+    return { success: true, message: 'Status atualizado com sucesso', formattedBill };
   }
 
   public async deleteBill(id: string, userId: string) {
@@ -87,7 +91,7 @@ class BillService {
     billObject.deletedAt = new Date();
     await billRepository.save(billObject);
 
-    return { id };
+    return { success: true, message: 'Conta excluída com sucesso', id };
   }
 
   public async closeMonth(data: BillUpdate[], userId: string) {
