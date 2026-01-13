@@ -41,6 +41,7 @@ export const actionEnum = (
   bill: BillWithActions,
   actions: BillActions,
   handleEdit: (bill: BillWithActions) => void,
+  handleDelete: (bill: BillWithActions) => void,
 ) => [
   {
     key: 'checkPaid',
@@ -95,11 +96,11 @@ export const actionEnum = (
       <div
         key="delete"
         className="flex items-center gap-2 justify-center"
-        onClick={() => actions.deleteBill(bill.id)}
+        onClick={() => handleDelete(bill)}
       >
         Excluir
       </div>
     ),
-    onClick: () => actions.deleteBill(bill.id),
+    onClick: () => handleDelete(bill),
   },
 ];

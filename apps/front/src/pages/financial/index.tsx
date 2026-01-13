@@ -9,9 +9,15 @@ import AddBill from '../../components/AddBill';
 import { useBillActions } from '../../hooks/useBillActions';
 import type { BillWithActions } from '../../../../api/src/billings/billTypes';
 import InfoBills from '../../components/CardInfo';
+import DeleteBillModal from '../../components/ConfirmationsModals/DeleteBill';
+import CloseMonthModal from '../../components/ConfirmationsModals/CloseMonth';
 
 const Financial = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
+  const [isOpenCloseMonthModal, setIsOpenCloseMonthModal] = useState(false);
+  const [billToDelete, setBillToDelete] = useState<BillWithActions | null>(null);
+
   const { data, isPending } = trpc.bill.allBills.useQuery();
   const billActions = useBillActions();
   const currentMonth = dayjs().format('MMMM');
@@ -21,7 +27,12 @@ const Financial = () => {
     setIsOpen(true);
   };
 
-  const closeModal = () => {
+  const handleDelete = (bill: BillWithActions) => {
+    setBillToDelete(bill);
+    setIsOpenDeleteModal(true);
+  };
+
+  const closeAddBillModal = () => {
     setIsOpen(false);
     billActions.clearEdit();
   };
@@ -30,6 +41,7 @@ const Financial = () => {
     if (!data) return;
 
     billActions.closeMonth(data);
+    setIsOpenCloseMonthModal(false);
   };
 
   return (
@@ -42,7 +54,11 @@ const Financial = () => {
             Adicionar Conta <AiOutlinePlusCircle />
           </Button>
 
-          <Button type="default" onClick={handleCloseMonth} disabled={!data?.length}>
+          <Button
+            type="default"
+            onClick={() => setIsOpenCloseMonthModal(true)}
+            disabled={!data?.length}
+          >
             Finalizar Mês <AiOutlineArrowRight />
           </Button>
         </div>
@@ -58,6 +74,7 @@ const Financial = () => {
               bill={bill}
               handleActions={billActions}
               handleEdit={handleEdit}
+              handleDelete={handleDelete}
               loading={isPending}
             />
           ))}
@@ -73,7 +90,23 @@ const Financial = () => {
         scroll={{ y: 'calc(100vh - 300px)' }}
       />*/}
 
-      <AddBill isOpen={isOpen} closeModal={closeModal} billToEdit={billActions.editingBill} />
+      <AddBill
+        isOpen={isOpen}
+        closeModal={closeAddBillModal}
+        billToEdit={billActions.editingBill}
+      />
+      <DeleteBillModal
+        isOpen={isOpenDeleteModal}
+        setModalIsOpen={setIsOpenDeleteModal}
+        bill={billToDelete}
+      />
+      <CloseMonthModal
+        isOpen={isOpenCloseMonthModal}
+        setModalIsOpen={setIsOpenCloseMonthModal}
+        onConfirm={handleCloseMonth}
+        loading={billActions.isPendingCloseMonth}
+        name={currentMonth}
+      />
     </div>
   );
 };

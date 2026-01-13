@@ -12,11 +12,13 @@ const InfoBills = ({
   bill,
   handleActions,
   handleEdit,
+  handleDelete,
   loading,
 }: {
   bill: BillWithActions;
   handleActions: BillActions;
   handleEdit: (bill: BillWithActions) => void;
+  handleDelete: (bill: BillWithActions) => void;
   loading: boolean;
 }) => {
   const title = () => {
@@ -38,7 +40,7 @@ const InfoBills = ({
   };
 
   const actionsList = () => {
-    const items = actionEnum(bill, handleActions, handleEdit)?.filter(
+    const items = actionEnum(bill, handleActions, handleEdit, handleDelete)?.filter(
       (action) => action?.key && bill.actions.includes(action.key as ActionKey),
     );
 

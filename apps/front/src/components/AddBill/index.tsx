@@ -21,7 +21,7 @@ const AddBill = ({
   const [option, setOption] = useState<'debit' | 'credit' | 'vital'>('debit');
   const [isPaid, setIsPaid] = useState<boolean>(false);
   const [form] = Form.useForm<BillInput>();
-  const { newBill, isPending, updateBill } = useBillActions();
+  const { newBill, isPendingNewBill, updateBill } = useBillActions();
 
   const options: CheckboxGroupProps<string>['options'] = [
     { label: 'Débito', value: 'debit' },
@@ -83,8 +83,8 @@ const AddBill = ({
         <Button
           key="ok"
           type="primary"
-          loading={isPending}
-          disabled={isPending}
+          loading={isPendingNewBill}
+          disabled={isPendingNewBill}
           onClick={() => form.submit()}
         >
           Salvar
@@ -97,7 +97,7 @@ const AddBill = ({
         className="w-full"
         onFinish={submitForm}
         initialValues={{ type: 'debit' }}
-        disabled={isPending}
+        disabled={isPendingNewBill}
       >
         <BaseFields />
 

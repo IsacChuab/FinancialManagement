@@ -108,7 +108,9 @@ export function useBillActions() {
 
   return {
     newBill,
-    isPending: newBillMutation.isPending,
+    isPendingNewBill: newBillMutation.isPending,
+    isPendingCloseMonth: closeMonthMutation.isPending,
+    isPendingDeleteBill: deleteBillMutation.isPending,
     updateStatus,
     deleteBill,
     updateBill,
