@@ -1,13 +1,16 @@
-import { Form, Modal, Radio, Button, type RadioChangeEvent } from 'antd';
 import { useEffect, useState } from 'react';
+
+import type { BillInput } from '@financial/shared';
+import type { BillWithActions } from '@financial/shared';
+
+import { Form, Modal, Radio, Button, type RadioChangeEvent } from 'antd';
 import type { CheckboxGroupProps } from 'antd/es/checkbox';
+import dayjs from 'dayjs';
+
 import BaseFields from './BaseFields';
 import DueDateFields from './DueDateFields';
 import InstallmentFields from './InstallmentFields';
-import type { BillInput } from '../../../../api/src/billings/billValidator';
 import { useBillActions } from '../../hooks/useBillActions';
-import type { BillWithActions } from '../../../../api/src/billings/billTypes';
-import dayjs from 'dayjs';
 
 const AddBill = ({
   isOpen,
@@ -60,7 +63,7 @@ const AddBill = ({
 
   useEffect(() => {
     if (billToEdit) {
-      form.setFieldsValue(billToEdit);
+      form.setFieldsValue(billToEdit as BillInput);
       setOption(billToEdit.type);
       return;
     }

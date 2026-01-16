@@ -1,4 +1,5 @@
 import { Outlet, useNavigate } from 'react-router-dom';
+
 import { trpc } from '../utils/trpc';
 
 const AuthRequired = () => {

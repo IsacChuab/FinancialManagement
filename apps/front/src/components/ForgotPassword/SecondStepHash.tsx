@@ -31,7 +31,7 @@ const SecondStepHash = ({
     },
   });
 
-  const submitCode = async (values: { code: string }) => {
+  const submitCode = (values: { code: string }) => {
     secondStepMutation.mutate({ ...values, email: emailToRecovery });
 
     setCode(values.code);

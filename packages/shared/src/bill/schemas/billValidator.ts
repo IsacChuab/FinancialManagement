@@ -51,3 +51,4 @@ export const billUpdateStatusSchema = z.object({
 export type BillUpdateStatus = z.infer<typeof billUpdateStatusSchema>;
 
 export const closeMonthSchema = z.array(billUpdateSchema).min(1);
+export type CloseMonth = z.infer<typeof closeMonthSchema>;

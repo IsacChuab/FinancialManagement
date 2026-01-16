@@ -1,7 +1,8 @@
+import type { BillWithActions } from '@financial/shared';
+
 import { Tooltip } from 'antd';
 
 import { formatBrlMoney } from '../../utils/functions';
-import type { BillWithActions } from '../../../../api/src/billings/billTypes';
 
 const BasicInfo = ({ bill }: { bill: BillWithActions }) => {
   return (

@@ -1,6 +1,8 @@
+import type { FirstStepForgotPasswordInput } from '@financial/shared';
+
 import { Button, Form, Input } from 'antd';
+
 import { trpc } from '../../utils/trpc';
-import type { FirstStepForgotPasswordInput } from '../../../../api/src/user/userValidators';
 import type { StepStatus } from '.';
 
 const FirstStepEmail = ({

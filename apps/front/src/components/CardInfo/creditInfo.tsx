@@ -1,6 +1,8 @@
-import { formatBrlMoney } from '../../utils/functions';
+import type { BillWithActions } from '@financial/shared';
+
 import dayjs from '../../utils/dayjs';
-import type { BillWithActions } from '../../../../api/src/billings/billTypes';
+
+import { formatBrlMoney } from '../../utils/functions';
 
 const CreditInfo = ({ bill }: { bill: BillWithActions }) => {
   return (

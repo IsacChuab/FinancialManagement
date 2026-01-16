@@ -1,19 +1,23 @@
-import { Dropdown, Tag, type TableColumnProps } from 'antd';
-import { formatBrlMoney } from '../../utils/functions';
-import dayjs from 'dayjs';
+import type { BillWithActions } from '@financial/shared';
+
 import { AiOutlineBars } from 'react-icons/ai';
+import { Dropdown, Tag, type TableColumnProps } from 'antd';
+import dayjs from 'dayjs';
+
+import { formatBrlMoney } from '../../utils/functions';
 import { actionEnum, statusEnum, typeEnum } from './billEnums';
 import type { BillActions } from '../../hooks/useBillActions';
-import type { BillWithActions } from '../../../../api/src/billings/billTypes';
 
 export type ActionKey = 'checkPaid' | 'checkPending' | 'edit' | 'delete';
 
 export const columns = ({
   billActions,
   handleEdit,
+  handleDelete,
 }: {
   billActions: BillActions;
   handleEdit: (bill: BillWithActions) => void;
+  handleDelete: (bill: BillWithActions) => void;
 }): TableColumnProps<BillWithActions>[] => [
   {
     title: 'Tipo',
@@ -78,7 +82,7 @@ export const columns = ({
     key: 'actions',
     align: 'center',
     render: (actions: ActionKey[], record: BillWithActions) => {
-      const items = actionEnum(record, billActions, handleEdit)?.filter(
+      const items = actionEnum(record, billActions, handleEdit, handleDelete)?.filter(
         (action) => action?.key && actions.includes(action.key as ActionKey),
       );
 

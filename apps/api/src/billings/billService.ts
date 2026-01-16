@@ -1,5 +1,5 @@
 import { addActionsToBill } from '../utils/actionsBill.js';
-import { BillInput, BillUpdate, BillUpdateStatus } from './billValidator.js';
+import { BillInput, BillUpdate, BillUpdateStatus } from '@financial/shared';
 import { Bill } from './repositories/billModel.js';
 import { billRepository } from './repositories/billRepository.js';
 import dayjs from 'dayjs';

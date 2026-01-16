@@ -1,7 +1,8 @@
+import type { BillWithActions } from '@financial/shared';
+
 import { Card, Tag } from 'antd';
 
 import { actionEnum, statusEnum, typeEnum } from '../../pages/financial/billEnums';
-import type { BillWithActions } from '../../../../api/src/billings/billTypes';
 import type { BillActions } from '../../hooks/useBillActions';
 import type { ActionKey } from '../../pages/financial/dashboardColumns';
 import CreditInfo from './creditInfo';

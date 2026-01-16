@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import type { BillStatus, BillWithActions } from '../../../api/src/billings/billTypes';
-import type { BillInput } from '../../../api/src/billings/billValidator';
-import { checkStatusBill } from '../utils/functions';
+import type { BillStatus, BillWithActions } from '@financial/shared';
+import type { BillInput } from '@financial/shared';
+
+import { checkStatusBill, closeMonthDataFormatter } from '../utils/functions';
 import { trpc } from '../utils/trpc';
 
 export function useBillActions() {
@@ -62,7 +63,7 @@ export function useBillActions() {
 
   const closeMonthMutation = trpc.bill.closeMonth.useMutation({
     onSuccess: () => {
-      utils.bill.allBills.invalidate();
+      void utils.bill.allBills.invalidate();
     },
   });
 
@@ -103,7 +104,9 @@ export function useBillActions() {
   }
 
   function closeMonth(data: BillWithActions[]) {
-    closeMonthMutation.mutate(data);
+    const formatedData = closeMonthDataFormatter(data);
+
+    closeMonthMutation.mutate(formatedData);
   }
 
   return {

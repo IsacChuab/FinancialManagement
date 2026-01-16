@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { AiOutlineArrowRight, AiOutlinePlusCircle } from 'react-icons/ai';
+import type { BillWithActions } from '@financial/shared';
 
+import { AiOutlineArrowRight, AiOutlinePlusCircle } from 'react-icons/ai';
 import { Button } from 'antd';
+
 import { trpc } from '../../utils/trpc';
 import dayjs from '../../utils/dayjs';
-
 import AddBill from '../../components/AddBill';
 import { useBillActions } from '../../hooks/useBillActions';
-import type { BillWithActions } from '../../../../api/src/billings/billTypes';
 import InfoBills from '../../components/CardInfo';
 import DeleteBillModal from '../../components/ConfirmationsModals/DeleteBill';
 import CloseMonthModal from '../../components/ConfirmationsModals/CloseMonth';
@@ -80,11 +80,10 @@ const Financial = () => {
           ))}
       </div>
 
-      {/*
-        layout em table
-        <Table
+      {/*layout em table
+      <Table
         dataSource={data}
-        columns={columns({ billActions, handleEdit })}
+        columns={columns({ billActions, handleEdit, handleDelete })}
         pagination={false}
         loading={isPending}
         scroll={{ y: 'calc(100vh - 300px)' }}

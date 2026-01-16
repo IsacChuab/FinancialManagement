@@ -1,3 +1,4 @@
+import type { BillWithActions, CloseMonth } from '@financial/shared';
 import dayjs from '../utils/dayjs';
 
 export const formatBrlMoney = (value = 0) => {
@@ -20,4 +21,53 @@ export const checkStatusBill = (isPaid: boolean, dueDate: Date) => {
   }
 
   return 'pending';
+};
+
+export const closeMonthDataFormatter = (data: BillWithActions[]): CloseMonth => {
+  return data.map((bill) => {
+    const {
+      id,
+      type,
+      name,
+      amount,
+      status,
+      valueInstallment,
+      currentInstallment,
+      totalInstallments,
+      dueDate,
+    } = bill;
+
+    if (type === 'debit') {
+      return {
+        id,
+        type,
+        name,
+        amount,
+        status,
+      };
+    }
+
+    if (type === 'credit') {
+      return {
+        id,
+        type,
+        name,
+        amount,
+        status,
+        valueInstallment,
+        currentInstallment,
+        totalInstallments,
+        dueDate: new Date(dueDate!),
+      };
+    }
+
+    return {
+      id,
+      type,
+      name,
+      amount,
+      status,
+      dueDate: new Date(dueDate!),
+    };
+  });
 };

@@ -1,8 +1,10 @@
+import type { BillWithActions } from '@financial/shared';
+
 import { AiFillDelete, AiFillEdit, AiOutlineCheck, AiOutlineDollar } from 'react-icons/ai';
-import type { BillActions } from '../../hooks/useBillActions';
-import type { BillWithActions } from '../../../../api/src/billings/billTypes';
 import { MdCalendarMonth, MdOutlineAttachMoney } from 'react-icons/md';
 import { FaRegCreditCard } from 'react-icons/fa6';
+
+import type { BillActions } from '../../hooks/useBillActions';
 
 export const typeEnum = {
   debit: {

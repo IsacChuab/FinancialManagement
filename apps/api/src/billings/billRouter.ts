@@ -6,7 +6,7 @@ import {
   billUpdateSchema,
   billUpdateStatusSchema,
   closeMonthSchema,
-} from './billValidator.js';
+} from '@financial/shared';
 
 export const billRouter = router({
   newBill: procedure.input(billInputSchema).mutation(async ({ input, ctx }) => {

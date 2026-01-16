@@ -1,4 +1,4 @@
-import { BillWithActions } from '../billings/billTypes.js';
+import { BillWithActions } from '@financial/shared';
 import { BillModel } from '../billings/repositories/billModel.js';
 
 export function addActionsToBill(bill: BillModel): BillWithActions {

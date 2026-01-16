@@ -1,5 +1,6 @@
-import { useTheme } from '../hooks/theme';
 import { ConfigProvider, theme as antdTheme } from 'antd';
+
+import { useTheme } from '../hooks/theme';
 import { lightTokens, darkTokens } from '../theme/colorsTokens';
 
 const ThemeProvider = ({ children }: { children: React.ReactNode }) => {

@@ -1,21 +1,20 @@
 import mongoose, { type Document, Schema } from 'mongoose';
-import { BillStatus, BillType } from '../billTypes.js';
 
-export interface IBill {
+interface IBill {
   id: string;
-  userId: mongoose.Schema.Types.ObjectId;
+  userId: mongoose.Types.ObjectId;
   amount: number;
   currentInstallment: number;
   dueDate: Date;
   name: string;
   totalInstallments: number;
-  type: BillType;
+  type: 'debit' | 'credit' | 'vital';
   valueInstallment: number;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
   isActive: boolean;
-  status: BillStatus;
+  status: 'paid' | 'pending' | 'late';
 }
 
 export interface BillModel extends Document<mongoose.Types.ObjectId>, Omit<IBill, 'id'> {}

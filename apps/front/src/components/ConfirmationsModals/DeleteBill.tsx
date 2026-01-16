@@ -1,5 +1,7 @@
+import type { BillWithActions } from '@financial/shared';
+
 import { Button, Modal } from 'antd';
-import type { BillWithActions } from '../../../../api/src/billings/billTypes';
+
 import { useBillActions } from '../../hooks/useBillActions';
 import { formatBrlMoney } from '../../utils/functions';
 import { typeEnum } from '../../pages/financial/billEnums';

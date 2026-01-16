@@ -1,7 +1,8 @@
 import { BrowserRouter } from 'react-router-dom';
+import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 import Pages from './pages';
 import ThemeProvider from './providers/ThemeProvider';
-import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { trpc, trpcClient } from './utils/trpc';
 import { NotificationProvider } from './providers/NotificationProvider';
 

@@ -1,7 +1,8 @@
+import type { ChangePasswordInput } from '@financial/shared';
+
 import { Form, Modal, Button } from 'antd';
 import Password from 'antd/es/input/Password';
 
-import type { ChangePasswordInput } from '../../../../api/src/user/userValidators';
 import { trpc } from '../../utils/trpc';
 import NewPassword from '../NewPassword';
 

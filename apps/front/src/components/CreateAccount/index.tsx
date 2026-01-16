@@ -1,9 +1,10 @@
+import { useNavigate } from 'react-router-dom';
+import type { CreateUserInput } from '@financial/shared';
+
 import { Form, Modal, Button, Input } from 'antd';
 
-import type { CreateUserInput } from '../../../../api/src/user/userValidators';
 import { trpc } from '../../utils/trpc';
 import NewPassword from '../NewPassword';
-import { useNavigate } from 'react-router-dom';
 
 const CreateAccount = ({
   isOpen,
