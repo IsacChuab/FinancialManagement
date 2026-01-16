@@ -2,9 +2,11 @@ import { useMemo } from 'react';
 import moneyMask from './money';
 
 export type MaskAdapter = {
-  apply(value: string | number | undefined | null): string | null | undefined;
-  clean(value: string): string;
+  apply(this: void, value: string | number | undefined | null): string | null | undefined;
+  clean(this: void, value: string | number | undefined | null): string;
 };
+
+type MaskValue = string | number | undefined | null;
 
 const builtInMasks = {
   money: moneyMask,
@@ -12,7 +14,7 @@ const builtInMasks = {
 
 export type BuiltInMasks = keyof typeof builtInMasks;
 
-export default function useMask(mask: BuiltInMasks | MaskAdapter | undefined, value: any) {
+export default function useMask(mask: BuiltInMasks | MaskAdapter | undefined, value: MaskValue) {
   const { apply: maskApply, clean: maskClean } = useMemo<MaskAdapter>(() => {
     const maskFunction = typeof mask === 'string' ? builtInMasks[mask] : mask;
     return maskFunction ?? ({ apply: (v) => v, clean: (v) => v } as MaskAdapter);

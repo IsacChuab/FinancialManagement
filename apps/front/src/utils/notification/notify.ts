@@ -1,8 +1,9 @@
 import type { ArgsProps } from 'antd/es/notification';
+import type { NotificationInstance } from 'antd/es/notification/interface';
 
-let notifyApi: any;
+let notifyApi: NotificationInstance | null = null;
 
-export const setNotify = (api: any) => {
+export const setNotify = (api: NotificationInstance) => {
   notifyApi = api;
 };
 
