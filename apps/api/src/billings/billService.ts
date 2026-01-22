@@ -3,12 +3,18 @@ import { BillInput, BillUpdate, BillUpdateStatus } from '@financial/shared';
 import { Bill } from './repositories/billModel.js';
 import { billRepository } from './repositories/billRepository.js';
 import dayjs from 'dayjs';
+import { generateOrderBill } from '../utils/order.js';
 
 class BillService {
   public async createBill(input: BillInput, userId: string) {
+    const data = await billRepository.getLastOrder(userId);
+
+    const order = generateOrderBill(data);
+
     const billObject = new Bill({
       ...input,
       userId: userId,
+      order,
       isActive: true,
     });
 

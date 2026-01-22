@@ -26,7 +26,7 @@ class BillRepository {
   }
 
   public async findActives(userId: string) {
-    return await Bill.find({ isActive: true, userId }).sort({ type: 1 });
+    return await Bill.find({ isActive: true, userId }).sort({ order: 1 });
   }
 
   public async findById(id: string): Promise<BillModel | null> {
@@ -58,6 +58,13 @@ class BillRepository {
       _id: { $in: billIds },
       userId: { $ne: new mongoose.Types.ObjectId(userId) },
     }).select('_id');
+  }
+
+  public async getLastOrder(userId: string) {
+    return await Bill.findOne({ isActive: true, userId })
+      .sort({ order: -1 })
+      .select({ order: 1 })
+      .lean();
   }
 }
 

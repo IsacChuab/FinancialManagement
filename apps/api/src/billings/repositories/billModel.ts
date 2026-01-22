@@ -14,6 +14,7 @@ interface IBill {
   updatedAt: Date;
   deletedAt?: Date;
   isActive: boolean;
+  order: number;
   status: 'paid' | 'pending' | 'late';
 }
 
@@ -33,6 +34,7 @@ const BillSchema = new Schema<BillModel>(
     updatedAt: { type: Date, default: Date.now },
     deletedAt: { type: Date },
     isActive: { type: Boolean, default: true, index: 1 },
+    order: { type: Number },
     status: { type: String, enum: ['paid', 'pending', 'late'], required: true },
   },
   {
