@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { BillModel, Bill } from './billModel.js';
+import { type BillModel, Bill } from './billModel.js';
 
 class BillRepository {
   public async save(bill: BillModel) {

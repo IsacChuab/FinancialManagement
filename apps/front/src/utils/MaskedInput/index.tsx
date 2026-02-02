@@ -36,7 +36,7 @@ const MaskedInput = forwardRef<InputRef, MaskedInputProps>(
     return (
       <Input
         name={name}
-        value={maskedValue}
+        value={maskedValue || undefined}
         ref={ref}
         status={message}
         onChange={handleChange}

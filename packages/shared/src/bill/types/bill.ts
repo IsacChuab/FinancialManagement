@@ -11,6 +11,7 @@ export interface IBill {
   totalInstallments: number;
   type: BillType;
   valueInstallment: number;
+  order: number;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;

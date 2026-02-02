@@ -10,6 +10,7 @@ const baseInputs = {
   name: z.string().min(3),
   amount: z.number().min(0.01),
   status: billStatusEnum,
+  order: z.number().min(10_000),
 };
 
 const debitSchema = z.object({
@@ -50,5 +51,5 @@ export const billUpdateStatusSchema = z.object({
 
 export type BillUpdateStatus = z.infer<typeof billUpdateStatusSchema>;
 
-export const closeMonthSchema = z.array(billUpdateSchema).min(1);
-export type CloseMonth = z.infer<typeof closeMonthSchema>;
+export const updateInBulk = z.array(billUpdateSchema).min(1);
+export type CloseMonth = z.infer<typeof updateInBulk>;

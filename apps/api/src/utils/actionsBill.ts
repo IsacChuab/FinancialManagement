@@ -1,5 +1,5 @@
-import { BillWithActions } from '@financial/shared';
-import { BillModel } from '../billings/repositories/billModel.js';
+import type { BillWithActions } from '@financial/shared';
+import type { BillModel } from '../billings/repositories/billModel.js';
 
 export function addActionsToBill(bill: BillModel): BillWithActions {
   const plain = bill.toObject();

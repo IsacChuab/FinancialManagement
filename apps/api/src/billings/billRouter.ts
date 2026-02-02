@@ -5,7 +5,7 @@ import {
   billInputSchema,
   billUpdateSchema,
   billUpdateStatusSchema,
-  closeMonthSchema,
+  updateInBulk,
 } from '@financial/shared';
 
 export const billRouter = router({
@@ -29,7 +29,11 @@ export const billRouter = router({
     return billService.updateStatus(input, ctx.user.id);
   }),
 
-  closeMonth: procedure.input(closeMonthSchema).mutation(async ({ input, ctx }) => {
+  closeMonth: procedure.input(updateInBulk).mutation(async ({ input, ctx }) => {
     return billService.closeMonth(input, ctx.user.id);
+  }),
+
+  updateBillsInBulk: procedure.input(updateInBulk).mutation(async ({ input }) => {
+    return billService.updateBillsInBulk(input);
   }),
 });

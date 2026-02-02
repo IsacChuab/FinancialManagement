@@ -1,5 +1,5 @@
 import { initTRPC } from '@trpc/server';
-import { Context } from './context.js';
+import type { Context } from './context.js';
 import superJSON from 'superjson';
 import { authMiddleware } from '../middlewares/auth.js';
 

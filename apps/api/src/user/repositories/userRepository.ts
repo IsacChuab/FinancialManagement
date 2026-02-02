@@ -1,4 +1,4 @@
-import { IUserModel, User } from './userModel.js';
+import { type IUserModel, User } from './userModel.js';
 
 class UserRepository {
   public async save(user: IUserModel) {

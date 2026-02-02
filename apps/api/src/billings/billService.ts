@@ -1,5 +1,5 @@
 import { addActionsToBill } from '../utils/actionsBill.js';
-import { BillInput, BillUpdate, BillUpdateStatus } from '@financial/shared';
+import type { BillInput, BillUpdate, BillUpdateStatus } from '@financial/shared';
 import { Bill } from './repositories/billModel.js';
 import { billRepository } from './repositories/billRepository.js';
 import dayjs from 'dayjs';
@@ -113,6 +113,21 @@ class BillService {
       this.closeVitalBills(data),
       this.closeCreditBills(data),
     ]);
+  }
+
+  public async updateBillsInBulk(data: BillUpdate[]) {
+    const billIds = data.map((bill) => bill.id);
+    const bills = await billRepository.findByIds(billIds);
+
+    bills.forEach((bill) => {
+      bill.order = data.find((item) => item.id === bill.id)?.order!;
+    });
+
+    await billRepository.bulkUpdate(bills);
+    const updatedBills = await billRepository.findByIds(billIds);
+
+    const formattedBill = updatedBills.map(addActionsToBill);
+    return { success: true, formattedBill };
   }
 
   private async closeDebitBills(data: BillUpdate[]) {

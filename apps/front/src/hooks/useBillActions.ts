@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { BillStatus, BillWithActions } from '@financial/shared';
 import type { BillInput } from '@financial/shared';
 
-import { checkStatusBill, closeMonthDataFormatter } from '../utils/functions';
+import { checkStatusBill, mapBillsToUpdate } from '../utils/functions';
 import { trpc } from '../utils/trpc';
 
 export function useBillActions() {
@@ -67,6 +67,12 @@ export function useBillActions() {
     },
   });
 
+  const updateBillInBulkMutation = trpc.bill.updateBillsInBulk.useMutation({
+    onSuccess: () => {
+      void utils.bill.allBills.invalidate();
+    },
+  });
+
   function newBill(data: BillInput, isPaid: boolean) {
     if (data.type === 'debit') {
       newBillMutation.mutate({ ...data, status: 'paid' });
@@ -104,9 +110,15 @@ export function useBillActions() {
   }
 
   function closeMonth(data: BillWithActions[]) {
-    const formatedData = closeMonthDataFormatter(data);
+    const formatedData = mapBillsToUpdate(data);
 
     closeMonthMutation.mutate(formatedData);
+  }
+
+  function reorderBills(data: BillWithActions[]) {
+    const formatedData = mapBillsToUpdate(data);
+
+    updateBillInBulkMutation.mutate(formatedData);
   }
 
   return {
@@ -121,6 +133,7 @@ export function useBillActions() {
     startEdit,
     clearEdit,
     closeMonth,
+    reorderBills,
   };
 }
 

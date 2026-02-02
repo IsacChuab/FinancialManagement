@@ -1,4 +1,4 @@
-import type { BillWithActions, CloseMonth } from '@financial/shared';
+import type { BillUpdate, BillWithActions } from '@financial/shared';
 import dayjs from '../utils/dayjs';
 
 export const formatBrlMoney = (value = 0) => {
@@ -23,51 +23,80 @@ export const checkStatusBill = (isPaid: boolean, dueDate: Date) => {
   return 'pending';
 };
 
-export const closeMonthDataFormatter = (data: BillWithActions[]): CloseMonth => {
-  return data.map((bill) => {
-    const {
-      id,
-      type,
-      name,
-      amount,
-      status,
-      valueInstallment,
-      currentInstallment,
-      totalInstallments,
-      dueDate,
-    } = bill;
+export function isBillData(data: unknown): data is BillWithActions {
+  if (typeof data !== 'object' || data === null) {
+    return false;
+  }
 
-    if (type === 'debit') {
+  const bill = data as Record<string, unknown>;
+
+  return (
+    typeof bill.billId === 'string' &&
+    typeof bill.userId === 'string' &&
+    typeof bill.amount === 'number' &&
+    typeof bill.name === 'string' &&
+    typeof bill.type === 'string' &&
+    Array.isArray(bill.actions)
+  );
+}
+
+export function getBillData(bill: BillWithActions): Record<string, unknown> {
+  return {
+    billId: bill.id,
+    userId: bill.userId,
+    type: bill.type,
+    name: bill.name,
+    amount: bill.amount,
+    actions: bill.actions,
+  };
+}
+
+export function reorderBills(data: BillWithActions[]): BillWithActions[] {
+  const newOrder = 10_000;
+
+  for (let i = 0; i < data.length; i++) {
+    data[i].order = (i + 1) * newOrder;
+  }
+
+  return data;
+}
+
+export function mapBillsToUpdate(bills: BillWithActions[]): BillUpdate[] {
+  return bills.map((bill) => {
+    if (bill.type === 'debit') {
       return {
-        id,
-        type,
-        name,
-        amount,
-        status,
+        id: bill.id,
+        type: 'debit',
+        name: bill.name,
+        amount: bill.amount,
+        status: bill.status,
+        order: bill.order,
       };
     }
 
-    if (type === 'credit') {
+    if (bill.type === 'credit') {
       return {
-        id,
-        type,
-        name,
-        amount,
-        status,
-        valueInstallment,
-        currentInstallment,
-        totalInstallments,
-        dueDate: new Date(dueDate!),
+        id: bill.id,
+        type: 'credit',
+        name: bill.name,
+        amount: bill.amount,
+        status: bill.status,
+        order: bill.order,
+        valueInstallment: bill.valueInstallment,
+        currentInstallment: bill.currentInstallment,
+        totalInstallments: bill.totalInstallments,
+        dueDate: new Date(bill.dueDate!),
       };
     }
 
     return {
-      id,
-      type,
-      name,
-      amount,
-      status,
-      dueDate: new Date(dueDate!),
+      id: bill.id,
+      type: 'vital',
+      name: bill.name,
+      amount: bill.amount,
+      status: bill.status,
+      order: bill.order,
+      dueDate: new Date(bill.dueDate!),
     };
   });
-};
+}
