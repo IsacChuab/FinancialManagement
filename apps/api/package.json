@@ -17,6 +17,7 @@
   "dependencies": {
     "@isac-chuab/financial-shared": "^0.0.1",
     "@trpc/server": "^11.7.1",
+    "cookies": "^0.9.1",
     "cors": "^2.8.5",
     "dayjs": "^1.11.19",
     "dotenv": "^17.2.3",
