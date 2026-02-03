@@ -1,10 +1,8 @@
 import dotenv from 'dotenv';
 
 dotenv.config();
-dotenv.config({ path: '../.env', override: true });
 
-export const PORT = Number(process.env.PORT || 3000);
-export const VITE_API_URL = process.env.VITE_API_URL || 'http://localhost:5173';
+export const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || 'http://localhost:5173';
 
 export const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:test';
 

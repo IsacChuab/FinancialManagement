@@ -3,11 +3,12 @@ import express from 'express';
 import { trpcRouter } from './trpc/router.js';
 import * as trpcExpress from '@trpc/server/adapters/express';
 import { createContext } from './trpc/context.js';
-import { PORT, VITE_API_URL } from './config.js';
+import { FRONTEND_ORIGIN } from './config.js';
 
 const app = express();
+const port = Number(process.env.PORT) || 3000;
 
-app.use(cors({ origin: VITE_API_URL, credentials: true }));
+app.use(cors({ origin: [FRONTEND_ORIGIN], credentials: true }));
 app.set('trust proxy', true);
 
 app.get('/', (_req, res) => {
@@ -28,12 +29,12 @@ app.use('/{*splat}', (_req, res) => {
 
 export const listen = () => {
   return new Promise<void>((resolve, reject) => {
-    app.listen(PORT, (error?: Error) => {
+    app.listen(port, (error?: Error) => {
       if (error) {
         return reject(error);
       }
 
-      console.log(`API listening on ${PORT}`);
+      console.log(`API listening on ${port}`);
       resolve();
     });
   });
