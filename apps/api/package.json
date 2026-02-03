@@ -29,6 +29,7 @@
     "resend": "^6.6.0"
   },
   "devDependencies": {
+    "@types/cookie": "^1.0.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.5",
     "@types/jsonwebtoken": "^9.0.10",
