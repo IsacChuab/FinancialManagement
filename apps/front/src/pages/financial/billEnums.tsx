@@ -1,4 +1,4 @@
-import type { BillWithActions } from '@financial/shared';
+import type { BillWithActions } from '@isac-chuab/financial-shared';
 
 import { AiFillDelete, AiFillEdit, AiOutlineCheck, AiOutlineDollar } from 'react-icons/ai';
 import { MdCalendarMonth, MdOutlineAttachMoney } from 'react-icons/md';

@@ -1,6 +1,6 @@
 import { User } from './repositories/userModel.js';
 import { userRepository } from './repositories/userRepository.js';
-import type { ChangePasswordInput, CreateUserInput, LoginInput } from '@financial/shared';
+import type { ChangePasswordInput, CreateUserInput, LoginInput } from '@isac-chuab/financial-shared';
 import crypto from 'node:crypto';
 import { generateToken } from '../utils/token.js';
 import EmailSender from '../lib/EmailSender.js';

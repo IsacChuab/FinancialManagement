@@ -8,7 +8,7 @@ import {
   loginValidator,
   secondStepForgotPasswordValidator,
   thirdStepForgotPasswordValidator,
-} from '@financial/shared';
+} from '@isac-chuab/financial-shared';
 
 export const authRouter = router({
   login: publicProcedure.input(loginValidator).mutation(async ({ input, ctx }) => {

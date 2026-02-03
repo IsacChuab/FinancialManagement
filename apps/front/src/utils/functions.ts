@@ -1,4 +1,4 @@
-import type { BillUpdate, BillWithActions } from '@financial/shared';
+import type { BillUpdate, BillWithActions } from '@isac-chuab/financial-shared';
 import dayjs from '../utils/dayjs';
 
 export const formatBrlMoney = (value = 0) => {

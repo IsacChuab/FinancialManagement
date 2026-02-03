@@ -1,4 +1,4 @@
-import type { BillWithActions } from '@financial/shared';
+import type { BillWithActions } from '@isac-chuab/financial-shared';
 
 import { AiOutlineBars } from 'react-icons/ai';
 import { Dropdown, Tag, type TableColumnProps } from 'antd';

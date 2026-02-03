@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import type { BillWithActions } from '@financial/shared';
+import type { BillWithActions } from '@isac-chuab/financial-shared';
 
 import { Card, Tag } from 'antd';
 import {

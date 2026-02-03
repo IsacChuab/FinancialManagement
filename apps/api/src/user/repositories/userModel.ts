@@ -1,5 +1,5 @@
 import mongoose, { type Document, Schema } from 'mongoose';
-import type { IUser } from '@financial/shared';
+import type { IUser } from '@isac-chuab/financial-shared';
 
 export interface IUserModel extends Document, Omit<IUser, 'id'> {}
 

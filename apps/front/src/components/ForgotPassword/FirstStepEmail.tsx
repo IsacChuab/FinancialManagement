@@ -1,4 +1,4 @@
-import type { FirstStepForgotPasswordInput } from '@financial/shared';
+import type { FirstStepForgotPasswordInput } from '@isac-chuab/financial-shared';
 
 import { Button, Form, Input } from 'antd';
 

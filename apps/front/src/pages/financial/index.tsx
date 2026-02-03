@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { BillWithActions } from '@financial/shared';
+import type { BillWithActions } from '@isac-chuab/financial-shared';
 
 import { AiOutlineArrowRight, AiOutlinePlusCircle } from 'react-icons/ai';
 import { Button } from 'antd';

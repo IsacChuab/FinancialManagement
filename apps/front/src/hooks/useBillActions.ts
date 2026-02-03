@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import type { BillStatus, BillWithActions } from '@financial/shared';
-import type { BillInput } from '@financial/shared';
+import type { BillStatus, BillWithActions } from '@isac-chuab/financial-shared';
+import type { BillInput } from '@isac-chuab/financial-shared';
 
 import { checkStatusBill, mapBillsToUpdate } from '../utils/functions';
 import { trpc } from '../utils/trpc';

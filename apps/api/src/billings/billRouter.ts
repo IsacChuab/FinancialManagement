@@ -6,7 +6,7 @@ import {
   billUpdateSchema,
   billUpdateStatusSchema,
   updateInBulk,
-} from '@financial/shared';
+} from '@isac-chuab/financial-shared';
 
 export const billRouter = router({
   newBill: procedure.input(billInputSchema).mutation(async ({ input, ctx }) => {

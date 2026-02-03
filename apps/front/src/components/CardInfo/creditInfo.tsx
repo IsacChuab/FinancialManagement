@@ -1,4 +1,4 @@
-import type { BillWithActions } from '@financial/shared';
+import type { BillWithActions } from '@isac-chuab/financial-shared';
 
 import dayjs from '../../utils/dayjs';
 

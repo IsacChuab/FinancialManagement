@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import type { CreateUserInput } from '@financial/shared';
+import type { CreateUserInput } from '@isac-chuab/financial-shared';
 
 import { Form, Modal, Button, Input } from 'antd';
 

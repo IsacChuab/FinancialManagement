@@ -1,4 +1,4 @@
-import type { ChangePasswordInput } from '@financial/shared';
+import type { ChangePasswordInput } from '@isac-chuab/financial-shared';
 
 import { Form, Modal, Button } from 'antd';
 import Password from 'antd/es/input/Password';

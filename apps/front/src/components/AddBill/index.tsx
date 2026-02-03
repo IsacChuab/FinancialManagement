@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import type { BillInput } from '@financial/shared';
-import type { BillWithActions } from '@financial/shared';
+import type { BillInput } from '@isac-chuab/financial-shared';
+import type { BillWithActions } from '@isac-chuab/financial-shared';
 
 import { Form, Modal, Radio, Button, type RadioChangeEvent } from 'antd';
 import type { CheckboxGroupProps } from 'antd/es/checkbox';

@@ -1,5 +1,5 @@
 import dayjs from '../../utils/dayjs';
-import type { BillWithActions } from '@financial/shared';
+import type { BillWithActions } from '@isac-chuab/financial-shared';
 
 const VitalInfo = ({ bill }: { bill: BillWithActions }) => {
   return (
