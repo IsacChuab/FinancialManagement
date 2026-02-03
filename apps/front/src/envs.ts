@@ -1,2 +1,7 @@
+const endpoint = (import.meta.env.VITE_API_ENDPOINT as string);
 
-export const API_ENDPOINT = (import.meta.env.VITE_API_ENDPOINT as string) || 'http://localhost:3000';
+if (!endpoint) {
+  throw new Error('VITE_API_ENDPOINT is not defined');
+}
+
+export const API_ENDPOINT = endpoint;
