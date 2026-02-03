@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
+import { JWT_SECRET } from '../config.js';
 
 export function validateToken(token: string) {
   try {
-    const validData: any = jwt.verify(token, process.env.JWT_SECRET!);
+    const validData: any = jwt.verify(token, JWT_SECRET);
 
     return { id: validData.id, email: validData.email };
   } catch (error) {
@@ -13,7 +14,7 @@ export function validateToken(token: string) {
 
 export function generateToken(id: string, email: string) {
   try {
-    const token = jwt.sign({ id, email }, process.env.JWT_SECRET!, {
+    const token = jwt.sign({ id, email }, JWT_SECRET, {
       expiresIn: '1w',
     });
 

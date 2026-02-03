@@ -3,6 +3,7 @@ import { httpBatchLink, createTRPCReact } from '@trpc/react-query';
 import { type inferRouterOutputs } from '@trpc/server';
 import superJSON from 'superjson';
 import { notifyLink } from './notification/notifyLink';
+import { API_ENDPOINT } from '../envs';
 
 export const trpc = createTRPCReact<TrpcRouter>();
 
@@ -13,7 +14,7 @@ export const trpcClient = trpc.createClient({
   links: [
     notifyLink(),
     httpBatchLink({
-      url: `http://localhost:4000/trpc`,
+      url: `${API_ENDPOINT}/trpc`,
       transformer: superJSON,
       fetch(url, options) {
         return fetch(url, {

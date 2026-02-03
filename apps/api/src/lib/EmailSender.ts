@@ -1,22 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 import { Resend } from 'resend';
+import { MAIL_FROM, RESEND_API_KEY } from '../config.js';
 
 class EmailSender {
   private from: string;
   private client: Resend;
 
   constructor() {
-    const { RESEND_API_KEY, MAIL_FROM } = process.env;
-
-    if (!RESEND_API_KEY) {
-      throw new Error('RESEND_API_KEY is missing');
-    }
-
-    if (!MAIL_FROM) {
-      throw new Error('MAIL_FROM is missing');
-    }
-
     this.from = MAIL_FROM;
     this.client = new Resend(RESEND_API_KEY);
   }

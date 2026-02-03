@@ -3,7 +3,7 @@ import { userRepository } from './repositories/userRepository.js';
 import type { ChangePasswordInput, CreateUserInput, LoginInput } from '@financial/shared';
 import crypto from 'node:crypto';
 import { generateToken } from '../utils/token.js';
-// import EmailSender from '../lib/EmailSender.js';
+import EmailSender from '../lib/EmailSender.js';
 
 class UserService {
   public async createUser({ email, newPassword }: CreateUserInput) {
@@ -98,19 +98,18 @@ class UserService {
     }
 
     if (user.code && user.expiresAt && user.expiresAt > new Date()) {
-      // await EmailSender.sendRecoveryEmail({ to: email, code: user.code });
+      await EmailSender.sendRecoveryEmail({ to: email, code: user.code });
       return { success: true, message: 'E-mail de recuperação enviado' };
     }
 
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    console.log('mycode', code);
 
     user.code = code;
     user.expiresAt = new Date(Date.now() + 1000 * 60 * 30);
 
     await userRepository.save(user);
 
-    // await EmailSender.sendRecoveryEmail({ to: email, code });
+    await EmailSender.sendRecoveryEmail({ to: email, code });
 
     return { success: true, message: 'E-mail de recuperação enviado' };
   }
