@@ -24,7 +24,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Build TypeScript
-RUN pnpm --filter apps/api build
+RUN pnpm --filter api build
 
 
 ############################
