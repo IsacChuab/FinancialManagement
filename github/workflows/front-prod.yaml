@@ -1,0 +1,41 @@
+name: Production Deployment
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/front/**'
+   
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9 
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --fozen-lockfile
+
+      - name: Build front
+        run: pnpm build
+        working-directory: ./apps/front
+
+      - name: Deploy to Cloudflare Pages
+        run: pnpm dlx wrangler pages deploy dist --project-name=financial-management
+        working-directory: ./apps/front
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
