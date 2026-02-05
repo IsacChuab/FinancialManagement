@@ -11,7 +11,11 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Copy dependency files
-COPY package.json pnpm-lock.yaml ./
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+
+# Copy package.json of projects
+COPY apps/api/package.json apps/api/package.json
+COPY packages/shared/package.json packages/shared/package.json
 
 # Install ALL deps (including dev)
 RUN pnpm install --frozen-lockfile
@@ -20,7 +24,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Build TypeScript
-RUN pnpm build
+RUN pnpm --filter apps/api build
 
 
 ############################
@@ -36,10 +40,9 @@ ENV NODE_ENV=production
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Copy only what is needed to run
-COPY --from=build /app/package.json ./
-COPY --from=build /app/pnpm-lock.yaml ./
+COPY --from=build /app/apps/api/package.json ./
 COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/dist ./dist
+COPY --from=build /app/apps/api/dist ./dist
 
 EXPOSE 3000
 
