@@ -24,7 +24,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Build TypeScript
-RUN RUN pnpm --filter @isac-chuab/financial-shared build \
+RUN pnpm --filter @isac-chuab/financial-shared build \
  && pnpm --filter api build
 
 
