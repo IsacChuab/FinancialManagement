@@ -10,7 +10,7 @@ class UserService {
     const user = await userRepository.findByEmail(email);
 
     if (user) {
-      throw new Error('seu lindo');
+      throw new Error('User already exists');
     }
 
     const hashPass = crypto.createHash('sha256').update(newPassword).digest('hex');
