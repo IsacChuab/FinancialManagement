@@ -14,7 +14,7 @@
     "@atlaskit/pragmatic-drag-and-drop": "^1.7.7",
     "@atlaskit/pragmatic-drag-and-drop-flourish": "^2.0.11",
     "@atlaskit/pragmatic-drag-and-drop-hitbox": "^1.1.0",
-    "@isac-chuab/financial-shared": "^0.0.1",
+    "@isac-chuab/financial-shared": "workspace:*",
     "@tailwindcss/vite": "^4.1.16",
     "@tanstack/react-query": "^5.90.11",
     "@trpc/client": "^11.7.1",
