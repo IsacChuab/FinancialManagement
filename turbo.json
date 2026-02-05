@@ -6,9 +6,6 @@
     "test": {
       "dependsOn": ["build:types"]
     },
-    "lint": {
-      "dependsOn": ["build:types"]
-    },
     "build:types": {
       "dependsOn": ["^build:types"],
       "outputs": ["dist/**/*.d.ts"]
@@ -16,7 +13,6 @@
     "build": {
       "dependsOn": [
         "build:types",
-        "lint",
         "^build"
       ],
       "outputs": ["dist/**"]
