@@ -20,7 +20,7 @@ jobs:
 
       - name: Deploy to Fly.io
         run: flyctl deploy
-        working-directory: .
+        working-directory: ./apps/api
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
