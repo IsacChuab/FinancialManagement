@@ -8,7 +8,7 @@ import EmailSender from '../lib/EmailSender.js';
 class UserService {
   public async createUser({ email, newPassword }: CreateUserInput) {
     const user = await userRepository.findByEmail(email);
-    console.log('1 test api');
+    console.log('2 test api');
 
     if (user) {
       throw new Error('User already exists');
