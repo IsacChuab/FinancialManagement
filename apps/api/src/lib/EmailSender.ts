@@ -13,7 +13,7 @@ class EmailSender {
   }
 
   loadTemplate(templateName: string) {
-    const templatePath = path.resolve(process.cwd(), 'src/lib/emailTemplates', templateName);
+    const templatePath = path.resolve(process.cwd(), 'public/emailTemplates', templateName);
 
     return fs.readFileSync(templatePath, 'utf-8');
   }
