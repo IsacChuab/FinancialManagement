@@ -38,7 +38,7 @@ class EmailSender {
     await this.client.emails.send({
       from: this.from,
       to,
-      subject: 'qual o erro?.',
+      subject: 'Recovery Your Password.',
       html,
     });
   }
