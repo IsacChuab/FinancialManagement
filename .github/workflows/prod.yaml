@@ -1,0 +1,36 @@
+name: Production Deployment
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/api/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/Checkout@v2
+      
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: Set up Node.jobs
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: pnpm install
+        working-directory: ./apps/api
+
+      - name: run build
+        run: pnpm build
+        working-directory: ./apps/api
+
+      
