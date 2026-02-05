@@ -8,10 +8,9 @@ import EmailSender from '../lib/EmailSender.js';
 class UserService {
   public async createUser({ email, newPassword }: CreateUserInput) {
     const user = await userRepository.findByEmail(email);
-    console.log('3 test api');
 
     if (user) {
-      throw new Error('User already exists');
+      throw new Error('seu lindo');
     }
 
     const hashPass = crypto.createHash('sha256').update(newPassword).digest('hex');
