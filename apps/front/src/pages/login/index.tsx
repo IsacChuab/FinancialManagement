@@ -27,7 +27,7 @@ const Login = () => {
   return (
     <div className="w-full h-220 flex justify-center items-center">
       <div className="w-100 h-110 flex flex-col justify-around rounded-2xl border border-gray-300 p-8 shadow-md">
-        <h1 className="text-4xl mb-6 text-center">5° teste</h1>
+        <h1 className="text-4xl mb-6 text-center">6° teste</h1>
 
         <Form
           form={form}
