@@ -8,8 +8,10 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "strict": true,
-    "outDir": "dist",
+    "outDir": "./dist",
     "allowSyntheticDefaultImports": true,
+    "noEmit": false,
+    "rootDir": "src"
   },
   "include": ["src"],
 }
