@@ -1,0 +1,41 @@
+name: Publish Packages
+
+on:
+  push:
+    branches: 
+      - main
+    paths: 
+      - 'packages/**'
+    
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up checkout
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          version: 18
+          registry-utl: https://registry.npmjs.org
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm Install
+
+      - name: Build packages
+        run: pnpm build
+        working-directory: packages/shared
+
+      - name: Publish to npm
+        run: pnpm publish --access public
+        working-directory: packages/shared
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
