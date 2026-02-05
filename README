@@ -1,0 +1,237 @@
+Collecting workspace information# Financial Management
+
+Uma aplicação completa de gerenciamento financeiro pessoal construída com tecnologias modernas, permitindo organizar e controlar suas contas de forma intuitiva.
+
+## 🎯 Características
+
+- **Gerenciamento de Contas**: Crie, edite e delete diferentes tipos de contas (débito, crédito e vitalícias)
+- **Organização por Status**: Acompanhe contas pagas, pendentes e atrasadas
+- **Drag & Drop**: Reordene suas contas de forma intuitiva
+- **Autenticação Segura**: Sistema de login com tokens JWT
+- **Recuperação de Senha**: Fluxo completo com validação por código
+- **Tema Claro/Escuro**: Interface adaptável às preferências do usuário
+- **Responsivo**: Funciona perfeitamente em dispositivos móveis e desktop
+
+## 🏗️ Arquitetura
+
+O projeto segue uma arquitetura monorepo com separação clara entre frontend, backend e código compartilhado.
+
+```
+├── apps/
+│   ├── api/           # Backend (Node.js + Express + tRPC)
+│   └── front/         # Frontend (React + TypeScript + Vite)
+├── packages/
+│   └── shared/        # Schemas e tipos compartilhados (Zod)
+```
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React 18** com TypeScript
+- **Vite** para build rápido
+- **Tailwind CSS** para estilização
+- **Ant Design** para componentes UI
+- **React Query** para state management
+- **tRPC** para type-safe API calls
+- **Day.js** para manipulação de datas
+
+### Backend
+- **Node.js** com TypeScript
+- **Express** para servidor HTTP
+- **tRPC** para API type-safe
+- **MongoDB** com Mongoose para persistência
+- **JWT** para autenticação
+- **Resend** para envio de emails
+
+### DevOps
+- **Turbo** para monorepo management
+- **pnpm** para package management
+- **Docker** para containerização
+
+## 📋 Pré-requisitos
+
+- Node.js 22+
+- pnpm 9+
+- MongoDB
+- Variáveis de ambiente configuradas
+
+## 🚀 Instalação
+
+### 1. Clone o repositório
+```bash
+git clone <repository-url>
+cd FinancialManagement
+```
+
+### 2. Instale as dependências
+```bash
+pnpm install
+```
+
+### 3. Configure as variáveis de ambiente
+
+**Backend (.env na raiz de api):**
+```env
+PORT=3000
+NODE_ENV=development
+MONGO_URL=mongodb://localhost:27017/financial
+JWT_SECRET=seu_secret_jwt_aqui
+FRONTEND_ORIGIN=http://localhost:5173
+RESEND_API_KEY=sua_chave_resend_aqui
+MAIL_FROM=seu_email@example.com
+```
+
+**Frontend (.env na raiz de front):**
+```env
+VITE_API_ENDPOINT=http://localhost:3000
+```
+
+## 📦 Scripts
+
+### Desenvolvimento
+```bash
+# Inicia todos os serviços em desenvolvimento
+pnpm dev
+
+# Apenas frontend
+pnpm dev:front
+
+# Apenas backend
+pnpm dev:api
+```
+
+### Build
+```bash
+# Build de todos os pacotes
+pnpm build
+
+# Build do frontend
+pnpm build:front
+
+# Build do backend
+pnpm build:api
+```
+
+### Testes
+```bash
+pnpm test
+```
+
+### Linting
+```bash
+pnpm lint
+```
+
+## 🏃 Executando o Projeto
+
+### Modo Desenvolvimento
+```bash
+pnpm dev
+```
+
+A aplicação estará disponível em:
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:3000`
+
+### Modo Produção
+```bash
+pnpm build
+cd apps/api
+node dist/index.js
+```
+
+## 🐳 Docker
+
+```bash
+# Build da imagem
+docker build -t financial-api apps/api/
+
+# Executa o container
+docker run -p 3000:3000 --env-file .env financial-api
+```
+
+## 📚 Estrutura de Pastas
+
+```
+apps/api/src/
+├── billings/          # Lógica de contas
+├── user/              # Autenticação e usuários
+├── trpc/              # Configuração tRPC
+├── middlewares/       # Middlewares
+├── lib/               # Utilitários e serviços
+└── utils/             # Funções auxiliares
+
+apps/front/src/
+├── components/        # Componentes React
+├── pages/             # Páginas principais
+├── hooks/             # Custom hooks
+├── utils/             # Funções auxiliares
+├── providers/         # Context providers
+└── theme/             # Temas e layout
+```
+
+## 🔐 Autenticação
+
+A aplicação utiliza **JWT (JSON Web Tokens)** com refresh automático via cookies httpOnly. O fluxo inclui:
+
+- Login com email/senha
+- Criação de conta com validação
+- Recuperação de senha em 3 etapas
+- Alteração de senha autenticada
+
+## 📝 API Endpoints
+
+### Autenticação
+- `POST /trpc/auth.login` - Login
+- `POST /trpc/auth.createUser` - Criar conta
+- `POST /trpc/auth.changePassword` - Alterar senha
+- `POST /trpc/auth.firstStepForgotPassword` - Iniciar recuperação
+- `POST /trpc/auth.secondStepForgotPassword` - Validar código
+- `POST /trpc/auth.thirdStepForgotPassword` - Redefinir senha
+- `GET /trpc/auth.me` - Obter usuário autenticado
+
+### Contas
+- `GET /trpc/bill.allBills` - Listar todas as contas
+- `POST /trpc/bill.newBill` - Criar conta
+- `PUT /trpc/bill.updateBill` - Atualizar conta
+- `DELETE /trpc/bill.deleteBill` - Deletar conta
+- `POST /trpc/bill.updateStatus` - Atualizar status
+- `POST /trpc/bill.closeMonth` - Finalizar mês
+
+## 🎨 Tipos de Contas
+
+### Débito
+Contas únicas sem parcelamento
+
+### Crédito
+Contas parceladas com data de vencimento
+
+### Vitalício
+Contas recorrentes com data de vencimento fixa
+
+## 💾 Dados Persistidos
+
+As contas mantêm histórico com:
+- Data de criação e atualização
+- Status (pago, pendente, atrasado)
+- Ordem de exibição (reordenável)
+- Soft delete (deletedAt)
+
+## 🤝 Contribuindo
+
+1. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+2. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+3. Push para a branch (`git push origin feature/AmazingFeature`)
+4. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+
+## 📧 Contato
+
+Para dúvidas ou sugestões, entre em contato através dos canais disponíveis no repositório.
+
+---
+
+**Desenvolvido com ❤️ usando tecnologias modernas e melhores práticas de desenvolvimento.**
