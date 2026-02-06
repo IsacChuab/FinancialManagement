@@ -24,11 +24,13 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Build TypeScript
-RUN pnpm --filter @isac-chuab/financial-shared build
-RUN pnpm --filter api build
+RUN pnpm --filter @isac-chuab/financial-shared build \
+ && pnpm --filter api build
+
 
 # Generate production node_modules only for the api
 RUN pnpm --filter api deploy --prod /prod
+
 
 ############################
 # Runtime stage
