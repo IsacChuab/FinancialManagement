@@ -16,10 +16,12 @@ const AddBill = ({
   isOpen,
   closeModal,
   billToEdit,
+  bills,
 }: {
   isOpen: boolean;
   closeModal: () => void;
   billToEdit?: BillWithActions;
+  bills: BillWithActions[];
 }) => {
   const [option, setOption] = useState<'debit' | 'credit' | 'vital'>('debit');
   const [isPaid, setIsPaid] = useState<boolean>(false);
@@ -42,14 +44,14 @@ const AddBill = ({
 
   const submitForm = (values: BillInput) => {
     if (billToEdit) {
-      updateBill(billToEdit.id, { ...values }, isPaid);
+      updateBill(billToEdit.id, { ...values, order: billToEdit.order }, isPaid);
       form.resetFields();
       closeModal();
       setOption('debit');
       return;
     }
 
-    newBill(values, isPaid);
+    newBill(values, isPaid, bills);
     form.resetFields();
     setOption('debit');
     closeModal();

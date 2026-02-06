@@ -9,10 +9,10 @@ export const formatBrlMoney = (value = 0) => {
   }).format(value > 0 ? value : 0);
 };
 
-export const checkStatusBill = (isPaid: boolean, dueDate: Date) => {
+export const checkStatusBill = (isPaid: boolean, type: string, dueDate?: Date) => {
   const currentDate = new Date();
 
-  if (isPaid) {
+  if (isPaid || type === 'debit') {
     return 'paid';
   }
 
@@ -99,4 +99,13 @@ export function mapBillsToUpdate(bills: BillWithActions[]): BillUpdate[] {
       dueDate: new Date(bill.dueDate!),
     };
   });
+}
+
+export function generateOrderForNewBill(existingBills: BillWithActions[]): number {
+  if (existingBills.length === 0) {
+    return 10_000;
+  }
+
+  const maxOrder = Math.max(...existingBills.map((bill) => bill.order || 0));
+  return maxOrder + 10_000;
 }

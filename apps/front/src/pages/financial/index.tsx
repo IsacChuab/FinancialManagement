@@ -159,6 +159,7 @@ const Financial = () => {
         isOpen={isOpen}
         closeModal={closeAddBillModal}
         billToEdit={billActions.editingBill}
+        bills={data || []}
       />
       <DeleteBillModal
         isOpen={isOpenDeleteModal}

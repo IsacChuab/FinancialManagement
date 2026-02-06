@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { BillStatus, BillWithActions } from '@isac-chuab/financial-shared';
 import type { BillInput } from '@isac-chuab/financial-shared';
 
-import { checkStatusBill, mapBillsToUpdate } from '../utils/functions';
+import { checkStatusBill, generateOrderForNewBill, mapBillsToUpdate } from '../utils/functions';
 import { trpc } from '../utils/trpc';
 
 export function useBillActions() {
@@ -73,13 +73,13 @@ export function useBillActions() {
     },
   });
 
-  function newBill(data: BillInput, isPaid: boolean) {
-    if (data.type === 'debit') {
-      newBillMutation.mutate({ ...data, status: 'paid' });
-      return;
-    }
+  function newBill(data: BillInput, isPaid: boolean, listBills: BillWithActions[]) {
+    const orderBill = generateOrderForNewBill(listBills);
+    data.order = orderBill;
 
-    const status = checkStatusBill(isPaid, data.dueDate);
+    const dueDate = data.type !== 'debit' ? data.dueDate : undefined;
+
+    const status = checkStatusBill(isPaid, data.type, dueDate);
     newBillMutation.mutate({ ...data, status });
   }
 
@@ -92,12 +92,10 @@ export function useBillActions() {
   }
 
   function updateBill(billId: string, data: BillInput, isPaid: boolean) {
-    if (data.type === 'debit') {
-      updateBillMutation.mutate({ id: billId, ...data, status: 'paid' });
-      return;
-    }
+    console.log('update bill', {  data  });
+    const dueDate = data.type !== 'debit' ? data.dueDate : undefined;
 
-    const status = checkStatusBill(isPaid, data.dueDate);
+    const status = checkStatusBill(isPaid, data.type, dueDate);
     updateBillMutation.mutate({ id: billId, ...data, status });
   }
 
