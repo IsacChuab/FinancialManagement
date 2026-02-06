@@ -146,7 +146,7 @@ const Financial = () => {
           ))}
       </div>
 
-      {/*layout em table
+      {/*colocar botão para escolher se quer card ou table, ajustar o reorder para funcionar na table
       <Table
         dataSource={data}
         columns={columns({ billActions, handleEdit, handleDelete })}
