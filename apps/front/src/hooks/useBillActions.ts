@@ -74,6 +74,7 @@ export function useBillActions() {
   });
 
   function newBill(data: BillInput, isPaid: boolean, listBills: BillWithActions[]) {
+    console.log('new bill', {  data  });
     const orderBill = generateOrderForNewBill(listBills);
     data.order = orderBill;
 
