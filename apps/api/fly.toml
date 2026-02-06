@@ -7,7 +7,7 @@ app = 'financialmanagement-voy4ww'
 primary_region = 'iad'
 
 [build]
-  dockerfile = "Dockerfile"
+  dockerfile = "apps/api/Dockerfile"
 
 [http_service]
   internal_port = 3000
