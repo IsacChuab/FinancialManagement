@@ -34,17 +34,18 @@ RUN pnpm --filter @isac-chuab/financial-shared build \
 FROM node:22-slim
 
 WORKDIR /app
-
 ENV NODE_ENV=production
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Copy only what is needed to run
-COPY --from=build /app/apps/api/package.json ./
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/apps/api/dist ./dist
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY apps/api/package.json apps/api/package.json
+COPY packages/shared/package.json packages/shared/package.json
+
+# Install only production deps of the API
+RUN pnpm install --prod --filter api...
 
 EXPOSE 3000
-
 CMD ["node", "dist/index.js"]
