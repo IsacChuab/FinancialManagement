@@ -24,9 +24,11 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Build TypeScript
-RUN pnpm --filter @isac-chuab/financial-shared build \
- && pnpm --filter api build
+RUN pnpm --filter @isac-chuab/financial-shared build
+RUN pnpm --filter api build
 
+# Generate production node_modules only for the api
+RUN pnpm --filter api deploy --prod /prod
 
 ############################
 # Runtime stage
@@ -39,11 +41,9 @@ ENV NODE_ENV=production
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-
-
 # Copy only what is needed to run
+COPY --from=build /prod/node_modules ./node_modules
 COPY --from=build /app/apps/api/dist ./dist
-COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/apps/api/package.json ./
 
 EXPOSE 3000
