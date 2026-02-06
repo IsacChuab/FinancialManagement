@@ -27,6 +27,7 @@ COPY . .
 RUN pnpm --filter @isac-chuab/financial-shared build \
  && pnpm --filter api build
 
+ RUN ls -R apps/api/dist || echo "dist nao existe"
 
 ############################
 # Runtime stage
