@@ -33,7 +33,7 @@ ENV NODE_ENV=production
 COPY --from=build /prod/node_modules ./node_modules
 COPY --from=build /prod/package.json ./package.json
 COPY --from=build /app/apps/api/dist ./dist
-COPY --from=build /app/public ./public
+COPY --from=build /app/apps/api/public ./public
 
 EXPOSE 3000
 CMD ["node", "dist/index.js"]
