@@ -31,6 +31,8 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+    console.log('Running in Strict Mode')
+
   return (
     <QueryClientProvider client={queryClient}>
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
