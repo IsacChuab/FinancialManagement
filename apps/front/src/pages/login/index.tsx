@@ -57,7 +57,7 @@ const Login = () => {
             <a onClick={() => setIsOpenForgotPassword(true)}>Forgot Password</a>
 
             <Form.Item className="text-center">
-              <Button htmlType="submit" type="primary">
+              <Button htmlType="submit" type="primary" disabled={submit.isPending} loading={submit.isPending}>
                 Login
               </Button>
             </Form.Item>
