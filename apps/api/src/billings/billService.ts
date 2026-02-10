@@ -142,7 +142,6 @@ class BillService {
 
   private async closeCreditBills(data: BillUpdate[]) {
     const creditIds = data.filter((bill) => bill.type === 'credit').map((bill) => bill.id);
-    const currentDate = dayjs().toDate();
 
     if (creditIds.length === 0) {
       return;
