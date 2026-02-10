@@ -14,6 +14,10 @@ class BillRepository {
     return Bill.updateMany({ _id: { $in: ids } }, { $set: data });
   }
 
+  public async bulkInsert(bills: BillModel[]) {
+    await Bill.insertMany(bills);
+  }
+
   public async bulkUpdate(bills: BillModel[]) {
     const operations = bills.map((bill) => ({
       updateOne: {
@@ -65,6 +69,17 @@ class BillRepository {
       .sort({ order: -1 })
       .select({ order: 1 })
       .lean();
+  }
+
+  public async findNextMonthBill(nextDate: Date, bill: BillModel) {
+    return await Bill.findOne({
+      dueDate: nextDate,
+      userId: bill.userId,
+      type: bill.type,
+      isActive: true,
+      name: bill.name,
+      amount: bill.amount
+    });
   }
 }
 
