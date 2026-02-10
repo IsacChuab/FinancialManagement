@@ -48,18 +48,21 @@ const AddBill = ({
       form.resetFields();
       closeModal();
       setOption('debit');
+      setIsPaid(false);
       return;
     }
 
     newBill(values, isPaid, bills);
     form.resetFields();
     setOption('debit');
+    setIsPaid(false);
     closeModal();
   };
 
   const handleCancel = () => {
     form.resetFields();
     setOption('debit');
+    setIsPaid(false);
     closeModal();
   };
 
@@ -72,6 +75,7 @@ const AddBill = ({
 
     form.resetFields();
     setOption('debit');
+    setIsPaid(false);
   }, [billToEdit, form]);
 
   return (
