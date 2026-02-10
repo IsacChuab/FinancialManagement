@@ -1,6 +1,6 @@
 import { addActionsToBill } from '../utils/actionsBill.js';
 import type { BillInput, BillUpdate, BillUpdateStatus } from '@isac-chuab/financial-shared';
-import { Bill } from './repositories/billModel.js';
+import { Bill, BillModel } from './repositories/billModel.js';
 import { billRepository } from './repositories/billRepository.js';
 import dayjs from 'dayjs';
 import { generateOrderBill } from '../utils/order.js';
@@ -149,25 +149,49 @@ class BillService {
     }
 
     const bills = await billRepository.findByIds(creditIds);
+    const duplicateBill: BillModel[] = [];
 
-    bills.forEach((bill) => {
+    for (const bill of bills) {
       const nextInstallment = bill.currentInstallment + 1;
       const nextDueDate = dayjs(bill.dueDate).add(1, 'month').toDate();
+      const existingBill = await billRepository.findNextMonthBill(nextDueDate, bill);
 
-      if (nextInstallment > bill.totalInstallments) {
+      if (existingBill && bill.status === 'paid') {
         bill.isActive = false;
-        return;
+        continue;
       }
 
-      if (nextDueDate >= currentDate) {
+      if (nextInstallment > bill.totalInstallments && bill.status === 'paid') {
+        bill.isActive = false;
+        bill.status = 'paid';
+        continue;
+      }
+
+      if (bill.status === 'paid') {
         bill.status = 'pending';
+        bill.currentInstallment = nextInstallment;
+        bill.dueDate = nextDueDate;
+        continue;
       }
 
-      bill.currentInstallment = nextInstallment;
-      bill.dueDate = nextDueDate;
-    });
+      bill.status = 'late';
 
+      if (!existingBill && nextInstallment <= bill.totalInstallments) {
+        duplicateBill.push(new Bill({
+          ...bill.toObject(),
+          dueDate: nextDueDate,
+          status: 'pending',
+          currentInstallment: nextInstallment,
+        }));
+      }
+
+    };
+    
     await billRepository.bulkUpdate(bills);
+
+    if (duplicateBill.length > 0) {
+      await billRepository.bulkInsert(duplicateBill);
+    }
   }
 
   private async closeVitalBills(data: BillUpdate[]) {
@@ -178,19 +202,41 @@ class BillService {
       return;
     }
 
-    const vitalBillsToUpdate = await billRepository.findByIds(vitalIds);
+    const vitalBills = await billRepository.findByIds(vitalIds);
+    const duplicateBill: BillModel[] = [];
 
-    vitalBillsToUpdate.forEach((bill) => {
+    for (const bill of vitalBills) {
       const nextDueDate = dayjs(bill.dueDate).add(1, 'month').toDate();
+      const existingBill = await billRepository.findNextMonthBill(nextDueDate, bill);
 
-      if (nextDueDate >= currentDate) {
-        bill.status = 'pending';
+      if (existingBill && bill.status === 'paid') {
+        bill.isActive = false;
+        continue;
       }
 
-      bill.dueDate = nextDueDate;
-    });
+      if (nextDueDate > currentDate && bill.status === 'paid') {
+        bill.status = 'pending';
+        bill.dueDate = nextDueDate;
+        continue;
+      }
 
-    await billRepository.bulkUpdate(vitalBillsToUpdate);
+      bill.status = 'late';
+
+      if (!existingBill) {
+        duplicateBill.push(new Bill({
+          ...bill.toObject(),
+          dueDate: nextDueDate,
+          status: 'pending',
+        }));
+      
+      }
+    }
+
+    await billRepository.bulkUpdate(vitalBills);
+
+    if (duplicateBill.length > 0) {
+      await billRepository.bulkInsert(duplicateBill);
+    }
   }
 }
 
