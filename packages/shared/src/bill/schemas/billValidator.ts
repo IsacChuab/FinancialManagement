@@ -53,3 +53,11 @@ export type BillUpdateStatus = z.infer<typeof billUpdateStatusSchema>;
 
 export const updateInBulk = z.array(billUpdateSchema).min(1);
 export type CloseMonth = z.infer<typeof updateInBulk>;
+
+
+export const billSummarySchema = z.object({
+  totalDebit: z.number(),
+  totalCredit: z.number(),
+  totalVital: z.number(),
+  total: z.number(),
+});

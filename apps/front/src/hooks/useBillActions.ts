@@ -26,6 +26,7 @@ export function useBillActions() {
 
   const newBillMutation = trpc.bill.newBill.useMutation({
     onSuccess: (response) => {
+      void utils.bill.summary.invalidate();
       const { formattedBill } = response;
 
       utils.bill.allBills.setData(undefined, (old) => {
@@ -37,6 +38,7 @@ export function useBillActions() {
 
   const deleteBillMutation = trpc.bill.deleteBill.useMutation({
     onSuccess: (response) => {
+      void utils.bill.summary.invalidate();
       const { id } = response;
 
       utils.bill.allBills.setData(undefined, (oldData) => {
@@ -49,6 +51,7 @@ export function useBillActions() {
 
   const updateBillMutation = trpc.bill.updateBill.useMutation({
     onSuccess: (response) => {
+      void utils.bill.summary.invalidate();
       const { formattedBill } = response;
 
       utils.bill.allBills.setData(undefined, (old) => {
@@ -63,6 +66,7 @@ export function useBillActions() {
 
   const closeMonthMutation = trpc.bill.closeMonth.useMutation({
     onSuccess: () => {
+      void utils.bill.summary.invalidate();
       void utils.bill.allBills.invalidate();
     },
   });

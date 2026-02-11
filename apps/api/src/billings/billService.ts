@@ -4,6 +4,7 @@ import { Bill, type BillModel } from './repositories/billModel.js';
 import { billRepository } from './repositories/billRepository.js';
 import dayjs from 'dayjs';
 import { generateOrderBill } from '../utils/order.js';
+import { summaryBills } from '../utils/summary.js';
 
 class BillService {
   public async createBill(input: BillInput, userId: string) {
@@ -128,6 +129,12 @@ class BillService {
 
     const formattedBill = updatedBills.map(addActionsToBill);
     return { success: true, formattedBill };
+  }
+
+  public async getSummary(userId: string) {
+    const bills = await billRepository.findActives(userId);
+
+    return summaryBills(bills);
   }
 
   private async closeDebitBills(data: BillUpdate[]) {
