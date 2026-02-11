@@ -1,6 +1,6 @@
 import { addActionsToBill } from '../utils/actionsBill.js';
 import type { BillInput, BillUpdate, BillUpdateStatus } from '@isac-chuab/financial-shared';
-import { Bill, BillModel } from './repositories/billModel.js';
+import { Bill, type BillModel } from './repositories/billModel.js';
 import { billRepository } from './repositories/billRepository.js';
 import dayjs from 'dayjs';
 import { generateOrderBill } from '../utils/order.js';
