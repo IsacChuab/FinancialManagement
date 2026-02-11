@@ -3,6 +3,7 @@ import { billService } from './billService.js';
 import {
   billIdSchema,
   billInputSchema,
+  billSummarySchema,
   billUpdateSchema,
   billUpdateStatusSchema,
   updateInBulk,
@@ -35,5 +36,9 @@ export const billRouter = router({
 
   updateBillsInBulk: procedure.input(updateInBulk).mutation(async ({ input }) => {
     return billService.updateBillsInBulk(input);
+  }),
+
+  summary: procedure.output(billSummarySchema).query(async ({ ctx }) => {
+    return billService.getSummary(ctx.user.id);
   }),
 });

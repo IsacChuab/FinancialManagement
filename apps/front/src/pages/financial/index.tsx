@@ -16,6 +16,7 @@ import DeleteBillModal from '../../components/ConfirmationsModals/DeleteBill';
 import CloseMonthModal from '../../components/ConfirmationsModals/CloseMonth';
 import { flushSync } from 'react-dom';
 import { isBillData, reorderBills } from '../../utils/functions';
+import Summary from '../../components/Summary';
 
 const Financial = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +26,7 @@ const Financial = () => {
   const [draggableBill, setDraggableBill] = useState<BillWithActions[]>([]);
 
   const { data, isPending } = trpc.bill.allBills.useQuery();
+
   const billActions = useBillActions();
   const currentMonth = dayjs().format('MMMM');
 
@@ -112,6 +114,7 @@ const Financial = () => {
 
   return (
     <div className="flex flex-col gap-4 p-4">
+      <Summary />
       <div className="flex justify-between items-center">
         <h1 className="text-2xl md:text-4xl">Contas de {currentMonth}</h1>
 
