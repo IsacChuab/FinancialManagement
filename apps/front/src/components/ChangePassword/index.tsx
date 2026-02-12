@@ -25,7 +25,6 @@ const ChangePassowrd = ({
   });
 
   const submitForm = (values: ChangePasswordInput) => {
-    console.log('aqui', values);
     changePassMutation.mutate(values);
   };
 

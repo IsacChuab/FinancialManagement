@@ -1,20 +1,20 @@
 import { User } from './repositories/userModel.js';
 import { userRepository } from './repositories/userRepository.js';
-import type { ChangePasswordInput, CreateUserInput, LoginInput } from '@isac-chuab/financial-shared';
-import crypto from 'node:crypto';
+import { type ChangePasswordInput, type CreateUserInput, type LoginInput } from '@isac-chuab/financial-shared';
 import { generateToken } from '../utils/token.js';
 import EmailSender from '../lib/EmailSender.js';
+import bcrypt from 'bcrypt';
 
 class UserService {
   public async createUser({ email, newPassword }: CreateUserInput) {
     const user = await userRepository.findByEmail(email);
-
+    
     if (user) {
       throw new Error('User already exists');
     }
-
-    const hashPass = crypto.createHash('sha256').update(newPassword).digest('hex');
-
+    
+    const hashPass = await bcrypt.hash(newPassword, 10);
+    
     const userObject = new User({
       email,
       password: hashPass,
@@ -39,11 +39,15 @@ class UserService {
       throw new Error('User not found');
     }
 
-    const hashPass = crypto.createHash('sha256').update(password).digest('hex');
-
-    if (user.password !== hashPass) {
-      throw new Error('Invalid password');
-    }
+    bcrypt.compare(password, user.password, (err, result) => {
+      if (err) {
+        throw new Error('Error comparing passwords');
+      }
+      
+      if (!result) {
+        throw new Error('Invalid password');
+      }
+    });
 
     const token = generateToken(user.id, user.email);
 
@@ -69,13 +73,17 @@ class UserService {
       throw new Error('User not found');
     }
 
-    const hashCurrentPass = crypto.createHash('sha256').update(input.currentPassword).digest('hex');
+    bcrypt.compare(input.currentPassword, user.password, (err, result) => {
+      if (err) {
+        throw new Error('Error comparing passwords');
+      }
+      
+      if (!result) {
+        throw new Error('Invalid password');
+      }
+    });
 
-    if (user.password !== hashCurrentPass) {
-      throw new Error('Invalid password');
-    }
-
-    const hashNewPass = crypto.createHash('sha256').update(input.newPassword).digest('hex');
+    const hashNewPass = await bcrypt.hash(input.newPassword, 10);
     user.password = hashNewPass;
 
     await userRepository.save(user);
@@ -131,7 +139,8 @@ class UserService {
       return { success: false, message: 'Usuário não encontrado' };
     }
 
-    const hashNewPass = crypto.createHash('sha256').update(newPassword).digest('hex');
+    const hashNewPass = await bcrypt.hash(newPassword, 10);
+    
     user.password = hashNewPass;
     user.code = undefined;
     user.expiresAt = undefined;
