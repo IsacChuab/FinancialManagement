@@ -1,10 +1,11 @@
 import { BrowserRouter } from 'react-router-dom';
-import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import Pages from './pages';
 import ThemeProvider from './providers/ThemeProvider';
 import { trpc, trpcClient } from './utils/trpc';
 import { NotificationProvider } from './providers/NotificationProvider';
+import { handleReactQueryError } from './utils/notification/notify';
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -12,6 +13,7 @@ const queryClient = new QueryClient({
       console.error('Query error:', error);
     },
   }),
+  mutationCache: new MutationCache({ onError: handleReactQueryError }),
 
   defaultOptions: {
     queries: {
@@ -23,9 +25,6 @@ const queryClient = new QueryClient({
     },
     mutations: {
       gcTime: 0,
-      onError: (error) => {
-        console.error('Mutation error:', error);
-      },
     },
   },
 });

@@ -43,7 +43,7 @@ const Login = () => {
               { type: 'email', message: 'Digite um email válido' },
             ]}
           >
-            <Input />
+            <Input autoFocus />
           </Form.Item>
           <Form.Item
             name="password"
