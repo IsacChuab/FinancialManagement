@@ -96,7 +96,6 @@ export function useBillActions() {
   }
 
   function updateBill(billId: string, data: BillInput, isPaid: boolean) {
-    console.log('update bill', {  data  });
     const dueDate = data.type !== 'debit' ? data.dueDate : undefined;
 
     const status = checkStatusBill(isPaid, data.type, dueDate);
