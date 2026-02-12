@@ -77,10 +77,6 @@ const InfoBills = ({
     );
   };
 
-  const getStatusColor = () => {
-    return statusEnum[bill.status].color;
-  }
-
   const actionsList = () => {
     const items = actionEnum(bill, handleActions, handleEdit, handleDelete)?.filter(
       (action) => action?.key && bill.actions.includes(action.key as ActionKey),
@@ -174,7 +170,7 @@ const InfoBills = ({
           variant="borderless"
           loading={loading}
           actions={actionsList()}
-          className={`shadow-sm! shadow-[${getStatusColor()}]!`}
+          className={`shadow-sm! ${statusEnum[bill.status].shadowClass}`}
         >
           <div className="h-24 flex flex-col gap-1">
             <BasicInfo bill={bill} />

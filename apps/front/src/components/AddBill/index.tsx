@@ -45,24 +45,11 @@ const AddBill = ({
   const submitForm = (values: BillInput) => {
     if (billToEdit) {
       updateBill(billToEdit.id, { ...values, order: billToEdit.order }, isPaid);
-      form.resetFields();
       closeModal();
-      setOption('debit');
-      setIsPaid(false);
       return;
     }
 
     newBill(values, isPaid, bills);
-    form.resetFields();
-    setOption('debit');
-    setIsPaid(false);
-    closeModal();
-  };
-
-  const handleCancel = () => {
-    form.resetFields();
-    setOption('debit');
-    setIsPaid(false);
     closeModal();
   };
 
@@ -72,19 +59,19 @@ const AddBill = ({
       setOption(billToEdit.type);
       return;
     }
-
-    form.resetFields();
-    setOption('debit');
-    setIsPaid(false);
   }, [billToEdit, form]);
 
   return (
     <Modal
       title="Adicionar Conta"
-      onCancel={handleCancel}
-      onOk={form.submit}
+      onCancel={() => closeModal()}
       open={isOpen}
       footer={null}
+      afterClose={() => {
+        form.resetFields();
+        setOption('debit');
+        setIsPaid(false);
+      }}
     >
       <Form
         form={form}
@@ -127,7 +114,7 @@ const AddBill = ({
         </div>
 
         <div className="flex justify-end gap-2 mt-6">
-          <Button key="cancel" onClick={handleCancel}>
+          <Button key="cancel" onClick={() => closeModal()} disabled={isPendingNewBill}>
             Cancelar
           </Button>
 
@@ -137,7 +124,6 @@ const AddBill = ({
             htmlType='submit'
             loading={isPendingNewBill}
             disabled={isPendingNewBill}
-            onClick={() => form.submit()}
           >
             Salvar
           </Button>

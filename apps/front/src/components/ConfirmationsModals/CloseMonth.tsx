@@ -16,7 +16,7 @@ const CloseMonthModal = ({
   onConfirm: () => void;
   setModalIsOpen: (isOpen: boolean) => void;
 }) => {
-    const confirmButtonRef = useRef<HTMLButtonElement | null>(null);
+  const confirmButtonRef = useRef<HTMLButtonElement | null>(null);
 
   return (
     <Modal
