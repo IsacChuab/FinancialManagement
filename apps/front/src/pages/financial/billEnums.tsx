@@ -28,14 +28,17 @@ export const statusEnum = {
   paid: {
     label: 'Pago',
     color: '#53D388',
+    shadowClass: 'shadow-green-500',
   },
   late: {
     label: 'Atrasado',
     color: '#c40606',
+    shadowClass: 'shadow-red-600',
   },
   pending: {
     label: 'Pendente',
     color: '#f0a01f',
+    shadowClass: 'shadow-amber-500',
   },
 };
 
