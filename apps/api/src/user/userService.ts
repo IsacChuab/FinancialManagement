@@ -39,15 +39,11 @@ class UserService {
       throw new Error('User not found');
     }
 
-    bcrypt.compare(password, user.password, (err, result) => {
-      if (err) {
-        throw new Error('Error comparing passwords');
-      }
-      
-      if (!result) {
-        throw new Error('Invalid password');
-      }
-    });
+    const isValid = await bcrypt.compare(password, user.password);
+
+    if (!isValid) {
+      throw new Error('Invalid password');
+    }
 
     const token = generateToken(user.id, user.email);
 
@@ -73,15 +69,12 @@ class UserService {
       throw new Error('User not found');
     }
 
-    bcrypt.compare(input.currentPassword, user.password, (err, result) => {
-      if (err) {
-        throw new Error('Error comparing passwords');
-      }
-      
-      if (!result) {
-        throw new Error('Invalid password');
-      }
-    });
+    const isValid = await bcrypt.compare(input.currentPassword, user.password);
+
+    if (!isValid) {
+      throw new Error('Invalid password');
+    }
+  
 
     const hashNewPass = await bcrypt.hash(input.newPassword, 10);
     user.password = hashNewPass;
