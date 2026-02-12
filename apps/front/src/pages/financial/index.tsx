@@ -175,6 +175,7 @@ const Financial = () => {
         onConfirm={handleCloseMonth}
         loading={billActions.isPendingCloseMonth}
         name={currentMonth}
+        isSomeBillOpened={data ? data.some((bill) => bill.status !== 'paid') : false}
       />
     </div>
   );

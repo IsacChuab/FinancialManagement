@@ -13,3 +13,19 @@ export const notify = {
   info: (options: ArgsProps) => notifyApi?.info(options),
   warning: (options: ArgsProps) => notifyApi?.warning(options),
 };
+
+export function handleReactQueryError(error: unknown) {
+   if (error instanceof Error) {
+    notify.error({
+      message: 'Erro inesperado',
+      description: error.message,
+    });
+
+    return;
+  }
+
+  notify.error({
+    message: 'Erro inesperado',
+    description: 'Algo deu errado',
+  });
+}

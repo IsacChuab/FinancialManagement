@@ -84,21 +84,7 @@ const AddBill = ({
       onCancel={handleCancel}
       onOk={form.submit}
       open={isOpen}
-      footer={[
-        <Button key="cancel" onClick={handleCancel}>
-          Cancelar
-        </Button>,
-
-        <Button
-          key="ok"
-          type="primary"
-          loading={isPendingNewBill}
-          disabled={isPendingNewBill}
-          onClick={() => form.submit()}
-        >
-          Salvar
-        </Button>,
-      ]}
+      footer={null}
     >
       <Form
         form={form}
@@ -138,6 +124,23 @@ const AddBill = ({
               dateEdit={billToEdit && dayjs(billToEdit.dueDate)}
             />
           )}
+        </div>
+
+        <div className="flex justify-end gap-2 mt-6">
+          <Button key="cancel" onClick={handleCancel}>
+            Cancelar
+          </Button>
+
+          <Button
+            key="ok"
+            type="primary"
+            htmlType='submit'
+            loading={isPendingNewBill}
+            disabled={isPendingNewBill}
+            onClick={() => form.submit()}
+          >
+            Salvar
+          </Button>
         </div>
       </Form>
     </Modal>

@@ -14,7 +14,10 @@ const BaseFields = () => {
       <Form.Item
         label="Nome"
         name="name"
-        rules={[{ required: true, message: 'Por favor, insira um nome' }]}
+        rules={[
+          { required: true, message: 'Por favor, insira um nome' }, 
+          { min: 3, message: 'O nome deve conter pelo menos 3 caracteres' }
+          ]}
       >
         <Input />
       </Form.Item>
