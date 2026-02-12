@@ -34,21 +34,7 @@ const ChangePassowrd = ({
       onCancel={() => setIsOpen(false)}
       onOk={form.submit}
       open={isOpen}
-      footer={[
-        <Button key="cancel" onClick={() => setIsOpen(false)}>
-          Cancelar
-        </Button>,
-
-        <Button
-          key="ok"
-          type="primary"
-          loading={changePassMutation.isPending}
-          disabled={changePassMutation.isPending}
-          onClick={() => form.submit()}
-        >
-          Salvar
-        </Button>,
-      ]}
+      footer={null}
     >
       <Form form={form} layout="vertical" className="w-full" onFinish={submitForm} disabled={false}>
         <Form.Item
@@ -60,6 +46,22 @@ const ChangePassowrd = ({
         </Form.Item>
 
         <NewPassword />
+        
+        <div className="flex justify-end gap-2 mt-6">
+          <Button key="cancel" onClick={() => setIsOpen(false)} disabled={changePassMutation.isPending}>
+            Cancelar
+          </Button>
+
+          <Button
+            key="ok"
+            type="primary"
+            htmlType='submit'
+            loading={changePassMutation.isPending}
+            disabled={changePassMutation.isPending}
+          >
+            Salvar
+          </Button>
+        </div>
       </Form>
     </Modal>
   );
