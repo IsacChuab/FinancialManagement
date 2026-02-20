@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { BillStatus, BillWithActions } from '@isac-chuab/financial-shared';
 import type { BillInput } from '@isac-chuab/financial-shared';
 
@@ -7,8 +6,8 @@ import { trpc } from '../utils/trpc';
 
 export function useBillActions() {
   const utils = trpc.useUtils();
-  const [editingBill, setEditingBill] = useState<BillWithActions | undefined>(undefined);
-
+  const { data: listBills, isPending: isPendingListBills } = trpc.bill.allBills.useQuery();
+  
   const updateStatusMutation = trpc.bill.updateStatus.useMutation({
     onSuccess: (response) => {
       const { formattedBill } = response;
@@ -77,9 +76,9 @@ export function useBillActions() {
     },
   });
 
-  function newBill(data: BillInput, isPaid: boolean, listBills: BillWithActions[]) {
-    const orderBill = generateOrderForNewBill(listBills);
-    data.order = orderBill;
+  function newBill(data: BillInput, isPaid: boolean) {
+    const bills = listBills !== undefined ? listBills : [];
+    data.order = generateOrderForNewBill(bills);
 
     const dueDate = data.type !== 'debit' ? data.dueDate : undefined;
 
@@ -102,14 +101,6 @@ export function useBillActions() {
     updateBillMutation.mutate({ id: billId, ...data, status });
   }
 
-  function clearEdit() {
-    setEditingBill(undefined);
-  }
-
-  function startEdit(bill: BillWithActions) {
-    setEditingBill(bill);
-  }
-
   function closeMonth(data: BillWithActions[]) {
     const formatedData = mapBillsToUpdate(data);
 
@@ -122,19 +113,27 @@ export function useBillActions() {
     updateBillInBulkMutation.mutate(formatedData);
   }
 
+  function getSomeLatedOrPendingBill() {
+    if (!listBills) {
+      return false
+    };
+
+    return listBills.some((bill) => bill.status === 'pending' || bill.status === 'late');
+  }
+
   return {
     newBill,
     isPendingNewBill: newBillMutation.isPending,
     isPendingCloseMonth: closeMonthMutation.isPending,
     isPendingDeleteBill: deleteBillMutation.isPending,
+    listBills,
     updateStatus,
     deleteBill,
     updateBill,
-    editingBill,
-    startEdit,
-    clearEdit,
     closeMonth,
     reorderBills,
+    getSomeLatedOrPendingBill,
+    isPendingListBills,
   };
 }
 

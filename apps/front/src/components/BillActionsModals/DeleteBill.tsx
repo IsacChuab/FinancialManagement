@@ -7,7 +7,7 @@ import { formatBrlMoney } from '../../utils/functions';
 import { typeEnum } from '../../pages/financial/billEnums';
 import { useRef } from 'react';
 
-const DeleteBillModal = ({
+const DeleteBill = ({
   isOpen,
   bill,
   setModalIsOpen,
@@ -78,4 +78,4 @@ const DeleteBillModal = ({
   );
 };
 
-export default DeleteBillModal;
+export default DeleteBill;

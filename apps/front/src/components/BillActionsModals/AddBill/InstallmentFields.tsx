@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 import { Form, InputNumber, Switch } from 'antd';
-import MaskedInput from '../../utils/MaskedInput';
-import DatePickerForm from '../DatePicker';
+import MaskedInput from '../../../utils/MaskedInput';
+import DatePickerForm from '../../DatePicker';
 import type { Dayjs } from 'dayjs';
 
 const InstallmentFields = ({

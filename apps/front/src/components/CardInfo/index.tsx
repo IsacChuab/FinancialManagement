@@ -44,18 +44,13 @@ type TaskState =
 const InfoBills = ({
   bill,
   handleActions,
-  handleEdit,
-  handleDelete,
-  loading,
+  handleAction,
 }: {
   bill: BillWithActions;
   handleActions: BillActions;
-  handleEdit: (bill: BillWithActions) => void;
-  handleDelete: (bill: BillWithActions) => void;
-  loading: boolean;
+  handleAction: (action: 'add' | 'edit' | 'delete' | 'closeMonth') => void;
 }) => {
   const idle: TaskState = useMemo(() => ({ type: 'idle' }), []);
-
   const ref = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<TaskState>(idle);
 
@@ -78,7 +73,7 @@ const InfoBills = ({
   };
 
   const actionsList = () => {
-    const items = actionEnum(bill, handleActions, handleEdit, handleDelete)?.filter(
+    const items = actionEnum(bill, handleActions, handleAction)?.filter(
       (action) => action?.key && bill.actions.includes(action.key as ActionKey),
     );
 
@@ -154,9 +149,6 @@ const InfoBills = ({
         onDragLeave() {
           setState(idle);
         },
-        onDrop() {
-          setState(idle);
-        },
       }),
     );
   }, [bill, idle]);
@@ -168,7 +160,6 @@ const InfoBills = ({
           title={title()}
           extra={statusInfo()}
           variant="borderless"
-          loading={loading}
           actions={actionsList()}
           className={`shadow-sm! ${statusEnum[bill.status].shadowClass}`}
         >
@@ -184,7 +175,20 @@ const InfoBills = ({
 
       {state.type === 'preview'
         ? createPortal(
-            <div className="border-solid rounded p-2 bg-white">{bill.name}</div>,
+            <Card
+              title={title()}
+              extra={statusInfo()}
+              variant="borderless"
+              className={`shadow-sm! ${statusEnum[bill.status].shadowClass}`}
+            >
+              <div className="h-24 flex flex-col gap-1">
+                <BasicInfo bill={bill} />
+
+                {bill.type === 'credit' && <CreditInfo bill={bill} />}
+
+                {bill.type === 'vital' && <VitalInfo bill={bill} />}
+              </div>
+            </Card>,
             state.container,
           )
         : null}

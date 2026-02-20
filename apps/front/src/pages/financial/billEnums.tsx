@@ -45,8 +45,7 @@ export const statusEnum = {
 export const actionEnum = (
   bill: BillWithActions,
   actions: BillActions,
-  handleEdit: (bill: BillWithActions) => void,
-  handleDelete: (bill: BillWithActions) => void,
+  handleAction: (action: 'add' | 'edit' | 'delete' | 'closeMonth', bill?: BillWithActions) => void,
 ) => [
   {
     key: 'checkPaid',
@@ -86,12 +85,13 @@ export const actionEnum = (
       <div
         key="edit"
         className="flex items-center gap-2 justify-center"
-        onClick={() => handleEdit(bill)}
+        onClick={() => handleAction('edit', bill)}
       >
         Editar
       </div>
     ),
-    onClick: () => handleEdit(bill),
+    onClick: () => handleAction('edit', bill),
+
   },
   {
     key: 'delete',
@@ -101,11 +101,11 @@ export const actionEnum = (
       <div
         key="delete"
         className="flex items-center gap-2 justify-center"
-        onClick={() => handleDelete(bill)}
+        onClick={() => handleAction('delete', bill)}
       >
         Excluir
       </div>
     ),
-    onClick: () => handleDelete(bill),
+    onClick: () => handleAction('delete', bill),
   },
 ];
