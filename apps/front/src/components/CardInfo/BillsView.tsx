@@ -6,7 +6,7 @@ import { AiOutlineArrowRight, AiOutlinePlusCircle } from "react-icons/ai";
 import { useState } from "react";
 import BillActionsModals from "../BillActionsModals";
 
-const BillsView = ({bills}: {bills: BillWithActions[]}) => {
+const BillsView = ({bills, onReorder}: {bills: BillWithActions[], onReorder: (params: { sourceId: string; targetId: string }) => void}) => {
 	const billActions = useBillActions();
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState<'add' | 'edit' | 'delete' | 'closeMonth'>('add');
@@ -48,6 +48,7 @@ const BillsView = ({bills}: {bills: BillWithActions[]}) => {
 						bill={bill}
 						handleActions={billActions}
 						handleAction={setActionType}
+						onReorder={onReorder}
 					/>
 				))}
 

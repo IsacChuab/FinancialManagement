@@ -24,6 +24,8 @@ import BasicInfo from './basicInfo';
 import VitalInfo from './vitalInfo';
 import { getBillData, isBillData } from '../../utils/functions';
 import { createPortal } from 'react-dom';
+import { useMobileReorder } from '../../hooks/useMobileReorder';
+import { cn } from '../../utils/cn';
 
 type TaskState =
   | {
@@ -45,14 +47,24 @@ const InfoBills = ({
   bill,
   handleActions,
   handleAction,
+  onReorder,
 }: {
   bill: BillWithActions;
   handleActions: BillActions;
   handleAction: (action: 'add' | 'edit' | 'delete' | 'closeMonth') => void;
+  onReorder: (params: { sourceId: string; targetId: string }) => void;
 }) => {
   const idle: TaskState = useMemo(() => ({ type: 'idle' }), []);
   const ref = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<TaskState>(idle);
+  
+  const { bind, isDragging } = useMobileReorder({
+    billId: bill.id,
+    onReorderMobile: (sourceId, targetId) => {
+      onReorder({ sourceId, targetId });
+    }
+  });
+
 
   const title = () => {
     return (
@@ -155,7 +167,12 @@ const InfoBills = ({
 
   return (
     <>
-      <div ref={ref}>
+      <div 
+        className={cn({ 'scale-105 shadow-xl': isDragging }, 'transition-transform duration-200 ease-in-out')} 
+        ref={ref} 
+        data-bill-id={bill.id} 
+        {...bind}
+      >
         <Card
           title={title()}
           extra={statusInfo()}

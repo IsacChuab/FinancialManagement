@@ -71,7 +71,7 @@ const Financial = () => {
 
       {!orderedList.length && <p>Nenhuma conta registrada</p>}
 
-      <BillsView bills={orderedList} />
+      <BillsView bills={orderedList} onReorder={onReorder} />
     </div>
   );
 };
