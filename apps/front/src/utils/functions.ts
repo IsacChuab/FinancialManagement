@@ -51,14 +51,13 @@ export function getBillData(bill: BillWithActions): Record<string, unknown> {
   };
 }
 
-export function reorderBills(data: BillWithActions[]): BillWithActions[] {
-  const newOrder = 10_000;
+export function recalcOrders(data: BillWithActions[]): BillWithActions[] {
+  const step = 10_000;
 
-  for (let i = 0; i < data.length; i++) {
-    data[i].order = (i + 1) * newOrder;
-  }
-
-  return data;
+  return data.map((bill, i) => ({
+    ...bill,
+    order: (i + 1) * step,
+  }));
 }
 
 export function mapBillsToUpdate(bills: BillWithActions[]): BillUpdate[] {

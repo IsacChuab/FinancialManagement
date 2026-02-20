@@ -24,6 +24,8 @@ import BasicInfo from './basicInfo';
 import VitalInfo from './vitalInfo';
 import { getBillData, isBillData } from '../../utils/functions';
 import { createPortal } from 'react-dom';
+import { useMobileReorder } from '../../hooks/useMobileReorder';
+import { cn } from '../../utils/cn';
 
 type TaskState =
   | {
@@ -44,20 +46,25 @@ type TaskState =
 const InfoBills = ({
   bill,
   handleActions,
-  handleEdit,
-  handleDelete,
-  loading,
+  handleAction,
+  onReorder,
 }: {
   bill: BillWithActions;
   handleActions: BillActions;
-  handleEdit: (bill: BillWithActions) => void;
-  handleDelete: (bill: BillWithActions) => void;
-  loading: boolean;
+  handleAction: (action: 'add' | 'edit' | 'delete' | 'closeMonth') => void;
+  onReorder: (params: { sourceId: string; targetId: string }) => void;
 }) => {
   const idle: TaskState = useMemo(() => ({ type: 'idle' }), []);
-
   const ref = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<TaskState>(idle);
+
+  const { bind, isDragging } = useMobileReorder({
+    billId: bill.id,
+    onReorderMobile: (sourceId, targetId) => {
+      onReorder({ sourceId, targetId });
+    }
+  });
+
 
   const title = () => {
     return (
@@ -78,7 +85,7 @@ const InfoBills = ({
   };
 
   const actionsList = () => {
-    const items = actionEnum(bill, handleActions, handleEdit, handleDelete)?.filter(
+    const items = actionEnum(bill, handleActions, handleAction)?.filter(
       (action) => action?.key && bill.actions.includes(action.key as ActionKey),
     );
 
@@ -154,21 +161,22 @@ const InfoBills = ({
         onDragLeave() {
           setState(idle);
         },
-        onDrop() {
-          setState(idle);
-        },
       }),
     );
   }, [bill, idle]);
 
   return (
     <>
-      <div ref={ref}>
+      <div
+        className={cn({ 'scale-105 shadow-xl': isDragging }, 'transition-transform duration-200 ease-in-out')}
+        ref={ref}
+        data-bill-id={bill.id}
+        {...bind}
+      >
         <Card
           title={title()}
           extra={statusInfo()}
           variant="borderless"
-          loading={loading}
           actions={actionsList()}
           className={`shadow-sm! ${statusEnum[bill.status].shadowClass}`}
         >
@@ -184,7 +192,20 @@ const InfoBills = ({
 
       {state.type === 'preview'
         ? createPortal(
-            <div className="border-solid rounded p-2 bg-white">{bill.name}</div>,
+            <Card
+              title={title()}
+              extra={statusInfo()}
+              variant="borderless"
+              className={`shadow-sm! ${statusEnum[bill.status].shadowClass}`}
+            >
+              <div className="h-24 flex flex-col gap-1">
+                <BasicInfo bill={bill} />
+
+                {bill.type === 'credit' && <CreditInfo bill={bill} />}
+
+                {bill.type === 'vital' && <VitalInfo bill={bill} />}
+              </div>
+            </Card>,
             state.container,
           )
         : null}

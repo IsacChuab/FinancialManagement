@@ -1,5 +1,5 @@
 import { Form, Input } from 'antd';
-import MaskedInput from '../../utils/MaskedInput';
+import MaskedInput from '../../../utils/MaskedInput';
 import { useState } from 'react';
 
 const BaseFields = () => {

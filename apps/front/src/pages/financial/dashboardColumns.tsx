@@ -12,12 +12,10 @@ export type ActionKey = 'checkPaid' | 'checkPending' | 'edit' | 'delete';
 
 export const columns = ({
   billActions,
-  handleEdit,
-  handleDelete,
+  handleActions,
 }: {
   billActions: BillActions;
-  handleEdit: (bill: BillWithActions) => void;
-  handleDelete: (bill: BillWithActions) => void;
+  handleActions: (action: 'add' | 'edit' | 'delete' | 'closeMonth') => void;
 }): TableColumnProps<BillWithActions>[] => [
   {
     title: 'Tipo',
@@ -82,7 +80,7 @@ export const columns = ({
     key: 'actions',
     align: 'center',
     render: (actions: ActionKey[], record: BillWithActions) => {
-      const items = actionEnum(record, billActions, handleEdit, handleDelete)?.filter(
+      const items = actionEnum(record, billActions, handleActions)?.filter(
         (action) => action?.key && actions.includes(action.key as ActionKey),
       );
 

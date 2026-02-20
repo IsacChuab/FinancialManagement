@@ -10,18 +10,16 @@ import dayjs from 'dayjs';
 import BaseFields from './BaseFields';
 import DueDateFields from './DueDateFields';
 import InstallmentFields from './InstallmentFields';
-import { useBillActions } from '../../hooks/useBillActions';
+import { useBillActions } from '../../../hooks/useBillActions';
 
-const AddBill = ({
+const BillForm = ({
   isOpen,
   closeModal,
   billToEdit,
-  bills,
 }: {
   isOpen: boolean;
-  closeModal: () => void;
+  closeModal: (isOpen: boolean) => void;
   billToEdit?: BillWithActions;
-  bills: BillWithActions[];
 }) => {
   const [option, setOption] = useState<'debit' | 'credit' | 'vital'>('debit');
   const [isPaid, setIsPaid] = useState<boolean>(false);
@@ -43,14 +41,15 @@ const AddBill = ({
   };
 
   const submitForm = (values: BillInput) => {
+    console.log('esotu chegando aqui?')
     if (billToEdit) {
       updateBill(billToEdit.id, { ...values, order: billToEdit.order }, isPaid);
-      closeModal();
+      closeModal(false);
       return;
     }
 
-    newBill(values, isPaid, bills);
-    closeModal();
+    newBill(values, isPaid);
+    closeModal(false);
   };
 
   useEffect(() => {
@@ -64,7 +63,7 @@ const AddBill = ({
   return (
     <Modal
       title="Adicionar Conta"
-      onCancel={() => closeModal()}
+      onCancel={() => closeModal(false)}
       open={isOpen}
       footer={null}
       afterClose={() => {
@@ -114,7 +113,7 @@ const AddBill = ({
         </div>
 
         <div className="flex justify-end gap-2 mt-6">
-          <Button key="cancel" onClick={() => closeModal()} disabled={isPendingNewBill}>
+          <Button key="cancel" onClick={() => closeModal(false)} disabled={isPendingNewBill}>
             Cancelar
           </Button>
 
@@ -133,4 +132,4 @@ const AddBill = ({
   );
 };
 
-export default AddBill;
+export default BillForm;

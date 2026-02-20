@@ -1,28 +1,22 @@
 import { Button, Modal } from 'antd';
 import { useRef } from 'react';
+import { useBillActions } from '../../hooks/useBillActions';
 
-const CloseMonthModal = ({
+const CloseMonth = ({
   isOpen,
-  isSomeBillOpened,
-  name,
-  loading,
-  onConfirm,
   setModalIsOpen,
 }: {
   isOpen: boolean;
-  isSomeBillOpened: boolean;
-  name: string;
-  loading: boolean;
-  onConfirm: () => void;
   setModalIsOpen: (isOpen: boolean) => void;
 }) => {
   const confirmButtonRef = useRef<HTMLButtonElement | null>(null);
+  const { isPendingCloseMonth, getSomeLatedOrPendingBill } = useBillActions();
 
   return (
     <Modal
       title="Finalizar Mês"
       onCancel={() => setModalIsOpen(false)}
-      onOk={onConfirm}
+      onOk={() => setModalIsOpen(false)}
       open={isOpen}
       footer={null}
       afterOpenChange={(open) => {
@@ -36,26 +30,26 @@ const CloseMonthModal = ({
           <span className='block'>Tem certeza que deseja finalizar o mês?</span>
           
           <span className="text-red-600 font-semibold">
-            {isSomeBillOpened && 'Existem contas atrasadas ou pendentes que não foram pagas.'}
+            {getSomeLatedOrPendingBill() && 'Existem contas atrasadas ou pendentes que não foram pagas.'}
           </span>
         </div>
         
 
         <span>
-          Mês de <b>{name}</b>
+          Mês de <b>test</b>
         </span>
       </div>
 
       <div className="flex justify-end gap-2 mt-6">
-        <Button key="cancel" onClick={() => setModalIsOpen(false)} disabled={loading}>
+        <Button key="cancel" onClick={() => setModalIsOpen(false)} disabled={isPendingCloseMonth}>
           Cancelar
         </Button>
 
         <Button
           key="confirm"
           type="primary"
-          onClick={onConfirm}
-          loading={loading}
+          onClick={() => setModalIsOpen(false)}
+          loading={isPendingCloseMonth}
           ref={confirmButtonRef}
         >
           Finalizar
@@ -65,4 +59,4 @@ const CloseMonthModal = ({
   );
 };
 
-export default CloseMonthModal;
+export default CloseMonth;
