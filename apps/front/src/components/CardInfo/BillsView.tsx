@@ -11,7 +11,7 @@ const BillsView = ({bills, onReorder}: {bills: BillWithActions[], onReorder: (pa
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState<'add' | 'edit' | 'delete' | 'closeMonth'>('add');
   const [activeBill, setActiveBill] = useState<BillWithActions | undefined>(undefined);
-	
+
 	const setActionType = (action: 'add' | 'edit' | 'delete' | 'closeMonth', bill?: BillWithActions) => {
 		if (action === 'edit' || action === 'delete') {
 			setActiveBill(bill || undefined);
@@ -20,7 +20,7 @@ const BillsView = ({bills, onReorder}: {bills: BillWithActions[], onReorder: (pa
     setType(action);
     setIsOpen(true);
   };
-	
+
 	return (
 		<>
 			<div className="flex justify-between items-center">

@@ -57,7 +57,7 @@ const InfoBills = ({
   const idle: TaskState = useMemo(() => ({ type: 'idle' }), []);
   const ref = useRef<HTMLDivElement | null>(null);
   const [state, setState] = useState<TaskState>(idle);
-  
+
   const { bind, isDragging } = useMobileReorder({
     billId: bill.id,
     onReorderMobile: (sourceId, targetId) => {
@@ -167,10 +167,10 @@ const InfoBills = ({
 
   return (
     <>
-      <div 
-        className={cn({ 'scale-105 shadow-xl': isDragging }, 'transition-transform duration-200 ease-in-out')} 
-        ref={ref} 
-        data-bill-id={bill.id} 
+      <div
+        className={cn({ 'scale-105 shadow-xl': isDragging }, 'transition-transform duration-200 ease-in-out')}
+        ref={ref}
+        data-bill-id={bill.id}
         {...bind}
       >
         <Card

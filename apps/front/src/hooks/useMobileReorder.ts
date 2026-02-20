@@ -17,7 +17,7 @@ export function useMobileReorder({billId, onReorderMobile: onReorderMobile, long
       timerRef.current = null;
     }
   }
-  
+
   const getBillIdFromPoint = (x: number, y: number): string | null => {
     const el = document.elementFromPoint(x, y) as HTMLElement | null;
     if (!el) {
@@ -26,7 +26,7 @@ export function useMobileReorder({billId, onReorderMobile: onReorderMobile, long
 
     const card = el.closest("[data-bill-id]");
     return (card as HTMLElement)?.dataset.billId || null;
-    
+
   }
 
   const onTouchStart = useCallback(() => {
