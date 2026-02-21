@@ -121,7 +121,7 @@ const InfoBills = ({
           return attachClosestEdge(data, {
             element,
             input,
-            allowedEdges: ['top', 'bottom'],
+            allowedEdges: ['left'],
           });
         },
 
@@ -163,9 +163,13 @@ const InfoBills = ({
         {...bind}
         className={cn(
           { 'scale-105 shadow-xl': isDragging },
-          'transition-transform duration-200 ease-in-out'
+          'relative transition-transform duration-200 ease-in-out'
         )}
       >
+        {state.type === 'is-dragging-over' && state.closestEdge === 'left' && (
+          <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-blue-500 rounded z-10" />
+        )}
+
         <Card
           title={title()}
           extra={statusInfo()}

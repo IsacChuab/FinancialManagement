@@ -1,8 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   draggable,
   dropTargetForElements,
 } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+import {
+  attachClosestEdge,
+  type Edge,
+  extractClosestEdge,
+} from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 
 type Params = {
   id: string;
@@ -11,6 +16,7 @@ type Params = {
 
 export const useTableSortableRow = ({ id, onReorder }: Params) => {
   const rowRef = useRef<HTMLElement | null>(null);
+  const [edge, setEdge] = useState<Edge | null>(null);
 
   useEffect(() => {
     if (!rowRef.current) return;
@@ -22,8 +28,24 @@ export const useTableSortableRow = ({ id, onReorder }: Params) => {
 
     const cleanDrop = dropTargetForElements({
       element: rowRef.current,
-      getData: () => ({ billId: id }),
+
+      getData: ({ input }) =>
+        attachClosestEdge({ billId: id }, {
+          element: rowRef.current!,
+          input,
+          allowedEdges: ['top'],
+        }),
+
+      onDragEnter: ({ self }) =>
+        setEdge(extractClosestEdge(self.data)),
+
+      onDrag: ({ self }) =>
+        setEdge(extractClosestEdge(self.data)),
+
+      onDragLeave: () => setEdge(null),
+
       onDrop: ({ source }) => {
+        setEdge(null)
         const sourceId = source.data.billId as string;
 
         if (!sourceId || sourceId === id) return;
@@ -41,5 +63,8 @@ export const useTableSortableRow = ({ id, onReorder }: Params) => {
     };
   }, [id, onReorder]);
 
-  return { rowRef };
+  return {
+    rowRef,
+    edge,
+  };
 };
