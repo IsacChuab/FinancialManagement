@@ -6,7 +6,7 @@ type MobileSortableParams = {
   longPress?: number;
 };
 
-export function useMobileReorder({billId, onReorderMobile: onReorderMobile, longPress = 400}: MobileSortableParams) {
+export function useMobileReorder({billId, onReorderMobile, longPress = 400}: MobileSortableParams) {
   const timerRef = useRef<number | null>(null);
   const draggingRef = useRef(false);
   const [isDragging, setIsDragging] = useState(false);

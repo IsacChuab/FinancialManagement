@@ -9,8 +9,14 @@ import { PiListStarFill } from "react-icons/pi";
 import { useState } from "react";
 import BillActionsModals from "../BillActionsModals";
 import { columns } from "../../pages/financial/dashboardColumns";
+import SortableRow from "../SortableRow";
 
-const BillsView = ({bills, onReorder}: {bills: BillWithActions[], onReorder: (params: { sourceId: string; targetId: string }) => void}) => {
+type BillProps = {
+  bills: BillWithActions[];
+  onReorder: (params: { sourceId: string; targetId: string }) => void;
+}
+
+const BillsView = ({bills, onReorder}: BillProps) => {
 	const billActions = useBillActions();
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState<'add' | 'edit' | 'delete' | 'closeMonth'>('add');
@@ -64,6 +70,23 @@ const BillsView = ({bills, onReorder}: {bills: BillWithActions[], onReorder: (pa
           columns={columns({ billActions, handleActions: setActionType })}
           pagination={false}
           loading={billActions.isPendingListBills}
+          rowKey="id"
+          components={{
+            body: {
+              row: (props: { "data-row-key": string; children: React.ReactNode }) => {
+                const bill = bills.find(b => b.id === props["data-row-key"]);
+
+                return (
+                  <SortableRow
+                    record={bill || { id: props["data-row-key"] }}
+                    onReorder={onReorder}
+                  >
+                    {props.children}
+                  </SortableRow>
+                );
+              },
+            },
+          }}
         />
       )}
 

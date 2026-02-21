@@ -1,17 +1,18 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-
 import type { BillWithActions } from '@isac-chuab/financial-shared';
-
 import { Card, Tag } from 'antd';
+
 import {
   attachClosestEdge,
   type Edge,
   extractClosestEdge,
 } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
+
 import {
   draggable,
   dropTargetForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+
 import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview';
 import { pointerOutsideOfPreview } from '@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
@@ -28,20 +29,10 @@ import { useMobileReorder } from '../../hooks/useMobileReorder';
 import { cn } from '../../utils/cn';
 
 type TaskState =
-  | {
-      type: 'idle';
-    }
-  | {
-      type: 'preview';
-      container: HTMLElement;
-    }
-  | {
-      type: 'is-dragging';
-    }
-  | {
-      type: 'is-dragging-over';
-      closestEdge: Edge | null;
-    };
+  | { type: 'idle' }
+  | { type: 'preview'; container: HTMLElement }
+  | { type: 'is-dragging' }
+  | { type: 'is-dragging-over'; closestEdge: Edge | null };
 
 const InfoBills = ({
   bill,
@@ -62,17 +53,14 @@ const InfoBills = ({
     billId: bill.id,
     onReorderMobile: (sourceId, targetId) => {
       onReorder({ sourceId, targetId });
-    }
+    },
   });
 
-
-  const title = () => {
-    return (
-      <div className="flex items-center gap-2">
-        {typeEnum[bill.type].icon} {typeEnum[bill.type].label}
-      </div>
-    );
-  };
+  const title = () => (
+    <div className="flex items-center gap-2">
+      {typeEnum[bill.type].icon} {typeEnum[bill.type].label}
+    </div>
+  );
 
   const statusInfo = () => {
     const statusItem = statusEnum[bill.status];
@@ -97,6 +85,7 @@ const InfoBills = ({
     if (!element) {
       return;
     }
+
     return combine(
       draggable({
         element,
@@ -106,10 +95,7 @@ const InfoBills = ({
         onGenerateDragPreview({ nativeSetDragImage }) {
           setCustomNativeDragPreview({
             nativeSetDragImage,
-            getOffset: pointerOutsideOfPreview({
-              x: '16px',
-              y: '8px',
-            }),
+            getOffset: pointerOutsideOfPreview({ x: '16px', y: '8px' }),
             render({ container }) {
               setState({ type: 'preview', container });
             },
@@ -122,56 +108,63 @@ const InfoBills = ({
           setState(idle);
         },
       }),
+
       dropTargetForElements({
         element,
         canDrop({ source }) {
-          if (source.element === element) {
-            return false;
-          }
-
-          return isBillData(source.data);
+          return source.element !== element && isBillData(source.data);
         },
+
         getData({ input }) {
           const data = getBillData(bill);
 
           return attachClosestEdge(data, {
             element,
             input,
-            allowedEdges: ['left', 'right'],
+            allowedEdges: ['top', 'bottom'],
           });
         },
-        getIsSticky() {
-          return true;
-        },
+
         onDragEnter({ self }) {
-          const closestEdge = extractClosestEdge(self.data);
-
-          setState({ type: 'is-dragging-over', closestEdge });
-        },
-        onDrag({ self }) {
-          const closestEdge = extractClosestEdge(self.data);
-
-          setState((current) => {
-            if (current.type === 'is-dragging-over' && current.closestEdge === closestEdge) {
-              return current;
-            }
-            return { type: 'is-dragging-over', closestEdge };
+          setState({
+            type: 'is-dragging-over',
+            closestEdge: extractClosestEdge(self.data),
           });
         },
+
         onDragLeave() {
+          setState(idle);
+        },
+
+        onDrop({ source }) {
+          if (!isBillData(source.data)) {
+            return;
+          }
+
+          const sourceId = source.data.billId as string;
+          const targetId = bill.id;
+
+          if (sourceId === targetId) {
+            return;
+          }
+
+          onReorder({ sourceId, targetId });
           setState(idle);
         },
       }),
     );
-  }, [bill, idle]);
+  }, [bill, idle, onReorder]);
 
   return (
     <>
       <div
-        className={cn({ 'scale-105 shadow-xl': isDragging }, 'transition-transform duration-200 ease-in-out')}
         ref={ref}
         data-bill-id={bill.id}
         {...bind}
+        className={cn(
+          { 'scale-105 shadow-xl': isDragging },
+          'transition-transform duration-200 ease-in-out'
+        )}
       >
         <Card
           title={title()}

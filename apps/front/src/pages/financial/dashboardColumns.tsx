@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import { formatBrlMoney } from '../../utils/functions';
 import { actionEnum, statusEnum, typeEnum } from './billEnums';
 import type { BillActions } from '../../hooks/useBillActions';
+import { RxDragHandleDots1 } from "react-icons/rx";
 
 export type ActionKey = 'checkPaid' | 'checkPending' | 'edit' | 'delete';
 
@@ -17,6 +18,16 @@ export const columns = ({
   billActions: BillActions;
   handleActions: (action: 'add' | 'edit' | 'delete' | 'closeMonth', bill?: BillWithActions) => void;
 }): TableColumnProps<BillWithActions>[] => [
+  {
+    title: "",
+    dataIndex: "drag",
+    width: 40,
+    render: () => (
+      <span className="cursor-grab active:cursor-grabbing opacity-60 hover:opacity-100">
+        <RxDragHandleDots1 size={18} />
+      </span>
+    ),
+  },
   {
     title: 'Tipo',
     dataIndex: 'type',
