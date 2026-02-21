@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { BillWithActions } from "@isac-chuab/financial-shared";
 import { recalcOrders } from "../utils/functions";
 
@@ -13,13 +13,13 @@ function reorder(
   targetId: string
 ): BillWithActions[] {
   if (sourceId === targetId) {
-		return bills
-	};
+    return bills;
+  }
 
   const sourceIndex = bills.findIndex(b => b.id === sourceId);
   const targetIndex = bills.findIndex(b => b.id === targetId);
 
-  if (sourceIndex === -1 || targetIndex === -1) {
+  if (sourceIndex === -1 || targetIndex === -1 || sourceIndex === targetIndex) {
     return bills;
   }
 
@@ -32,9 +32,15 @@ function reorder(
 
 export function useSortables(initialList: BillWithActions[] = []) {
   const [orderedList, setOrderedList] = useState<BillWithActions[]>(initialList);
+  const lastIdsRef = useRef<string>("");
 
   useEffect(() => {
-    setOrderedList(initialList);
+    const ids = initialList.map(b => b.id).join(",");
+
+    if (ids !== lastIdsRef.current) {
+      setOrderedList(initialList);
+      lastIdsRef.current = ids;
+    }
   }, [initialList]);
 
   const onReorder = useCallback(
@@ -42,8 +48,8 @@ export function useSortables(initialList: BillWithActions[] = []) {
       const newList = reorder(orderedList, sourceId, targetId);
 
       if (newList === orderedList) {
-				return
-			};
+        return;
+      }
 
       setOrderedList(newList);
 
