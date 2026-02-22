@@ -167,7 +167,7 @@ const InfoBills = ({
         )}
       >
         {state.type === 'is-dragging-over' && state.closestEdge === 'left' && (
-          <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-blue-500 rounded z-10" />
+          <div className="absolute left-0 right-0 top-0 h-0.5 bg-blue-500 rounded z-10 md:bottom-0 md:w-0.5 md:right-auto md:h-auto" />
         )}
 
         <Card
