@@ -7,12 +7,16 @@ type ReorderParams = {
 };
 
 function reorderIds(ids: string[], sourceId: string, targetId: string) {
-  if (sourceId === targetId) return ids;
+  if (sourceId === targetId) {
+    return ids;
+  }
 
   const sourceIndex = ids.indexOf(sourceId);
   const targetIndex = ids.indexOf(targetId);
 
-  if (sourceIndex === -1 || targetIndex === -1) return ids;
+  if (sourceIndex === -1 || targetIndex === -1) {
+    return ids;
+  }
 
   const copy = [...ids];
   const [removed] = copy.splice(sourceIndex, 1);
@@ -36,10 +40,14 @@ export function useSortables(initialList: BillWithActions[] = []) {
       const next = current.filter((id) => backendSet.has(id));
 
       backendIds.forEach((id) => {
-        if (!currentSet.has(id)) next.push(id);
+        if (!currentSet.has(id)) {
+          next.push(id);
+        }
       });
 
-      if (current.length === 0) return backendIds;
+      if (current.length === 0) {
+        return backendIds;
+      }
 
       return next;
     });
