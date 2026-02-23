@@ -10,27 +10,27 @@ import { useRef } from 'react';
 const DeleteBill = ({
   isOpen,
   bill,
-  setModalIsOpen,
+  closeModal,
 }: {
   isOpen: boolean;
   bill: BillWithActions | null;
-  setModalIsOpen: (isOpen: boolean) => void;
+  closeModal: () => void;
 }) => {
   const confirmButtonRef = useRef<HTMLButtonElement | null>(null);
-  
+
   const { deleteBill, isPendingDeleteBill } = useBillActions();
 
   const handleDelete = () => {
     if (!bill) return;
 
     deleteBill(bill.id);
-    setModalIsOpen(false);
+    closeModal();
   };
 
   return (
     <Modal
       title="Adicionar Conta"
-      onCancel={() => setModalIsOpen(false)}
+      onCancel={closeModal}
       onOk={handleDelete}
       open={isOpen}
       footer={null}
@@ -60,7 +60,7 @@ const DeleteBill = ({
       </div>
 
       <div className="flex justify-end gap-2 mt-6">
-        <Button key="cancel" onClick={() => setModalIsOpen(false)} disabled={isPendingDeleteBill}>
+        <Button key="cancel" onClick={closeModal} disabled={isPendingDeleteBill}>
           Cancelar
         </Button>
 

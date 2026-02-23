@@ -6,17 +6,17 @@ import CloseMonth from "./CloseMonth";
 interface BillActionsModalsProps {
 	type: 'add' | 'edit' | 'delete' | 'closeMonth';
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  handleClose: () => void;
   activeBill?: BillWithActions;
 }
 
-const BillActionsModals = ({type, isOpen, setIsOpen, activeBill}: BillActionsModalsProps) => {
-  return ( 
+const BillActionsModals = ({type, isOpen, handleClose, activeBill}: BillActionsModalsProps) => {
+  return (
 		<div>
 			{(type === 'add' || type === 'edit') && (
 				<BillForm
 					isOpen={isOpen}
-					closeModal={setIsOpen}
+					closeModal={handleClose}
 					billToEdit={activeBill}
 				/>
 			)}
@@ -24,7 +24,7 @@ const BillActionsModals = ({type, isOpen, setIsOpen, activeBill}: BillActionsMod
 			{type === 'delete' && activeBill && (
 				<DeleteBill
 					isOpen={isOpen}
-					setModalIsOpen={setIsOpen}
+					closeModal={handleClose}
 					bill={activeBill}
 				/>
 			)}
@@ -32,7 +32,7 @@ const BillActionsModals = ({type, isOpen, setIsOpen, activeBill}: BillActionsMod
 			{type === 'closeMonth' && (
 				<CloseMonth
 					isOpen={isOpen}
-					setModalIsOpen={setIsOpen}
+					closeModal={handleClose}
 				/>
 			)}
 		</div>

@@ -1,4 +1,4 @@
-import type { BillUpdate, BillWithActions } from '@isac-chuab/financial-shared';
+import type { BillStatus, BillUpdate, BillWithActions } from '@isac-chuab/financial-shared';
 import dayjs from '../utils/dayjs';
 
 export const formatBrlMoney = (value = 0) => {
@@ -9,7 +9,7 @@ export const formatBrlMoney = (value = 0) => {
   }).format(value > 0 ? value : 0);
 };
 
-export const checkStatusBill = (isPaid: boolean, type: string, dueDate?: Date) => {
+export const checkStatusBill = (isPaid: boolean, type: string, dueDate?: Date): BillStatus => {
   const currentDate = new Date();
 
   if (isPaid || type === 'debit') {
