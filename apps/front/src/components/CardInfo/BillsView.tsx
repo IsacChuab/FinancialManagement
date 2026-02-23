@@ -32,6 +32,11 @@ const BillsView = ({bills, onReorder}: BillProps) => {
     setIsOpen(true);
   };
 
+  const handleCloseModals = () => {
+    setIsOpen(false);
+    setActiveBill(undefined);
+  }
+
 	return (
 		<>
 			<div className="flex justify-between items-center">
@@ -104,7 +109,7 @@ const BillsView = ({bills, onReorder}: BillProps) => {
         </div>
       )}
 
-			<BillActionsModals type={type} isOpen={isOpen} setIsOpen={setIsOpen} activeBill={activeBill} />
+			<BillActionsModals type={type} isOpen={isOpen} handleClose={handleCloseModals} activeBill={activeBill} />
 		</>
 	)
 };

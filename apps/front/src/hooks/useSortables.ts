@@ -1,61 +1,70 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { BillWithActions } from "@isac-chuab/financial-shared";
-import { recalcOrders } from "../utils/functions";
 
 type ReorderParams = {
   sourceId: string;
   targetId: string;
 };
 
-function reorder(
-  bills: BillWithActions[],
-  sourceId: string,
-  targetId: string
-): BillWithActions[] {
+function reorderIds(ids: string[], sourceId: string, targetId: string) {
   if (sourceId === targetId) {
-    return bills;
+    return ids;
   }
 
-  const sourceIndex = bills.findIndex(b => b.id === sourceId);
-  const targetIndex = bills.findIndex(b => b.id === targetId);
+  const sourceIndex = ids.indexOf(sourceId);
+  const targetIndex = ids.indexOf(targetId);
 
-  if (sourceIndex === -1 || targetIndex === -1 || sourceIndex === targetIndex) {
-    return bills;
+  if (sourceIndex === -1 || targetIndex === -1) {
+    return ids;
   }
 
-  const copy = [...bills];
+  const copy = [...ids];
   const [removed] = copy.splice(sourceIndex, 1);
   copy.splice(targetIndex, 0, removed);
 
-  return recalcOrders(copy);
+  return copy;
 }
 
 export function useSortables(initialList: BillWithActions[] = []) {
-  const [orderedList, setOrderedList] = useState<BillWithActions[]>(initialList);
-  const lastIdsRef = useRef<string>("");
+  const [orderedIds, setOrderedIds] = useState<string[]>(
+    initialList.map((b) => b.id)
+  );
 
   useEffect(() => {
-    const ids = initialList.map(b => b.id).join(",");
+    const backendIds = initialList.map((b) => b.id);
 
-    if (ids !== lastIdsRef.current) {
-      setOrderedList(initialList);
-      lastIdsRef.current = ids;
-    }
+    setOrderedIds((current) => {
+      const currentSet = new Set(current);
+      const backendSet = new Set(backendIds);
+
+      const next = current.filter((id) => backendSet.has(id));
+
+      backendIds.forEach((id) => {
+        if (!currentSet.has(id)) {
+          next.push(id);
+        }
+      });
+
+      if (current.length === 0) {
+        return backendIds;
+      }
+
+      return next;
+    });
   }, [initialList]);
+
+  const orderedList = useMemo(() => {
+    const map = new Map(initialList.map((b) => [b.id, b]));
+    return orderedIds.map((id) => map.get(id)).filter(Boolean) as BillWithActions[];
+  }, [orderedIds, initialList]);
 
   const onReorder = useCallback(
     ({ sourceId, targetId }: ReorderParams) => {
-      const newList = reorder(orderedList, sourceId, targetId);
-
-      if (newList === orderedList) {
-        return;
-      }
-
-      setOrderedList(newList);
+      setOrderedIds((prev) => reorderIds(prev, sourceId, targetId));
 
       return {
         movedId: sourceId,
-        newList,
+        newList: orderedList,
       };
     },
     [orderedList]
@@ -64,6 +73,6 @@ export function useSortables(initialList: BillWithActions[] = []) {
   return {
     orderedList,
     onReorder,
-    setOrderedList,
+    setOrderedIds,
   };
 }

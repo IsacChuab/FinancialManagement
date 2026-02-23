@@ -5,7 +5,7 @@ import type { BillWithActions } from '@isac-chuab/financial-shared';
 
 import { Form, Modal, Radio, Button, type RadioChangeEvent } from 'antd';
 import type { CheckboxGroupProps } from 'antd/es/checkbox';
-import dayjs from 'dayjs';
+import dayjs from '../../../utils/dayjs';
 
 import BaseFields from './BaseFields';
 import DueDateFields from './DueDateFields';
@@ -18,7 +18,7 @@ const BillForm = ({
   billToEdit,
 }: {
   isOpen: boolean;
-  closeModal: (isOpen: boolean) => void;
+  closeModal: () => void;
   billToEdit?: BillWithActions;
 }) => {
   const [option, setOption] = useState<'debit' | 'credit' | 'vital'>('debit');
@@ -41,15 +41,14 @@ const BillForm = ({
   };
 
   const submitForm = (values: BillInput) => {
-    console.log('esotu chegando aqui?')
     if (billToEdit) {
       updateBill(billToEdit.id, { ...values, order: billToEdit.order }, isPaid);
-      closeModal(false);
+      closeModal();
       return;
     }
 
     newBill(values, isPaid);
-    closeModal(false);
+    closeModal();
   };
 
   useEffect(() => {
@@ -63,7 +62,7 @@ const BillForm = ({
   return (
     <Modal
       title="Adicionar Conta"
-      onCancel={() => closeModal(false)}
+      onCancel={closeModal}
       open={isOpen}
       footer={null}
       afterClose={() => {
@@ -91,6 +90,7 @@ const BillForm = ({
             optionType="button"
             buttonStyle="solid"
             onChange={handleChangeOption}
+            disabled={Boolean(billToEdit)}
           />
         </Form.Item>
 
@@ -113,7 +113,7 @@ const BillForm = ({
         </div>
 
         <div className="flex justify-end gap-2 mt-6">
-          <Button key="cancel" onClick={() => closeModal(false)} disabled={isPendingNewBill}>
+          <Button key="cancel" onClick={closeModal} disabled={isPendingNewBill}>
             Cancelar
           </Button>
 

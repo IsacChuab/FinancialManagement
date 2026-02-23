@@ -55,12 +55,12 @@ export const actionEnum = (
       <div
         key="checkPaid"
         className="flex items-center gap-2 justify-center"
-        onClick={() => actions.updateStatus(bill.id, 'paid')}
+        onClick={() => actions.updateStatus(bill, 'paid')}
       >
         Quitar
       </div>
     ),
-    onClick: () => actions.updateStatus(bill.id, 'paid'),
+    onClick: () => actions.updateStatus(bill, 'paid'),
   },
   {
     key: 'checkPending',
@@ -70,12 +70,12 @@ export const actionEnum = (
       <div
         key="checkPending"
         className="flex items-center gap-2 justify-center"
-        onClick={() => actions.updateStatus(bill.id, 'pending')}
+        onClick={() => actions.updateStatus(bill, 'pending')}
       >
         Em aberto
       </div>
     ),
-    onClick: () => actions.updateStatus(bill.id, 'pending'),
+    onClick: () => actions.updateStatus(bill, 'pending'),
   },
   {
     key: 'edit',

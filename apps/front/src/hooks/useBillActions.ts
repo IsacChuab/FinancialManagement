@@ -7,7 +7,7 @@ import { trpc } from '../utils/trpc';
 export function useBillActions() {
   const utils = trpc.useUtils();
   const { data: listBills, isPending: isPendingListBills } = trpc.bill.allBills.useQuery();
-  
+
   const updateStatusMutation = trpc.bill.updateStatus.useMutation({
     onSuccess: (response) => {
       const { formattedBill } = response;
@@ -86,8 +86,13 @@ export function useBillActions() {
     newBillMutation.mutate({ ...data, status });
   }
 
-  function updateStatus(billId: string, status: BillStatus) {
-    updateStatusMutation.mutate({ id: billId, status });
+  function updateStatus(bill: BillWithActions, status: BillStatus) {
+    const isPaid = status === 'paid' ? true : false;
+    const date = bill?.dueDate ? new Date(bill.dueDate) : undefined;
+
+    const checkedStatus = checkStatusBill(isPaid, bill.type, date);
+
+    updateStatusMutation.mutate({ id: bill.id, status: checkedStatus });
   }
 
   function deleteBill(billId: string) {
