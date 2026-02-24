@@ -35,12 +35,16 @@ class EmailSender {
       code,
     });
 
-    await this.client.emails.send({
-      from: this.from,
-      to,
-      subject: 'Recovery Your Password',
-      html,
-    });
+    try {
+      await this.client.emails.send({
+        from: this.from,
+        to,
+        subject: 'Recovery Your Password',
+        html,
+      });
+    } catch (err) {
+      console.log({ message: 'Send email failed', err })
+    }
   }
 }
 
