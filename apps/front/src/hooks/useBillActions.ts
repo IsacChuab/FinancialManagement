@@ -70,7 +70,7 @@ export function useBillActions() {
     },
   });
 
-  const updateBillInBulkMutation = trpc.bill.updateBillsInBulk.useMutation({
+  const updateReorderBills = trpc.bill.updateReorderBills.useMutation({
     onSuccess: () => {
       void utils.bill.allBills.invalidate();
     },
@@ -115,7 +115,7 @@ export function useBillActions() {
   function reorderBills(data: BillWithActions[]) {
     const formatedData = mapBillsToUpdate(data);
 
-    updateBillInBulkMutation.mutate(formatedData);
+    updateReorderBills.mutate(formatedData);
   }
 
   function getSomeLatedOrPendingBill() {

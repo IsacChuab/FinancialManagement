@@ -34,8 +34,8 @@ export const billRouter = router({
     return billService.closeMonth(input, ctx.user.id);
   }),
 
-  updateBillsInBulk: procedure.input(updateInBulk).mutation(async ({ input }) => {
-    return billService.updateBillsInBulk(input);
+  updateReorderBills: procedure.input(updateInBulk).mutation(async ({ input }) => {
+    return billService.reorderBills(input);
   }),
 
   summary: procedure.output(billSummarySchema).query(async ({ ctx }) => {

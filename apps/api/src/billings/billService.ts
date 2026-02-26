@@ -27,6 +27,7 @@ class BillService {
   }
 
   public async getAllActiveBills(userId: string) {
+    await billRepository.ensureLateBillsUpdated(userId);
     const data = await billRepository.findActives(userId);
 
     const formattedData = data.map(addActionsToBill);
@@ -116,7 +117,7 @@ class BillService {
     ]);
   }
 
-  public async updateBillsInBulk(data: BillUpdate[]) {
+  public async reorderBills(data: BillUpdate[]) {
     const billIds = data.map((bill) => bill.id);
     const bills = await billRepository.findByIds(billIds);
 
@@ -192,7 +193,7 @@ class BillService {
       }
 
     };
-    
+
     await billRepository.bulkUpdate(bills);
 
     if (duplicateBill.length > 0) {
@@ -234,7 +235,6 @@ class BillService {
           dueDate: nextDueDate,
           status: 'pending',
         }));
-      
       }
     }
 
