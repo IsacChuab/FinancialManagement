@@ -81,6 +81,21 @@ class BillRepository {
       amount: bill.amount
     });
   }
+
+  public async ensureLateBillsUpdated(userId: string) {
+    const now = new Date();
+
+    await Bill.updateMany(
+      {
+        userId,
+        status: 'pending',
+        dueDate: { $lt: now },
+      },
+      {
+        $set: { status: 'late' },
+      }
+    );
+  }
 }
 
 export const billRepository = new BillRepository();
