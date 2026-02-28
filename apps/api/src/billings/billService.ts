@@ -115,6 +115,8 @@ class BillService {
       this.closeVitalBills(data),
       this.closeCreditBills(data),
     ]);
+
+    return { success: true, message: 'Mês fechado com sucesso' };
   }
 
   public async reorderBills(data: BillUpdate[]) {

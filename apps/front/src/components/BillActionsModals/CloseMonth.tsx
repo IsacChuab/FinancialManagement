@@ -1,6 +1,7 @@
 import { Button, Modal } from 'antd';
 import { useRef } from 'react';
 import { useBillActions } from '../../hooks/useBillActions';
+import dayjs from '../../utils/dayjs';
 
 const CloseMonth = ({
   isOpen,
@@ -10,13 +11,22 @@ const CloseMonth = ({
   closeModal: () => void;
 }) => {
   const confirmButtonRef = useRef<HTMLButtonElement | null>(null);
-  const { isPendingCloseMonth, getSomeLatedOrPendingBill } = useBillActions();
+  const { isPendingCloseMonth, getSomeLatedOrPendingBill, closeMonth } = useBillActions();
+  const currentMonth = dayjs().format('MMMM');
+
+  const handleCloseMonth = async () => {
+    const isSuccess = await closeMonth();
+
+    if (isSuccess) {
+      closeModal();
+    }
+  }
 
   return (
     <Modal
-      title="Finalizar Mês"
+      title={<>Finalizar mês de<span className='capitalize'> {currentMonth}</span></>}
       onCancel={closeModal}
-      onOk={closeModal}
+      onOk={() => void handleCloseMonth()}
       open={isOpen}
       footer={null}
       afterOpenChange={(open) => {
@@ -26,17 +36,11 @@ const CloseMonth = ({
       }}
     >
       <div className="flex flex-col gap-2 mt-6">
-        <div>
-          <span className='block'>Tem certeza que deseja finalizar o mês?</span>
+        <span className='block'>Tem certeza que deseja finalizar o mês?</span>
+        <span className='block'>Esta ação não poderá ser desfeita.</span>
 
-          <span className="text-red-600 font-semibold">
-            {getSomeLatedOrPendingBill() && 'Existem contas atrasadas ou pendentes que não foram pagas.'}
-          </span>
-        </div>
-
-
-        <span>
-          Mês de <b>test</b>
+        <span className="text-red-600 font-semibold">
+          {getSomeLatedOrPendingBill() && 'Existem contas atrasadas ou pendentes que não foram pagas.'}
         </span>
       </div>
 
@@ -48,7 +52,7 @@ const CloseMonth = ({
         <Button
           key="confirm"
           type="primary"
-          onClick={closeModal}
+          onClick={() => void handleCloseMonth()}
           loading={isPendingCloseMonth}
           ref={confirmButtonRef}
         >
