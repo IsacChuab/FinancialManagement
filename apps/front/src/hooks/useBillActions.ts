@@ -106,10 +106,16 @@ export function useBillActions() {
     updateBillMutation.mutate({ id: billId, ...data, status });
   }
 
-  function closeMonth(data: BillWithActions[]) {
-    const formatedData = mapBillsToUpdate(data);
+  async function closeMonth () {
+    if (!listBills?.length) {
+      return;
+    }
 
-    closeMonthMutation.mutate(formatedData);
+    const formatedData = mapBillsToUpdate(listBills);
+
+    const { success } = await closeMonthMutation.mutateAsync(formatedData);
+
+    return success as boolean;
   }
 
   function reorderBills(data: BillWithActions[]) {

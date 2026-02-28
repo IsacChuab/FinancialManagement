@@ -17,7 +17,7 @@ export const notify = {
 export function handleReactQueryError(error: unknown) {
    if (error instanceof Error) {
     notify.error({
-      message: 'Erro inesperado',
+      title: 'Erro inesperado',
       description: error.message,
     });
 
@@ -25,7 +25,7 @@ export function handleReactQueryError(error: unknown) {
   }
 
   notify.error({
-    message: 'Erro inesperado',
+    title: 'Erro inesperado',
     description: 'Algo deu errado',
   });
 }
