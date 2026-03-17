@@ -8,7 +8,7 @@ const Summary = () => {
   const { data } = trpc.bill.summary.useQuery();
 
   return (
-  <div className="flex flex-col gap-4 p-4 border border-gray-400 shadow-sm rounded-xl mb-4 lg:w-1/2">
+  <div className="flex flex-col gap-4 p-4 border border-gray-400 shadow-sm rounded-xl mb-4 lg:w-3/4">
       <h2 className="text-md font-bold">Resumo</h2>
       <div className="flex flex-col justify-between md:gap-4 lg:flex-row">
       <div className="flex justify-between lg:gap-2">
