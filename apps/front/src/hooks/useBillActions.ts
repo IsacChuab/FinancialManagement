@@ -1,7 +1,7 @@
 import type { BillStatus, BillWithActions } from '@isac-chuab/financial-shared';
 import type { BillInput } from '@isac-chuab/financial-shared';
 
-import { checkStatusBill, generateOrderForNewBill, mapBillsToUpdate } from '../utils/functions';
+import { checkStatusBill, generateOrderForNewBill, mapBillsToUpdate, recalcOrders } from '../utils/functions';
 import { trpc } from '../utils/trpc';
 import { useOffline } from '../providers/OfflineProvider';
 
@@ -123,7 +123,8 @@ export function useBillActions() {
   }
 
   function reorderBills(data: BillWithActions[]) {
-    const formatedData = mapBillsToUpdate(data);
+    const dataWithNewOrder = recalcOrders(data);
+    const formatedData = mapBillsToUpdate(dataWithNewOrder);
 
     updateReorderBills.mutate(formatedData);
   }
