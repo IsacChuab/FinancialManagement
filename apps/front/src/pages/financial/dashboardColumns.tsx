@@ -14,9 +14,11 @@ export type ActionKey = 'checkPaid' | 'checkPending' | 'edit' | 'delete';
 export const columns = ({
   billActions,
   handleActions,
+  isOffline,
 }: {
   billActions: BillActions;
   handleActions: (action: 'add' | 'edit' | 'delete' | 'closeMonth', bill?: BillWithActions) => void;
+  isOffline?: boolean;
 }): TableColumnProps<BillWithActions>[] => [
   {
     title: "",
@@ -107,7 +109,7 @@ export const columns = ({
 
       return (
         <div className='w-full flex justify-center'>
-          <Dropdown menu={{ items }} className="cursor-pointer m-auto">
+          <Dropdown menu={{ items }} className="cursor-pointer m-auto" disabled={isOffline}>
             <AiOutlineBars />
           </Dropdown>
         </div>

@@ -39,11 +39,13 @@ const InfoBills = ({
   handleActions,
   handleAction,
   onReorder,
+  isOffline,
 }: {
   bill: BillWithActions;
   handleActions: BillActions;
   handleAction: (action: 'add' | 'edit' | 'delete' | 'closeMonth') => void;
   onReorder: (params: { sourceId: string; targetId: string }) => void;
+  isOffline?: boolean;
 }) => {
   const idle: TaskState = useMemo(() => ({ type: 'idle' }), []);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -73,6 +75,10 @@ const InfoBills = ({
   };
 
   const actionsList = () => {
+    if (isOffline) {
+      return [];
+    }
+
     const items = actionEnum(bill, handleActions, handleAction)?.filter(
       (action) => action?.key && bill.actions.includes(action.key as ActionKey),
     );
