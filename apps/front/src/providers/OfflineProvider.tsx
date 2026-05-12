@@ -15,7 +15,6 @@ export function OfflineProvider({ children }: { children: ReactNode }) {
   const isOnline = useOnlineStatus();
   const [networkFailed, setNetworkFailed] = useState(false);
 
-  // Reset when the browser reports connectivity restored
   useEffect(() => {
     if (isOnline) setNetworkFailed(false);
   }, [isOnline]);
