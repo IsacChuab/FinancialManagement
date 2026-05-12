@@ -60,14 +60,18 @@ export function useSortables(initialList: BillWithActions[] = []) {
 
   const onReorder = useCallback(
     ({ sourceId, targetId }: ReorderParams) => {
-      setOrderedIds((prev) => reorderIds(prev, sourceId, targetId));
+      const newIds = reorderIds(orderedIds, sourceId, targetId);
+      setOrderedIds(newIds);
+
+      const map = new Map(initialList.map((b) => [b.id, b]));
+      const newList = newIds.map((id) => map.get(id)).filter(Boolean) as BillWithActions[];
 
       return {
         movedId: sourceId,
-        newList: orderedList,
+        newList,
       };
     },
-    [orderedList]
+    [orderedIds, initialList]
   );
 
   return {
