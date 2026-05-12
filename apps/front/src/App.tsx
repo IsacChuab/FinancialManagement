@@ -6,6 +6,7 @@ import ThemeProvider from './providers/ThemeProvider';
 import { trpc, trpcClient } from './utils/trpc';
 import { NotificationProvider } from './providers/NotificationProvider';
 import { handleReactQueryError } from './utils/notification/notify';
+import { OfflineProvider } from './providers/OfflineProvider';
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -33,13 +34,15 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
-        <ThemeProvider>
-          <NotificationProvider>
-            <BrowserRouter>
-              <Pages />
-            </BrowserRouter>
-          </NotificationProvider>
-        </ThemeProvider>
+        <OfflineProvider>
+          <ThemeProvider>
+            <NotificationProvider>
+              <BrowserRouter>
+                <Pages />
+              </BrowserRouter>
+            </NotificationProvider>
+          </ThemeProvider>
+        </OfflineProvider>
       </trpc.Provider>
     </QueryClientProvider>
   );

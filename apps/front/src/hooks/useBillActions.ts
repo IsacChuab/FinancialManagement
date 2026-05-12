@@ -3,10 +3,14 @@ import type { BillInput } from '@isac-chuab/financial-shared';
 
 import { checkStatusBill, generateOrderForNewBill, mapBillsToUpdate } from '../utils/functions';
 import { trpc } from '../utils/trpc';
+import { useOffline } from '../providers/OfflineProvider';
 
 export function useBillActions() {
+  const { isOffline } = useOffline();
   const utils = trpc.useUtils();
-  const { data: listBills, isPending: isPendingListBills } = trpc.bill.allBills.useQuery();
+  const { data: listBills, isPending: isPendingListBills } = trpc.bill.allBills.useQuery(undefined, {
+    enabled: !isOffline,
+  });
 
   const updateStatusMutation = trpc.bill.updateStatus.useMutation({
     onSuccess: (response) => {
@@ -115,7 +119,7 @@ export function useBillActions() {
 
     const { success } = await closeMonthMutation.mutateAsync(formatedData);
 
-    return success as boolean;
+    return success;
   }
 
   function reorderBills(data: BillWithActions[]) {

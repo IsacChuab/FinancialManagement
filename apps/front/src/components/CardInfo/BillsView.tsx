@@ -6,27 +6,34 @@ import { AiOutlineArrowRight, AiOutlinePlusCircle } from "react-icons/ai";
 import { BsListNested } from "react-icons/bs";
 import { PiListStarFill } from "react-icons/pi";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BillActionsModals from "../BillActionsModals";
 import { columns } from "../../pages/financial/dashboardColumns";
 import SortableRow from "../SortableRow";
+import { bulkStores } from "../../infrastructure/repositories/billRepository";
+import { useOffline } from "../../providers/OfflineProvider";
 
 type BillProps = {
   bills: BillWithActions[];
   onReorder: (params: { sourceId: string; targetId: string }) => void;
 }
 
-const BillsView = ({bills, onReorder}: BillProps) => {
-	const billActions = useBillActions();
+const BillsView = ({ bills, onReorder }: BillProps) => {
+  const { isOffline } = useOffline();
+  const billActions = useBillActions();
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState<'add' | 'edit' | 'delete' | 'closeMonth'>('add');
   const [activeBill, setActiveBill] = useState<BillWithActions | undefined>(undefined);
   const [viewType, setViewType] = useState<'card' | 'list'>('card');
 
-	const setActionType = (action: 'add' | 'edit' | 'delete' | 'closeMonth', bill?: BillWithActions) => {
-		if (action === 'edit' || action === 'delete') {
-			setActiveBill(bill || undefined);
-		}
+  const setActionType = (action: 'add' | 'edit' | 'delete' | 'closeMonth', bill?: BillWithActions) => {
+    if (isOffline) {
+      return;
+    }
+
+    if (action === 'edit' || action === 'delete') {
+      setActiveBill(bill || undefined);
+    }
 
     setType(action);
     setIsOpen(true);
@@ -37,18 +44,28 @@ const BillsView = ({bills, onReorder}: BillProps) => {
     setActiveBill(undefined);
   }
 
-	return (
-		<>
-			<div className="flex justify-between items-center">
-				<div className="w-full flex justify-between gap-3 md:flex-row md:w-fit">
-          <Button type="primary" onClick={() => setActionType('add')}>
+  useEffect(() => {
+    async function fetchData() {
+      if (!isOffline && billActions.listBills && billActions.listBills?.length > 0) {
+        await bulkStores(billActions.listBills)
+      }
+    }
+
+    void fetchData();
+  }, [billActions.listBills, isOffline])
+
+  return (
+    <>
+      <div className="flex justify-between items-center">
+        <div className="w-full flex justify-between gap-3 md:flex-row md:w-fit">
+          <Button type="primary" onClick={() => setActionType('add')} disabled={isOffline}>
             Adicionar Conta <AiOutlinePlusCircle />
           </Button>
 
           <Button
             type="default"
             onClick={() => setActionType('closeMonth')}
-            disabled={!bills?.length}
+            disabled={isOffline || !bills?.length}
           >
             Finalizar Mês <AiOutlineArrowRight />
           </Button>
@@ -67,14 +84,14 @@ const BillsView = ({bills, onReorder}: BillProps) => {
         </div>
       </div>
 
-			{billActions.isPendingListBills && <Spin description="Carregando contas..." />}
+      {!isOffline && billActions.isPendingListBills && <Spin description="Carregando contas..." />}
 
       {viewType === 'list' && (
         <Table
           dataSource={bills}
-          columns={columns({ billActions, handleActions: setActionType })}
+          columns={columns({ billActions, handleActions: setActionType, isOffline })}
           pagination={false}
-          loading={billActions.isPendingListBills}
+          loading={!isOffline && billActions.isPendingListBills}
           rowKey="id"
           components={{
             body: {
@@ -104,14 +121,17 @@ const BillsView = ({bills, onReorder}: BillProps) => {
               handleActions={billActions}
               handleAction={setActionType}
               onReorder={onReorder}
+              isOffline={isOffline}
             />
           ))}
         </div>
       )}
 
-			<BillActionsModals type={type} isOpen={isOpen} handleClose={handleCloseModals} activeBill={activeBill} />
-		</>
-	)
+      {!isOffline && (
+        <BillActionsModals type={type} isOpen={isOpen} handleClose={handleCloseModals} activeBill={activeBill} />
+      )}
+    </>
+  )
 };
 
 export default BillsView;
