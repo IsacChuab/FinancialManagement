@@ -24,7 +24,9 @@ const BillForm = ({
   const [option, setOption] = useState<'debit' | 'credit' | 'vital'>('debit');
   const [isPaid, setIsPaid] = useState<boolean>(false);
   const [form] = Form.useForm<BillInput>();
-  const { newBill, isPendingNewBill, updateBill } = useBillActions();
+  const { newBill, isPendingNewBill, updateBill, isPendingUpdateBill } = useBillActions();
+
+  const isSaving = billToEdit ? isPendingUpdateBill : isPendingNewBill;
 
   const options: CheckboxGroupProps<string>['options'] = [
     { label: 'Débito', value: 'debit' },
@@ -41,14 +43,18 @@ const BillForm = ({
   };
 
   const submitForm = (values: BillInput) => {
-    if (billToEdit) {
-      updateBill(billToEdit.id, { ...values, order: billToEdit.order }, isPaid);
+    try {
+      if (billToEdit) {
+        updateBill(billToEdit.id, { ...values, order: billToEdit.order }, isPaid);
+        closeModal();
+        return;
+      }
+
+      newBill(values, isPaid);
       closeModal();
+    } catch {
       return;
     }
-
-    newBill(values, isPaid);
-    closeModal();
   };
 
   useEffect(() => {
@@ -65,6 +71,9 @@ const BillForm = ({
       onCancel={closeModal}
       open={isOpen}
       footer={null}
+      closable={!isSaving}
+      mask={{ closable: !isSaving }}
+      keyboard={!isSaving}
       afterClose={() => {
         form.resetFields();
         setOption('debit');
@@ -75,9 +84,9 @@ const BillForm = ({
         form={form}
         layout="vertical"
         className="w-full"
-        onFinish={submitForm}
+        onFinish={(values) => void submitForm(values)}
         initialValues={{ type: 'debit' }}
-        disabled={isPendingNewBill}
+        disabled={isSaving}
       >
         <BaseFields />
 
@@ -113,7 +122,7 @@ const BillForm = ({
         </div>
 
         <div className="flex justify-end gap-2 mt-6">
-          <Button key="cancel" onClick={closeModal} disabled={isPendingNewBill}>
+          <Button key="cancel" onClick={closeModal} disabled={isSaving}>
             Cancelar
           </Button>
 
@@ -121,8 +130,8 @@ const BillForm = ({
             key="ok"
             type="primary"
             htmlType='submit'
-            loading={isPendingNewBill}
-            disabled={isPendingNewBill}
+            loading={isSaving}
+            disabled={isSaving}
           >
             Salvar
           </Button>

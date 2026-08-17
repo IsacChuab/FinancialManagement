@@ -20,20 +20,27 @@ const DeleteBill = ({
 
   const { deleteBill, isPendingDeleteBill } = useBillActions();
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!bill) return;
 
-    deleteBill(bill.id);
-    closeModal();
+    try {
+      await deleteBill(bill.id);
+      closeModal();
+    } catch {
+      return;
+    }
   };
 
   return (
     <Modal
       title="Adicionar Conta"
       onCancel={closeModal}
-      onOk={handleDelete}
+      onOk={() => void handleDelete()}
       open={isOpen}
       footer={null}
+      closable={!isPendingDeleteBill}
+      mask={{ closable: !isPendingDeleteBill }}
+      keyboard={!isPendingDeleteBill}
       afterOpenChange={(open) => {
         if (open) {
           confirmButtonRef.current?.focus();
@@ -67,8 +74,9 @@ const DeleteBill = ({
         <Button
           key="confirm"
           type="primary"
-          onClick={handleDelete}
+          onClick={() => void handleDelete()}
           loading={isPendingDeleteBill}
+          disabled={isPendingDeleteBill}
           ref={confirmButtonRef}
         >
           Excluir

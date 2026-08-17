@@ -1,4 +1,6 @@
+import { useMemo } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
+import type { BillWithActions } from '@isac-chuab/financial-shared';
 
 import dayjs from '../../utils/dayjs';
 import Summary from '../../components/Summary';
@@ -8,16 +10,22 @@ import { useSortables } from '../../hooks/useSortables';
 import { useOffline } from '../../providers/OfflineProvider';
 import { db } from '../../infrastructure/db/database';
 
+const EMPTY_BILLS: BillWithActions[] = [];
+
 const Financial = () => {
   const { isOffline } = useOffline();
   const { listBills, reorderBills } = useBillActions();
   const dexieBills = useLiveQuery(() => db.bill.toArray(), []);
 
-  const activeBills = isOffline ? (dexieBills ?? []) : (listBills ?? []);
+  const activeBills = useMemo(
+    () => (isOffline ? (dexieBills ?? EMPTY_BILLS) : (listBills ?? EMPTY_BILLS)),
+    [isOffline, dexieBills, listBills],
+  );
 
   const { orderedList, onReorder } = useSortables(activeBills);
 
   const currentMonth = dayjs().format('MMMM');
+  const currentMonthLabel = currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
 
   const handleReorder = (params: { sourceId: string; targetId: string }) => {
     if (isOffline) {
@@ -32,16 +40,14 @@ const Financial = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex flex-col gap-4">
       <Summary />
 
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl md:text-4xl">Contas de {currentMonth}</h1>
-      </div>
-
-      {!orderedList.length && <p>Nenhuma conta registrada</p>}
-
-      <BillsView bills={orderedList} onReorder={handleReorder} />
+      <BillsView
+        title={`Contas de ${currentMonthLabel}`}
+        bills={orderedList}
+        onReorder={handleReorder}
+      />
     </div>
   );
 };
