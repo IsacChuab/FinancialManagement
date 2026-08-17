@@ -5,26 +5,26 @@ const NewPassword = () => {
   return (
     <>
       <Form.Item
-        label="Nova senha"
+        label="New password"
         name="newPassword"
         rules={[
-          { required: true, message: 'Por favor, insira uma nova senha' },
-          { min: 3, max: 10, message: 'A senha deve ter entre 3 e 10 caracteres' },
+          { required: true, message: 'Please enter a new password' },
+          { min: 3, max: 10, message: 'Password must be between 3 and 10 characters' },
         ]}
       >
         <Password />
       </Form.Item>
 
       <Form.Item
-        label="Confirmar nova senha"
+        label="Confirm new password"
         name="confirmNewPassword"
         dependencies={['newPassword']}
         rules={[
-          { required: true, message: 'Por favor, confirme a nova senha' },
+          { required: true, message: 'Please confirm the new password' },
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue('newPassword') !== value) {
-                return Promise.reject(new Error('As senhas não coincidem'));
+                return Promise.reject(new Error('Passwords do not match'));
               }
 
               return Promise.resolve();

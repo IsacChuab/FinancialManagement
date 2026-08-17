@@ -74,7 +74,7 @@ const BillsView = ({ bills, title, onReorder }: BillProps) => {
 
           <div className="flex flex-wrap items-center gap-2">
             <Button type="primary" onClick={() => setActionType('add')} disabled={isOffline}>
-              Adicionar Conta <AiOutlinePlusCircle />
+              Add Bill <AiOutlinePlusCircle />
             </Button>
 
             <Button
@@ -82,11 +82,11 @@ const BillsView = ({ bills, title, onReorder }: BillProps) => {
               onClick={() => setActionType('closeMonth')}
               disabled={isOffline || !bills?.length}
             >
-              Finalizar Mês <AiOutlineArrowRight />
+              Close Month <AiOutlineArrowRight />
             </Button>
 
             <div className="hidden md:block">
-              <Tooltip title={viewType === 'card' ? 'Visualizar em lista' : 'Visualizar em cartões'}>
+              <Tooltip title={viewType === 'card' ? 'View as list' : 'View as cards'}>
                 <Button
                   type="default"
                   onClick={() => setViewType(viewType === 'card' ? 'list' : 'card')}
@@ -100,10 +100,10 @@ const BillsView = ({ bills, title, onReorder }: BillProps) => {
         </div>
       </Card>
 
-      {!isOffline && billActions.isPendingListBills && <Spin description="Carregando contas..." />}
+      {!isOffline && billActions.isPendingListBills && <Spin description="Loading bills..." />}
 
       {!bills.length ? (
-        <Empty description="Nenhuma conta registrada" />
+        <Empty description="No bills registered" />
       ) : (
         <>
           {viewType === 'list' && (

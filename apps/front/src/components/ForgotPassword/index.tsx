@@ -41,7 +41,7 @@ const ForgotPassword = ({
   };
 
   return (
-    <Modal title="Recuperação de Senha" onCancel={handleCancel} open={isOpen} footer={[]}>
+    <Modal title="Password Recovery" onCancel={handleCancel} open={isOpen} footer={[]}>
       <Steps
         className="py-4!"
         current={step}
@@ -52,12 +52,12 @@ const ForgotPassword = ({
             icon: <AiOutlineUser />,
           },
           {
-            title: 'Código',
+            title: 'Code',
             status: stepStatus[1],
             icon: <AiOutlineBarcode />,
           },
           {
-            title: 'Nova Senha',
+            title: 'New Password',
             status: stepStatus[2],
             icon: <MdOutlinePassword />,
           },

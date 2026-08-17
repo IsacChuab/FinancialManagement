@@ -26,7 +26,7 @@ class UserService {
 
     return {
       success: true,
-      message: 'Usuário criado com sucesso',
+      message: 'User created successfully',
       user: { id: savedUser.id, email: savedUser.email },
       token,
     };
@@ -84,7 +84,7 @@ class UserService {
 
     return {
       success: true,
-      message: 'Senha alterada com sucesso',
+      message: 'Password changed successfully',
       user: { id: user.id, email: user.email },
       token,
     };
@@ -94,12 +94,12 @@ class UserService {
     const user = await userRepository.findByEmail(email);
 
     if (!user) {
-      return { success: true, message: 'E-mail de recuperação enviado' };
+      return { success: true, message: 'Recovery email sent' };
     }
 
     if (user.code && user.expiresAt && user.expiresAt > new Date()) {
       await EmailSender.sendRecoveryEmail({ to: email, code: user.code });
-      return { success: true, message: 'E-mail de recuperação enviado' };
+      return { success: true, message: 'Recovery email sent' };
     }
 
     const code = Math.floor(100000 + Math.random() * 900000).toString();
@@ -111,14 +111,14 @@ class UserService {
 
     await EmailSender.sendRecoveryEmail({ to: email, code });
 
-    return { success: true, message: 'E-mail de recuperação enviado' };
+    return { success: true, message: 'Recovery email sent' };
   }
 
   public async secondStepForgotPassword(email: string, code: string) {
     const user = await userRepository.validatePasswordResetCode(email, code);
 
     if (!user) {
-      throw new Error('Código inválido ou expirado');
+      throw new Error('Invalid or expired code');
     }
 
     return { success: true };
@@ -128,7 +128,7 @@ class UserService {
     const user = await userRepository.findByEmail(email);
 
     if (!user) {
-      return { success: false, message: 'Usuário não encontrado' };
+      return { success: false, message: 'User not found' };
     }
 
     const hashNewPass = await bcrypt.hash(newPassword, 10);
@@ -139,7 +139,7 @@ class UserService {
 
     await userRepository.save(user);
 
-    return { success: true, message: 'Senha atualizada com sucesso' };
+    return { success: true, message: 'Password updated successfully' };
   }
 }
 

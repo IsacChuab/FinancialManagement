@@ -37,20 +37,20 @@ const Layout = () => {
       key: 'editPassword',
       icon: <LiaUserEditSolid />,
       onClick: () => setIsOpen(true),
-      label: 'Editar senha',
+      label: 'Change Password',
       disabled: isOffline,
     },
     {
       key: 'theme',
       icon: mode === 'light' ? <MdOutlineNightlightRound /> : <MdLightMode />,
       onClick: () => setMode(mode === 'light' ? 'dark' : 'light'),
-      label: 'Trocar tema',
+      label: 'Switch Theme',
     },
     {
       key: 'logout',
       icon: <MdOutlineLogout />,
       onClick: handleLogout,
-      label: 'Sair',
+      label: 'Log Out',
       disabled: isOffline,
     },
   ];
@@ -70,7 +70,7 @@ const Layout = () => {
           type="warning"
           banner
           showIcon
-          message="Você está offline. Os dados exibidos são do último acesso e todas as ações estão desativadas."
+          message="You are offline. The data shown is from your last access and all actions are disabled."
         />
       )}
 

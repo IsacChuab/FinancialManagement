@@ -31,14 +31,14 @@ const Summary = () => {
   }, [isOffline, data]);
 
   const stats = [
-    { key: 'credit', label: 'Crédito', value: displayData?.totalCredit, color: typeEnum.credit.color },
-    { key: 'debit', label: 'Débito', value: displayData?.totalDebit, color: typeEnum.debit.color },
-    { key: 'vital', label: 'Vitalício', value: displayData?.totalVital, color: typeEnum.vital.color },
+    { key: 'credit', label: 'Credit', value: displayData?.totalCredit, color: typeEnum.credit.color },
+    { key: 'debit', label: 'Debit', value: displayData?.totalDebit, color: typeEnum.debit.color },
+    { key: 'vital', label: 'Recurring', value: displayData?.totalVital, color: typeEnum.vital.color },
   ];
 
   return (
     <Card variant="borderless" className="shadow-sm! rounded-2xl mb-4 w-full">
-      <Title level={5} className="mb-4!">Resumo</Title>
+      <Title level={5} className="mb-4!">Summary</Title>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {stats.map((stat) => (

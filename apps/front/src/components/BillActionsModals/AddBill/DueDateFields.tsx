@@ -15,12 +15,12 @@ const DueDateFields = ({
     <>
       <Form.Item
         className="col-span-2"
-        label="Dia do Vencimento"
+        label="Due Day"
         name="dueDate"
         rules={[
           {
             required: true,
-            message: 'Insira uma data de vencimento',
+            message: 'Enter a due date',
           },
         ]}
       >
@@ -29,7 +29,7 @@ const DueDateFields = ({
 
       <span className="flex gap-2">
         <Switch onChange={(checked) => setIsPaid(checked)} />
-        Esta conta está paga?
+        Is this bill paid?
       </span>
     </>
   );

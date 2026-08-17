@@ -30,7 +30,7 @@ const ChangePassowrd = ({
 
   return (
     <Modal
-      title="Trocar Senha"
+      title="Change Password"
       onCancel={() => setIsOpen(false)}
       onOk={form.submit}
       open={isOpen}
@@ -38,18 +38,18 @@ const ChangePassowrd = ({
     >
       <Form form={form} layout="vertical" className="w-full" onFinish={submitForm} disabled={false}>
         <Form.Item
-          label="Senha atual"
+          label="Current password"
           name="currentPassword"
-          rules={[{ required: true, message: 'Por favor, insira uma senha atual' }]}
+          rules={[{ required: true, message: 'Please enter your current password' }]}
         >
           <Password />
         </Form.Item>
 
         <NewPassword />
-        
+
         <div className="flex justify-end gap-2 mt-6">
           <Button key="cancel" onClick={() => setIsOpen(false)} disabled={changePassMutation.isPending}>
-            Cancelar
+            Cancel
           </Button>
 
           <Button
@@ -59,7 +59,7 @@ const ChangePassowrd = ({
             loading={changePassMutation.isPending}
             disabled={changePassMutation.isPending}
           >
-            Salvar
+            Save
           </Button>
         </div>
       </Form>

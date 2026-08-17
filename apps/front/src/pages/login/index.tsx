@@ -44,11 +44,10 @@ const Login = () => {
 
           <div className="max-w-md">
             <h2 className="text-3xl font-semibold text-white leading-snug mb-4">
-              Organize suas finanças com clareza e simplicidade
+              Organize your finances with clarity and simplicity
             </h2>
             <p className="text-slate-300 text-base">
-              Acompanhe contas, receitas e despesas em um só lugar, com uma visão clara do seu
-              dinheiro.
+              Track bills, income and expenses in one place, with a clear view of your money.
             </p>
 
             <div className="flex gap-6 mt-8 text-slate-400">
@@ -67,8 +66,8 @@ const Login = () => {
         <div className="w-full max-w-sm">
           <div className="flex flex-col items-center lg:items-start mb-8">
             <img src={Logo} alt="Logo" className="h-16 w-16 rounded-full bg-blue-50 lg:hidden mb-4" />
-            <h1 className="text-3xl font-semibold text-slate-800">Bem-vindo de volta</h1>
-            <p className="text-slate-500 mt-1">Entre com sua conta para continuar</p>
+            <h1 className="text-3xl font-semibold text-slate-800">Welcome back</h1>
+            <p className="text-slate-500 mt-1">Sign in to your account to continue</p>
           </div>
 
           <Form form={form} onFinish={handleSubmit} layout="vertical" className="w-full">
@@ -76,8 +75,8 @@ const Login = () => {
               name="email"
               label="User Email"
               rules={[
-                { required: true, message: 'Digite seu usuário' },
-                { type: 'email', message: 'Digite um email válido' },
+                { required: true, message: 'Enter your email' },
+                { type: 'email', message: 'Enter a valid email' },
               ]}
             >
               <Input autoFocus size="large" />
@@ -85,7 +84,7 @@ const Login = () => {
             <Form.Item
               name="password"
               label="Password"
-              rules={[{ required: true, message: 'Digite sua senha' }]}
+              rules={[{ required: true, message: 'Enter your password' }]}
             >
               <Input.Password size="large" />
             </Form.Item>
@@ -108,10 +107,10 @@ const Login = () => {
             </Form.Item>
           </Form>
 
-          <Divider>ou</Divider>
+          <Divider>or</Divider>
 
           <Button size="large" block onClick={() => setIsOpenCreateAccount(true)}>
-            Criar uma conta
+            Create an account
           </Button>
 
           <CreateAccount isOpen={isOpenCreateAccount} setIsOpen={setIsOpenCreateAccount} />

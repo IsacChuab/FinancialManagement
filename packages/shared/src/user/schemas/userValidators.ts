@@ -18,7 +18,7 @@ export const changePasswordValidator = z
     ...newPassword,
   })
   .refine((data) => data.newPassword === data.confirmNewPassword, {
-    message: 'As senhas não coincidem',
+    message: 'Passwords do not match',
     path: ['confirmNewPassword'],
   });
 
@@ -30,7 +30,7 @@ export const createUserValidator = z
     ...newPassword,
   })
   .refine((data) => data.newPassword === data.confirmNewPassword, {
-    message: 'As senhas não coincidem',
+    message: 'Passwords do not match',
     path: ['confirmNewPassword'],
   });
 
@@ -41,7 +41,7 @@ const emailSchema = {
 };
 
 const codeSchema = {
-  code: z.string().regex(/^\d{6}$/, 'O código deve conter exatamente 6 dígitos'),
+  code: z.string().regex(/^\d{6}$/, 'The code must contain exactly 6 digits'),
 };
 
 export const firstStepForgotPasswordValidator = z.object({
@@ -60,7 +60,7 @@ export const thirdStepForgotPasswordValidator = z
     ...newPassword,
   })
   .refine((data) => data.newPassword === data.confirmNewPassword, {
-    message: 'As senhas não coincidem',
+    message: 'Passwords do not match',
     path: ['confirmNewPassword'],
   });
 

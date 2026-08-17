@@ -31,7 +31,7 @@ export const columns = ({
     ),
   },
   {
-    title: 'Tipo',
+    title: 'Type',
     dataIndex: 'type',
     key: 'type',
     align: 'center',
@@ -46,28 +46,28 @@ export const columns = ({
     },
   },
   {
-    title: 'Nome',
+    title: 'Name',
     dataIndex: 'name',
     width: '42%',
     key: 'name',
   },
   {
-    title: 'Valor',
+    title: 'Amount',
     dataIndex: 'amount',
     key: 'amount',
     width: 100,
     render: (amount: number) => formatBrlMoney(amount),
   },
   {
-    title: 'Estágio',
+    title: 'Progress',
     dataIndex: 'currentInstallment',
     key: 'currentInstallment',
     width: 85,
     render: (_, data: BillWithActions) =>
-      data.currentInstallment ? `${data.currentInstallment} de ${data.totalInstallments}` : '-',
+      data.currentInstallment ? `${data.currentInstallment} of ${data.totalInstallments}` : '-',
   },
   {
-    title: 'Parcela',
+    title: 'Installment',
     dataIndex: 'valueInstallment',
     key: 'valueInstallment',
     width: 100,
@@ -75,7 +75,7 @@ export const columns = ({
       valueInstallment ? formatBrlMoney(valueInstallment) : '-',
   },
   {
-    title: 'Vencimento',
+    title: 'Due Date',
     dataIndex: 'dueDate',
     key: 'dueDate',
     width: 120,
@@ -97,15 +97,22 @@ export const columns = ({
     },
   },
   {
-    title: 'Ações',
+    title: 'Actions',
     dataIndex: 'actions',
     key: 'actions',
     align: 'center',
     width: 85,
     render: (actions: ActionKey[], record: BillWithActions) => {
       const isRowPending = billActions.isPendingBill(record.id);
-      const isPendingCheckPaid = billActions.isPendingCheckPaid(record.id);
-      const isPendingCheckPending = billActions.isPendingCheckPending(record.id);
+      const isPendingCheckPaid =
+        typeof billActions.isPendingCheckPaid === 'function'
+          ? (billActions.isPendingCheckPaid as (id: string | number) => boolean | undefined)(record.id)
+          : false;
+
+      const isPendingCheckPending =
+        typeof billActions.isPendingCheckPending === 'function'
+          ? (billActions.isPendingCheckPending as (id: string | number) => boolean | undefined)(record.id)
+          : false;
 
       const items =
         actionEnum(

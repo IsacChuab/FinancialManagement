@@ -9,7 +9,7 @@ const CreditInfo = ({ bill }: { bill: BillWithActions }) => {
     <>
       <div className="flex justify-between">
         <span>
-          <b>Data Vencimento</b>
+          <b>Due Date</b>
         </span>
 
         <span>{dayjs(bill?.dueDate).format('DD/MM/YYYY')}</span>
@@ -17,7 +17,7 @@ const CreditInfo = ({ bill }: { bill: BillWithActions }) => {
 
       <div className="flex justify-between">
         <span>
-          <b>Estágio</b>
+          <b>Progress</b>
         </span>
 
         <span>{`${bill.currentInstallment}/${bill.totalInstallments}`}</span>
@@ -25,7 +25,7 @@ const CreditInfo = ({ bill }: { bill: BillWithActions }) => {
 
       <div className="flex justify-between">
         <span>
-          <b>Valor parcela</b>
+          <b>Installment amount</b>
         </span>
 
         <span>{formatBrlMoney(bill.valueInstallment)}</span>

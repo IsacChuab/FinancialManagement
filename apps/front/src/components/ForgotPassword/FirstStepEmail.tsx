@@ -42,8 +42,8 @@ const FirstStepEmail = ({
         label="E-mail"
         name="email"
         rules={[
-          { required: true, message: 'Campo obrigatório' },
-          { type: 'email', message: 'Por favor, insira um e-mail válido' },
+          { required: true, message: 'Required field' },
+          { type: 'email', message: 'Please enter a valid email' },
         ]}
       >
         <Input />
@@ -52,7 +52,7 @@ const FirstStepEmail = ({
       <div className="flex justify-end">
         <Form.Item>
           <Button type="default" htmlType="button" className="mr-4 mt-4" onClick={handleCancel}>
-            Cancelar
+            Cancel
           </Button>
 
           <Button
@@ -61,7 +61,7 @@ const FirstStepEmail = ({
             loading={firstStepMutation.isPending}
             disabled={firstStepMutation.isPending}
           >
-            Próximo
+            Next
           </Button>
         </Form.Item>
       </div>

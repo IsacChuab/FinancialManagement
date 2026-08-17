@@ -50,7 +50,7 @@ const ThirdStepNewPassword = ({
       <div className="flex justify-end">
         <Form.Item>
           <Button type="default" htmlType="button" className="mr-4 mt-4" onClick={handleBackStep}>
-            Voltar
+            Back
           </Button>
 
           <Button
@@ -59,7 +59,7 @@ const ThirdStepNewPassword = ({
             loading={thirdStepMutation.isPending}
             disabled={thirdStepMutation.isPending}
           >
-            Salvar
+            Save
           </Button>
         </Form.Item>
       </div>

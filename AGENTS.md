@@ -4,8 +4,8 @@ Guidance for AI coding agents (and humans) working in this repository.
 
 ## Project overview
 
-Financial Management is a personal finance app (Portuguese-language UI) for tracking bills
-(débito/crédito/vitalício), reordering them via drag-and-drop, and closing out months. It's a
+Financial Management is a personal finance app (English-language UI) for tracking bills
+(debit/credit/recurring), reordering them via drag-and-drop, and closing out months. It's a
 pnpm/Turborepo monorepo with an end-to-end typed API via tRPC.
 
 ```
@@ -118,9 +118,9 @@ Prefer arbitrary-value/utility classes already used nearby over introducing new 
   editor's format-on-save or `pnpm prettier --write` rather than hand-sorting classes.
 - ESLint configs are per-app (`apps/front/eslint.config.js`, similar for api) — always lint the
   specific workspace you touched.
-- UI copy is in Portuguese; keep new user-facing strings consistent with existing tone (informal
-  but tidy, e.g. "Digite sua senha", "Criar uma conta").
-- Bills have three types — débito (one-off), crédito (installments), vitalício (recurring, fixed
+- UI copy is in English; keep new user-facing strings consistent with existing tone (informal
+  but tidy, e.g. "Enter your password", "Create an account").
+- Bills have three types — debit (one-off), credit (installments), recurring (fixed
   due date) — and a status (paid/pending/late) plus soft delete (`deletedAt`); see
   `apps/front/src/pages/financial/billEnums.tsx` and `packages/shared/src/bill/`.
 

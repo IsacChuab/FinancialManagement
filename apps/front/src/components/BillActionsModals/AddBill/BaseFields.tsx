@@ -12,20 +12,20 @@ const BaseFields = () => {
   return (
     <div className="grid grid-cols-2 gap-4">
       <Form.Item
-        label="Nome"
+        label="Name"
         name="name"
         rules={[
-          { required: true, message: 'Por favor, insira um nome' }, 
-          { min: 3, message: 'O nome deve conter pelo menos 3 caracteres' }
+          { required: true, message: 'Please enter a name' },
+          { min: 3, message: 'Name must be at least 3 characters long' }
           ]}
       >
         <Input />
       </Form.Item>
 
       <Form.Item
-        label="Valor"
+        label="Amount"
         name="amount"
-        rules={[{ required: true, message: 'Por favor, insira um valor' }]}
+        rules={[{ required: true, message: 'Please enter an amount' }]}
       >
         <MaskedInput
           type="number"

@@ -10,17 +10,17 @@ import { cn } from '../../utils/cn';
 
 export const typeEnum = {
   debit: {
-    label: 'Débito',
+    label: 'Debit',
     color: '#20d0f7',
     icon: <MdOutlineAttachMoney />,
   },
   credit: {
-    label: 'Crédito',
+    label: 'Credit',
     color: '#b622f5',
     icon: <FaRegCreditCard />,
   },
   vital: {
-    label: 'Vitalício',
+    label: 'Recurring',
     color: '#00ab22',
     icon: <MdCalendarMonth />,
   },
@@ -28,17 +28,17 @@ export const typeEnum = {
 
 export const statusEnum = {
   paid: {
-    label: 'Pago',
+    label: 'Paid',
     color: '#53D388',
     shadowClass: 'shadow-green-500',
   },
   late: {
-    label: 'Atrasado',
+    label: 'Late',
     color: '#c40606',
     shadowClass: 'shadow-red-600',
   },
   pending: {
-    label: 'Pendente',
+    label: 'Pending',
     color: '#f0a01f',
     shadowClass: 'shadow-amber-500',
   },
@@ -54,7 +54,7 @@ export const actionEnum = (
 ) => [
   {
     key: 'checkPaid',
-    label: 'Quitar',
+    label: 'Mark as Paid',
     icon: <AiOutlineCheck />,
     disabled,
     actionCard: (
@@ -66,14 +66,14 @@ export const actionEnum = (
         })}
         onClick={() => !disabled && actions.updateStatus(bill, 'paid')}
       >
-        {pendingCheckPaid ? <Spin size="small" /> : 'Quitar'}
+        {pendingCheckPaid ? <Spin size="small" /> : 'Mark as Paid'}
       </div>
     ),
     onClick: () => actions.updateStatus(bill, 'paid'),
   },
   {
     key: 'checkPending',
-    label: 'Em aberto',
+    label: 'Mark as Pending',
     icon: <AiOutlineDollar />,
     disabled,
     actionCard: (
@@ -85,14 +85,14 @@ export const actionEnum = (
         })}
         onClick={() => !disabled && actions.updateStatus(bill, 'pending')}
       >
-        {pendingCheckPending ? <Spin size="small" /> : 'Em aberto'}
+        {pendingCheckPending ? <Spin size="small" /> : 'Mark as Pending'}
       </div>
     ),
     onClick: () => actions.updateStatus(bill, 'pending'),
   },
   {
     key: 'edit',
-    label: 'Editar',
+    label: 'Edit',
     icon: <AiFillEdit />,
     disabled,
     actionCard: (
@@ -103,7 +103,7 @@ export const actionEnum = (
         })}
         onClick={() => handleAction('edit', bill)}
       >
-        Editar
+        Edit
       </div>
     ),
     onClick: () => handleAction('edit', bill),
@@ -111,7 +111,7 @@ export const actionEnum = (
   },
   {
     key: 'delete',
-    label: 'Excluir',
+    label: 'Delete',
     icon: <AiFillDelete />,
     disabled,
     actionCard: (
@@ -122,7 +122,7 @@ export const actionEnum = (
         })}
         onClick={() => handleAction('delete', bill)}
       >
-        Excluir
+        Delete
       </div>
     ),
     onClick: () => handleAction('delete', bill),
