@@ -8,13 +8,13 @@ import bcrypt from 'bcrypt';
 class UserService {
   public async createUser({ email, newPassword }: CreateUserInput) {
     const user = await userRepository.findByEmail(email);
-    
+
     if (user) {
       throw new Error('User already exists');
     }
-    
+
     const hashPass = await bcrypt.hash(newPassword, 10);
-    
+
     const userObject = new User({
       email,
       password: hashPass,
@@ -74,7 +74,6 @@ class UserService {
     if (!isValid) {
       throw new Error('Invalid password');
     }
-  
 
     const hashNewPass = await bcrypt.hash(input.newPassword, 10);
     user.password = hashNewPass;
@@ -133,7 +132,7 @@ class UserService {
     }
 
     const hashNewPass = await bcrypt.hash(newPassword, 10);
-    
+
     user.password = hashNewPass;
     user.code = undefined;
     user.expiresAt = undefined;

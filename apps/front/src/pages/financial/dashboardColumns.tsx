@@ -1,7 +1,7 @@
 import type { BillWithActions } from '@isac-chuab/financial-shared';
 
 import { AiOutlineBars } from 'react-icons/ai';
-import { Dropdown, Tag, type TableColumnProps } from 'antd';
+import { Dropdown, Spin, Tag, type TableColumnProps } from 'antd';
 import dayjs from 'dayjs';
 
 import { formatBrlMoney } from '../../utils/functions';
@@ -103,15 +103,29 @@ export const columns = ({
     align: 'center',
     width: 85,
     render: (actions: ActionKey[], record: BillWithActions) => {
-      const items = actionEnum(record, billActions, handleActions)?.filter(
-        (action) => action?.key && actions.includes(action.key as ActionKey),
-      );
+      const isRowPending = billActions.isPendingBill(record.id);
+      const isPendingCheckPaid = billActions.isPendingCheckPaid(record.id);
+      const isPendingCheckPending = billActions.isPendingCheckPending(record.id);
+
+      const items =
+        actionEnum(
+          record,
+          billActions,
+          handleActions,
+          isRowPending,
+          isPendingCheckPaid,
+          isPendingCheckPending,
+        )?.filter((action) => Boolean(action?.key) && actions.includes(action.key as ActionKey)) ?? [];
 
       return (
         <div className='w-full flex justify-center'>
-          <Dropdown menu={{ items }} className="cursor-pointer m-auto" disabled={isOffline}>
-            <AiOutlineBars />
-          </Dropdown>
+          {isRowPending ? (
+            <Spin size="small" />
+          ) : (
+            <Dropdown menu={{ items }} className="cursor-pointer m-auto" disabled={isOffline}>
+              <AiOutlineBars />
+            </Dropdown>
+          )}
         </div>
       );
     },

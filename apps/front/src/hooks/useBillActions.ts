@@ -80,14 +80,14 @@ export function useBillActions() {
     },
   });
 
-  function newBill(data: BillInput, isPaid: boolean) {
+  async function newBill(data: BillInput, isPaid: boolean) {
     const bills = listBills !== undefined ? listBills : [];
     data.order = generateOrderForNewBill(bills);
 
     const dueDate = data.type !== 'debit' ? data.dueDate : undefined;
 
     const status = checkStatusBill(isPaid, data.type, dueDate);
-    newBillMutation.mutate({ ...data, status });
+    await newBillMutation.mutateAsync({ ...data, status });
   }
 
   function updateStatus(bill: BillWithActions, status: BillStatus) {
@@ -99,15 +99,15 @@ export function useBillActions() {
     updateStatusMutation.mutate({ id: bill.id, status: checkedStatus });
   }
 
-  function deleteBill(billId: string) {
-    deleteBillMutation.mutate({ id: billId });
+  async function deleteBill(billId: string) {
+    await deleteBillMutation.mutateAsync({ id: billId });
   }
 
-  function updateBill(billId: string, data: BillInput, isPaid: boolean) {
+  async function updateBill(billId: string, data: BillInput, isPaid: boolean) {
     const dueDate = data.type !== 'debit' ? data.dueDate : undefined;
 
     const status = checkStatusBill(isPaid, data.type, dueDate);
-    updateBillMutation.mutate({ id: billId, ...data, status });
+    await updateBillMutation.mutateAsync({ id: billId, ...data, status });
   }
 
   async function closeMonth () {
@@ -136,9 +136,42 @@ export function useBillActions() {
     return listBills.some((bill) => bill.status === 'pending' || bill.status === 'late');
   }
 
+  function isPendingBill(billId: string) {
+    if (updateStatusMutation.isPending && updateStatusMutation.variables?.id === billId) {
+      return true;
+    }
+
+    if (deleteBillMutation.isPending && deleteBillMutation.variables?.id === billId) {
+      return true;
+    }
+
+    if (updateBillMutation.isPending && updateBillMutation.variables?.id === billId) {
+      return true;
+    }
+
+    return false;
+  }
+
+  function isPendingCheckPaid(billId: string) {
+    return (
+      updateStatusMutation.isPending &&
+      updateStatusMutation.variables?.id === billId &&
+      updateStatusMutation.variables?.status === 'paid'
+    );
+  }
+
+  function isPendingCheckPending(billId: string) {
+    return (
+      updateStatusMutation.isPending &&
+      updateStatusMutation.variables?.id === billId &&
+      updateStatusMutation.variables?.status !== 'paid'
+    );
+  }
+
   return {
     newBill,
     isPendingNewBill: newBillMutation.isPending,
+    isPendingUpdateBill: updateBillMutation.isPending,
     isPendingCloseMonth: closeMonthMutation.isPending,
     isPendingDeleteBill: deleteBillMutation.isPending,
     listBills,
@@ -149,6 +182,9 @@ export function useBillActions() {
     reorderBills,
     getSomeLatedOrPendingBill,
     isPendingListBills,
+    isPendingBill,
+    isPendingCheckPaid,
+    isPendingCheckPending,
   };
 }
 

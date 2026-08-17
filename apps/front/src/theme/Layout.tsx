@@ -10,6 +10,7 @@ import { Alert, type MenuProps } from 'antd';
 import { useTheme } from '../hooks/theme';
 import { trpc } from '../utils/trpc';
 import Logo from '../assets/zc_logo.png';
+import GridPattern from '../assets/svgs/GridPattern';
 import ChangePassowrd from '../components/ChangePassword';
 import { useOffline } from '../providers/OfflineProvider';
 import { WAS_LOGGED_IN_KEY } from '../utils/authConstants';
@@ -73,17 +74,26 @@ const Layout = () => {
         />
       )}
 
-      <div className="w-full py-3 px-8 m-auto max-w-7xl flex gap-3 justify-between items-center ">
-        <img src={Logo} alt="Logo" className="h-30 bg-blue-50 rounded-full" />
+      <header className="sticky top-0 z-20 overflow-hidden bg-linear-to-r from-slate-900 via-slate-800 to-blue-950 shadow-md">
+        <GridPattern />
 
-        <span>
-          <Dropdown menu={{ items }} className="cursor-pointer m-auto" placement="bottomRight">
-            <FaUserGear className="h-8 w-8" />
-          </Dropdown>
-        </span>
-      </div>
+        <div className="relative z-10 w-full py-3 px-4 md:px-8 m-auto max-w-7xl flex gap-3 justify-between items-center">
+          <div className="flex items-center gap-3">
+            <img src={Logo} alt="Logo" className="h-11 w-11 bg-blue-50 rounded-full object-cover" />
+            <span className="hidden sm:inline text-slate-100 text-lg font-semibold tracking-wide">
+              Financial Management
+            </span>
+          </div>
 
-      <main className="grow w-full m-auto max-w-7xl ">
+          <span>
+            <Dropdown menu={{ items }} placement="bottomRight">
+              <FaUserGear className="h-7 w-7 text-slate-100 hover:text-white cursor-pointer transition-colors" />
+            </Dropdown>
+          </span>
+        </div>
+      </header>
+
+      <main className="grow w-full m-auto max-w-7xl px-4 md:px-8 py-6">
         <Outlet />
       </main>
 

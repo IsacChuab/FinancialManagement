@@ -74,16 +74,36 @@ const InfoBills = ({
     );
   };
 
+  const getPendingFlag = (
+    key: 'isPendingBill' | 'isPendingCheckPaid' | 'isPendingCheckPending',
+  ) => {
+    const handler =
+      handleActions && typeof handleActions === 'object'
+        ? (handleActions[key] as ((billId: string) => boolean) | undefined)
+        : undefined;
+
+    return typeof handler === 'function' ? handler(bill.id) : false;
+  };
+
+  const isRowPending = getPendingFlag('isPendingBill');
+  const isPendingCheckPaid = getPendingFlag('isPendingCheckPaid');
+  const isPendingCheckPending = getPendingFlag('isPendingCheckPending');
+
   const actionsList = () => {
     if (isOffline) {
       return [];
     }
 
-    const items = actionEnum(bill, handleActions, handleAction)?.filter(
-      (action) => action?.key && bill.actions.includes(action.key as ActionKey),
-    );
+    const items = actionEnum(
+      bill,
+      handleActions,
+      handleAction,
+      isRowPending,
+      isPendingCheckPaid,
+      isPendingCheckPending,
+    )?.filter((action) => action?.key && bill.actions.includes(action.key as ActionKey));
 
-    return items?.map((item) => item.actionCard);
+    return items?.map((item) => item.actionCard) ?? [];
   };
 
   useEffect(() => {
