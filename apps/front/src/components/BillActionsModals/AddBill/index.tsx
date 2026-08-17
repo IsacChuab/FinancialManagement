@@ -42,14 +42,15 @@ const BillForm = ({
     form.setFieldValue('dueDate', value);
   };
 
-  const submitForm = async (values: BillInput) => {
+  const submitForm = (values: BillInput) => {
     try {
       if (billToEdit) {
-        await updateBill(billToEdit.id, { ...values, order: billToEdit.order }, isPaid);
-      } else {
-        await newBill(values, isPaid);
+        updateBill(billToEdit.id, { ...values, order: billToEdit.order }, isPaid);
+        closeModal();
+        return;
       }
 
+      newBill(values, isPaid);
       closeModal();
     } catch {
       return;
