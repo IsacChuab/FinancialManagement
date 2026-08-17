@@ -20,11 +20,11 @@ const DeleteBill = ({
 
   const { deleteBill, isPendingDeleteBill } = useBillActions();
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (!bill) return;
 
     try {
-      await deleteBill(bill.id);
+      deleteBill(bill.id);
       closeModal();
     } catch {
       return;
@@ -33,7 +33,7 @@ const DeleteBill = ({
 
   return (
     <Modal
-      title="Adicionar Conta"
+      title="Delete Bill"
       onCancel={closeModal}
       onOk={() => void handleDelete()}
       open={isOpen}
@@ -48,19 +48,19 @@ const DeleteBill = ({
       }}
     >
       <div className="flex flex-col gap-2 mt-6">
-        <span>Tem certeza que deseja excluir esta conta?</span>
+        <span>Are you sure you want to delete this bill?</span>
 
         <div className="flex flex-col">
           <span>
-            <b>Nome: </b>
+            <b>Name: </b>
             {bill?.name}
           </span>
           <span>
-            <b>Tipo: </b>
+            <b>Type: </b>
             {bill?.type && typeEnum[bill.type].label}
           </span>
           <span>
-            <b>Valor: </b>
+            <b>Amount: </b>
             {formatBrlMoney(bill?.amount)}
           </span>
         </div>
@@ -68,7 +68,7 @@ const DeleteBill = ({
 
       <div className="flex justify-end gap-2 mt-6">
         <Button key="cancel" onClick={closeModal} disabled={isPendingDeleteBill}>
-          Cancelar
+          Cancel
         </Button>
 
         <Button
@@ -79,7 +79,7 @@ const DeleteBill = ({
           disabled={isPendingDeleteBill}
           ref={confirmButtonRef}
         >
-          Excluir
+          Delete
         </Button>
       </div>
     </Modal>

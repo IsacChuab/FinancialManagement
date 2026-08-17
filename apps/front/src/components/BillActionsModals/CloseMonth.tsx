@@ -24,7 +24,7 @@ const CloseMonth = ({
 
   return (
     <Modal
-      title={<>Finalizar mês de<span className='capitalize'> {currentMonth}</span></>}
+      title={<>Close out<span className='capitalize'> {currentMonth}</span></>}
       onCancel={closeModal}
       onOk={() => void handleCloseMonth()}
       open={isOpen}
@@ -36,17 +36,17 @@ const CloseMonth = ({
       }}
     >
       <div className="flex flex-col gap-2 mt-6">
-        <span className='block'>Tem certeza que deseja finalizar o mês?</span>
-        <span className='block'>Esta ação não poderá ser desfeita.</span>
+        <span className='block'>Are you sure you want to close out the month?</span>
+        <span className='block'>This action cannot be undone.</span>
 
         <span className="text-red-600 font-semibold">
-          {getSomeLatedOrPendingBill() && 'Existem contas atrasadas ou pendentes que não foram pagas.'}
+          {getSomeLatedOrPendingBill() && 'There are late or pending bills that have not been paid.'}
         </span>
       </div>
 
       <div className="flex justify-end gap-2 mt-6">
         <Button key="cancel" onClick={closeModal} disabled={isPendingCloseMonth}>
-          Cancelar
+          Cancel
         </Button>
 
         <Button
@@ -56,7 +56,7 @@ const CloseMonth = ({
           loading={isPendingCloseMonth}
           ref={confirmButtonRef}
         >
-          Finalizar
+          Close
         </Button>
       </div>
     </Modal>

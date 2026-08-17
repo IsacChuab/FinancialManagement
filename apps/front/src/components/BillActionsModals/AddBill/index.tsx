@@ -29,9 +29,9 @@ const BillForm = ({
   const isSaving = billToEdit ? isPendingUpdateBill : isPendingNewBill;
 
   const options: CheckboxGroupProps<string>['options'] = [
-    { label: 'Débito', value: 'debit' },
-    { label: 'Crédito', value: 'credit' },
-    { label: 'Vitalícia', value: 'vital' },
+    { label: 'Debit', value: 'debit' },
+    { label: 'Credit', value: 'credit' },
+    { label: 'Recurring', value: 'vital' },
   ];
 
   const handleChangeOption = (value: RadioChangeEvent) => {
@@ -67,7 +67,7 @@ const BillForm = ({
 
   return (
     <Modal
-      title="Adicionar Conta"
+      title="Add Bill"
       onCancel={closeModal}
       open={isOpen}
       footer={null}
@@ -123,7 +123,7 @@ const BillForm = ({
 
         <div className="flex justify-end gap-2 mt-6">
           <Button key="cancel" onClick={closeModal} disabled={isSaving}>
-            Cancelar
+            Cancel
           </Button>
 
           <Button
@@ -133,7 +133,7 @@ const BillForm = ({
             loading={isSaving}
             disabled={isSaving}
           >
-            Salvar
+            Save
           </Button>
         </div>
       </Form>

@@ -25,7 +25,7 @@ const SecondStepHash = ({
       form.setFields([
         {
           name: 'code',
-          errors: ['Código inválido ou expirado'],
+          errors: ['Invalid or expired code'],
         },
       ]);
     },
@@ -46,12 +46,12 @@ const SecondStepHash = ({
 
   return (
     <Form form={form} layout="vertical" className="w-full" onFinish={submitCode} disabled={false}>
-      <div className="py-4">Foi enviado um código para o seu e-mail.</div>
+      <div className="py-4">A code was sent to your e-mail.</div>
 
       <Form.Item
-        label="Código"
+        label="Code"
         name="code"
-        rules={[{ required: true, message: 'Campo obrigatório' }]}
+        rules={[{ required: true, message: 'Required field' }]}
       >
         <Input.OTP size="large" />
       </Form.Item>
@@ -59,11 +59,11 @@ const SecondStepHash = ({
       <div className="flex justify-end">
         <Form.Item>
           <Button type="default" htmlType="button" className="mr-4 mt-4" onClick={handleBackStep}>
-            Voltar
+            Back
           </Button>
 
           <Button type="primary" htmlType="submit" loading={false} disabled={false}>
-            Próximo
+            Next
           </Button>
         </Form.Item>
       </div>

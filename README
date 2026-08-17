@@ -1,118 +1,118 @@
-Collecting workspace information# Financial Management
+# Financial Management
 
-Uma aplicação completa de gerenciamento financeiro pessoal construída com tecnologias modernas, permitindo organizar e controlar suas contas de forma intuitiva.
+A complete personal finance management application built with modern technologies, allowing you to organize and control your bills intuitively.
 
-## 🎯 Características
+## 🎯 Features
 
-- **Gerenciamento de Contas**: Crie, edite e delete diferentes tipos de contas (débito, crédito e vitalícias)
-- **Organização por Status**: Acompanhe contas pagas, pendentes e atrasadas
-- **Drag & Drop**: Reordene suas contas de forma intuitiva
-- **Autenticação Segura**: Sistema de login com tokens JWT
-- **Recuperação de Senha**: Fluxo completo com validação por código
-- **Tema Claro/Escuro**: Interface adaptável às preferências do usuário
-- **Responsivo**: Funciona perfeitamente em dispositivos móveis e desktop
+- **Bill Management**: Create, edit and delete different types of bills (debit, credit and recurring)
+- **Status Organization**: Track paid, pending and late bills
+- **Drag & Drop**: Reorder your bills intuitively
+- **Secure Authentication**: Login system with JWT tokens
+- **Password Recovery**: Complete flow with code validation
+- **Light/Dark Theme**: Interface that adapts to user preferences
+- **Responsive**: Works perfectly on mobile and desktop devices
 
-## 🏗️ Arquitetura
+## 🏗️ Architecture
 
-O projeto segue uma arquitetura monorepo com separação clara entre frontend, backend e código compartilhado.
+The project follows a monorepo architecture with a clear separation between frontend, backend and shared code.
 
 ```
 ├── apps/
 │   ├── api/           # Backend (Node.js + Express + tRPC)
 │   └── front/         # Frontend (React + TypeScript + Vite)
 ├── packages/
-│   └── shared/        # Schemas e tipos compartilhados (Zod)
+│   └── shared/        # Shared schemas and types (Zod)
 ```
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **React 18** com TypeScript
-- **Vite** para build rápido
-- **Tailwind CSS** para estilização
-- **Ant Design** para componentes UI
-- **React Query** para state management
-- **tRPC** para type-safe API calls
-- **Day.js** para manipulação de datas
+- **React 18** with TypeScript
+- **Vite** for fast builds
+- **Tailwind CSS** for styling
+- **Ant Design** for UI components
+- **React Query** for state management
+- **tRPC** for type-safe API calls
+- **Day.js** for date manipulation
 
 ### Backend
-- **Node.js** com TypeScript
-- **Express** para servidor HTTP
-- **tRPC** para API type-safe
-- **MongoDB** com Mongoose para persistência
-- **JWT** para autenticação
-- **Resend** para envio de emails
+- **Node.js** with TypeScript
+- **Express** for the HTTP server
+- **tRPC** for type-safe API
+- **MongoDB** with Mongoose for persistence
+- **JWT** for authentication
+- **Resend** for sending emails
 
 ### DevOps
-- **Turbo** para monorepo management
-- **pnpm** para package management
-- **Docker** para containerização
+- **Turbo** for monorepo management
+- **pnpm** for package management
+- **Docker** for containerization
 
-## 📋 Pré-requisitos
+## 📋 Prerequisites
 
 - Node.js 22+
 - pnpm 9+
 - MongoDB
-- Variáveis de ambiente configuradas
+- Environment variables configured
 
-## 🚀 Instalação
+## 🚀 Installation
 
-### 1. Clone o repositório
+### 1. Clone the repository
 ```bash
 git clone <repository-url>
 cd FinancialManagement
 ```
 
-### 2. Instale as dependências
+### 2. Install dependencies
 ```bash
 pnpm install
 ```
 
-### 3. Configure as variáveis de ambiente
+### 3. Configure environment variables
 
-**Backend (.env na raiz de api):**
+**Backend (.env in the api root):**
 ```env
 PORT=3000
 NODE_ENV=development
 MONGO_URL=mongodb://localhost:27017/financial
-JWT_SECRET=seu_secret_jwt_aqui
+JWT_SECRET=your_jwt_secret_here
 FRONTEND_ORIGIN=http://localhost:5173
-RESEND_API_KEY=sua_chave_resend_aqui
-MAIL_FROM=seu_email@example.com
+RESEND_API_KEY=your_resend_key_here
+MAIL_FROM=your_email@example.com
 ```
 
-**Frontend (.env na raiz de front):**
+**Frontend (.env in the front root):**
 ```env
 VITE_API_ENDPOINT=http://localhost:3000
 ```
 
 ## 📦 Scripts
 
-### Desenvolvimento
+### Development
 ```bash
-# Inicia todos os serviços em desenvolvimento
+# Starts all services in development
 pnpm dev
 
-# Apenas frontend
+# Frontend only
 pnpm dev:front
 
-# Apenas backend
+# Backend only
 pnpm dev:api
 ```
 
 ### Build
 ```bash
-# Build de todos os pacotes
+# Build all packages
 pnpm build
 
-# Build do frontend
+# Build the frontend
 pnpm build:front
 
-# Build do backend
+# Build the backend
 pnpm build:api
 ```
 
-### Testes
+### Tests
 ```bash
 pnpm test
 ```
@@ -122,18 +122,18 @@ pnpm test
 pnpm lint
 ```
 
-## 🏃 Executando o Projeto
+## 🏃 Running the Project
 
-### Modo Desenvolvimento
+### Development Mode
 ```bash
 pnpm dev
 ```
 
-A aplicação estará disponível em:
+The application will be available at:
 - Frontend: `http://localhost:5173`
 - Backend: `http://localhost:3000`
 
-### Modo Produção
+### Production Mode
 ```bash
 pnpm build
 cd apps/api
@@ -143,95 +143,95 @@ node dist/index.js
 ## 🐳 Docker
 
 ```bash
-# Build da imagem
+# Build the image
 docker build -t financial-api apps/api/
 
-# Executa o container
+# Run the container
 docker run -p 3000:3000 --env-file .env financial-api
 ```
 
-## 📚 Estrutura de Pastas
+## 📚 Folder Structure
 
 ```
 apps/api/src/
-├── billings/          # Lógica de contas
-├── user/              # Autenticação e usuários
-├── trpc/              # Configuração tRPC
+├── billings/          # Bill logic
+├── user/              # Authentication and users
+├── trpc/              # tRPC configuration
 ├── middlewares/       # Middlewares
-├── lib/               # Utilitários e serviços
-└── utils/             # Funções auxiliares
+├── lib/               # Utilities and services
+└── utils/             # Helper functions
 
 apps/front/src/
-├── components/        # Componentes React
-├── pages/             # Páginas principais
+├── components/        # React components
+├── pages/             # Main pages
 ├── hooks/             # Custom hooks
-├── utils/             # Funções auxiliares
+├── utils/             # Helper functions
 ├── providers/         # Context providers
-└── theme/             # Temas e layout
+└── theme/             # Themes and layout
 ```
 
-## 🔐 Autenticação
+## 🔐 Authentication
 
-A aplicação utiliza **JWT (JSON Web Tokens)** com refresh automático via cookies httpOnly. O fluxo inclui:
+The application uses **JWT (JSON Web Tokens)** with automatic refresh via httpOnly cookies. The flow includes:
 
-- Login com email/senha
-- Criação de conta com validação
-- Recuperação de senha em 3 etapas
-- Alteração de senha autenticada
+- Login with email/password
+- Account creation with validation
+- Password recovery in 3 steps
+- Authenticated password change
 
 ## 📝 API Endpoints
 
-### Autenticação
+### Authentication
 - `POST /trpc/auth.login` - Login
-- `POST /trpc/auth.createUser` - Criar conta
-- `POST /trpc/auth.changePassword` - Alterar senha
-- `POST /trpc/auth.firstStepForgotPassword` - Iniciar recuperação
-- `POST /trpc/auth.secondStepForgotPassword` - Validar código
-- `POST /trpc/auth.thirdStepForgotPassword` - Redefinir senha
-- `GET /trpc/auth.me` - Obter usuário autenticado
+- `POST /trpc/auth.createUser` - Create account
+- `POST /trpc/auth.changePassword` - Change password
+- `POST /trpc/auth.firstStepForgotPassword` - Start recovery
+- `POST /trpc/auth.secondStepForgotPassword` - Validate code
+- `POST /trpc/auth.thirdStepForgotPassword` - Reset password
+- `GET /trpc/auth.me` - Get authenticated user
 
-### Contas
-- `GET /trpc/bill.allBills` - Listar todas as contas
-- `POST /trpc/bill.newBill` - Criar conta
-- `PUT /trpc/bill.updateBill` - Atualizar conta
-- `DELETE /trpc/bill.deleteBill` - Deletar conta
-- `POST /trpc/bill.updateStatus` - Atualizar status
-- `POST /trpc/bill.closeMonth` - Finalizar mês
+### Bills
+- `GET /trpc/bill.allBills` - List all bills
+- `POST /trpc/bill.newBill` - Create bill
+- `PUT /trpc/bill.updateBill` - Update bill
+- `DELETE /trpc/bill.deleteBill` - Delete bill
+- `POST /trpc/bill.updateStatus` - Update status
+- `POST /trpc/bill.closeMonth` - Close month
 
-## 🎨 Tipos de Contas
+## 🎨 Bill Types
 
-### Débito
-Contas únicas sem parcelamento
+### Debit
+One-off bills with no installments
 
-### Crédito
-Contas parceladas com data de vencimento
+### Credit
+Installment bills with a due date
 
-### Vitalício
-Contas recorrentes com data de vencimento fixa
+### Recurring
+Recurring bills with a fixed due date
 
-## 💾 Dados Persistidos
+## 💾 Persisted Data
 
-As contas mantêm histórico com:
-- Data de criação e atualização
-- Status (pago, pendente, atrasado)
-- Ordem de exibição (reordenável)
+Bills keep a history with:
+- Creation and update date
+- Status (paid, pending, late)
+- Display order (reorderable)
 - Soft delete (deletedAt)
 
-## 🤝 Contribuindo
+## 🤝 Contributing
 
-1. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-2. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-3. Push para a branch (`git push origin feature/AmazingFeature`)
-4. Abra um Pull Request
+1. Create a branch for your feature (`git checkout -b feature/AmazingFeature`)
+2. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+3. Push to the branch (`git push origin feature/AmazingFeature`)
+4. Open a Pull Request
 
-## 📄 Licença
+## 📄 License
 
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+This project is licensed under the MIT License. See the LICENSE file for more details.
 
-## 📧 Contato
+## 📧 Contact
 
-Para dúvidas ou sugestões, entre em contato através dos canais disponíveis no repositório.
+For questions or suggestions, please reach out through the channels available in the repository.
 
 ---
 
-**Desenvolvido com ❤️ usando tecnologias modernas e melhores práticas de desenvolvimento.**
+**Built with ❤️ using modern technologies and development best practices.**

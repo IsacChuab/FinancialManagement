@@ -23,7 +23,7 @@ class BillService {
 
     const formattedBill = addActionsToBill(billObject);
 
-    return { success: true, message: 'Conta criada com sucesso', formattedBill };
+    return { success: true, message: 'Bill created successfully', formattedBill };
   }
 
   public async getAllActiveBills(userId: string) {
@@ -58,7 +58,7 @@ class BillService {
 
     const formattedBill = addActionsToBill(savedBill!);
 
-    return { success: true, message: 'Conta atualizada com sucesso', formattedBill };
+    return { success: true, message: 'Bill updated successfully', formattedBill };
   }
 
   public async updateStatus(input: BillUpdateStatus, userId: string) {
@@ -77,7 +77,7 @@ class BillService {
 
     const formattedBill = addActionsToBill(savedBill);
 
-    return { success: true, message: 'Status atualizado com sucesso', formattedBill };
+    return { success: true, message: 'Status updated successfully', formattedBill };
   }
 
   public async deleteBill(id: string, userId: string) {
@@ -99,7 +99,7 @@ class BillService {
     billObject.deletedAt = new Date();
     await billRepository.save(billObject);
 
-    return { success: true, message: 'Conta excluída com sucesso', id };
+    return { success: true, message: 'Bill deleted successfully', id };
   }
 
   public async closeMonth(data: BillUpdate[], userId: string) {
@@ -116,7 +116,7 @@ class BillService {
       this.closeCreditBills(data),
     ]);
 
-    return { success: true, message: 'Mês fechado com sucesso' };
+    return { success: true, message: 'Month closed successfully' };
   }
 
   public async reorderBills(data: BillUpdate[]) {

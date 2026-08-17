@@ -6,7 +6,7 @@ const VitalInfo = ({ bill }: { bill: BillWithActions }) => {
     <>
       <div className="flex justify-between">
         <span>
-          <b>Data Vencimento</b>
+          <b>Due Date</b>
         </span>
 
         <span>{dayjs(bill?.dueDate).format('DD/MM/YYYY')}</span>

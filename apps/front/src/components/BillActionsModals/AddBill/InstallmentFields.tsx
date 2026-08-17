@@ -23,12 +23,12 @@ const InstallmentFields = ({
   return (
     <>
       <Form.Item
-        label="Dia do Vencimento"
+        label="Due Day"
         name="dueDate"
         rules={[
           {
             required: true,
-            message: 'Insira uma data de vencimento',
+            message: 'Enter a due date',
           },
         ]}
       >
@@ -36,12 +36,12 @@ const InstallmentFields = ({
       </Form.Item>
 
       <Form.Item
-        label="Valor Parcela"
+        label="Installment Amount"
         name="valueInstallment"
         rules={[
           {
             required: true,
-            message: 'Insira o valor da parcela',
+            message: 'Enter the installment amount',
           },
         ]}
       >
@@ -57,12 +57,12 @@ const InstallmentFields = ({
       </Form.Item>
 
       <Form.Item
-        label="Parcela Atual"
+        label="Current Installment"
         name="currentInstallment"
         rules={[
           {
             required: true,
-            message: 'Insira a parcela atual',
+            message: 'Enter the current installment',
           },
         ]}
       >
@@ -70,12 +70,12 @@ const InstallmentFields = ({
       </Form.Item>
 
       <Form.Item
-        label="Parcelas Totais"
+        label="Total Installments"
         name="totalInstallments"
         rules={[
           {
             required: true,
-            message: 'Insira a quantidade de parcelas',
+            message: 'Enter the number of installments',
           },
         ]}
       >
@@ -84,7 +84,7 @@ const InstallmentFields = ({
 
       <span className="flex gap-2">
         <Switch onChange={(checked) => setIsPaid(checked)} />
-        Esta conta está paga?
+        Is this bill paid?
       </span>
     </>
   );

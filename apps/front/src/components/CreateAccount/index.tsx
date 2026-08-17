@@ -29,13 +29,13 @@ const CreateAccount = ({
 
   return (
     <Modal
-      title="Nova Conta"
+      title="New Account"
       onCancel={() => setIsOpen(false)}
       onOk={form.submit}
       open={isOpen}
       footer={[
         <Button key="cancel" onClick={() => setIsOpen(false)}>
-          Cancelar
+          Cancel
         </Button>,
 
         <Button
@@ -45,7 +45,7 @@ const CreateAccount = ({
           disabled={createUserMutation.isPending}
           onClick={form.submit}
         >
-          Salvar
+          Save
         </Button>,
       ]}
     >
@@ -54,8 +54,8 @@ const CreateAccount = ({
           label="E-mail"
           name="email"
           rules={[
-            { required: true, message: 'Campo obrigatório' },
-            { type: 'email', message: 'Por favor, insira um e-mail válido' },
+            { required: true, message: 'Required field' },
+            { type: 'email', message: 'Please enter a valid email' },
           ]}
         >
           <Input />
