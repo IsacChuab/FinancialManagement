@@ -416,7 +416,6 @@ define(['exports'], (function (exports) { 'use strict';
     };
     const isInstance = (object,
     // Need the general type to do the check later.
-
     expectedClass, details) => {
       if (!(object instanceof expectedClass)) {
         details['expectedClassName'] = expectedClass.name;
@@ -432,7 +431,6 @@ define(['exports'], (function (exports) { 'use strict';
     const isArrayOfClass = (value,
     // Need general type to do check later.
     expectedClass,
-    // eslint-disable-line
     details) => {
       const error = new WorkboxError('not-array-of-class', details);
       if (!Array.isArray(value)) {
@@ -749,7 +747,6 @@ define(['exports'], (function (exports) { 'use strict';
         // See https://github.com/Microsoft/TypeScript/issues/28357#issuecomment-436484705
         self.addEventListener('message', event => {
           // event.data is type 'any'
-
           if (event.data && event.data.type === 'CACHE_URLS') {
             const {
               payload
@@ -944,7 +941,6 @@ define(['exports'], (function (exports) { 'use strict';
         for (const route of routes) {
           let params;
           // route.match returns type any, not possible to change right now.
-
           const matchResult = route.match({
             url,
             sameOrigin,
@@ -960,13 +956,11 @@ define(['exports'], (function (exports) { 'use strict';
               }
             }
             // See https://github.com/GoogleChrome/workbox/issues/2079
-
             params = matchResult;
             if (Array.isArray(params) && params.length === 0) {
               // Instead of passing an empty array in as params, use undefined.
               params = undefined;
             } else if (matchResult.constructor === Object &&
-            // eslint-disable-line
             Object.keys(matchResult).length === 0) {
               // Instead of passing an empty object in as params, use undefined.
               params = undefined;
@@ -1342,7 +1336,6 @@ define(['exports'], (function (exports) { 'use strict';
     */
     // Callbacks to be executed whenever there's a quota error.
     // Can't change Function type right now.
-
     const quotaErrorCallbacks = new Set();
 
     /*
@@ -1734,7 +1727,7 @@ define(['exports'], (function (exports) { 'use strict';
               request: effectiveRequest,
               event: this.event,
               // params has a type any can't change right now.
-              params: this.params // eslint-disable-line
+              params: this.params
             }));
           }
           this._cacheKeys[key] = effectiveRequest;
@@ -2628,9 +2621,7 @@ define(['exports'], (function (exports) { 'use strict';
           params
         }) => {
           // Params is type any, can't change right now.
-          /* eslint-disable */
           const cacheKey = (params === null || params === void 0 ? void 0 : params.cacheKey) || this._precacheController.getCacheKeyForURL(request.url);
-          /* eslint-enable */
           return cacheKey ? new Request(cacheKey, {
             headers: request.headers
           }) : request;
@@ -3148,7 +3139,6 @@ define(['exports'], (function (exports) { 'use strict';
        */
       install(event) {
         // waitUntil returns Promise<any>
-
         return waitUntil(event, async () => {
           const installReportPlugin = new PrecacheInstallReportPlugin();
           this.strategy.plugins.push(installReportPlugin);
@@ -3195,7 +3185,6 @@ define(['exports'], (function (exports) { 'use strict';
        */
       activate(event) {
         // waitUntil returns Promise<any>
-
         return waitUntil(event, async () => {
           const cache = await self.caches.open(this.strategy.cacheName);
           const currentlyCachedRequests = await cache.keys();
