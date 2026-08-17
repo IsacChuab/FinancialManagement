@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, Divider, Form, Input } from 'antd';
+import { Button, ConfigProvider, Divider, Form, Input, theme as antdTheme } from 'antd';
 import { FaCalculator, FaChartLine, FaCoins, FaPen } from 'react-icons/fa6';
 
 import { trpc } from '../../utils/trpc';
@@ -11,6 +11,7 @@ import GridPattern from '../../assets/svgs/GridPattern';
 import ChartIllustration from '../../assets/svgs/ChartIllustration';
 import CreateAccount from '../../components/CreateAccount';
 import ForgotPassword from '../../components/ForgotPassword';
+import { lightTokens } from '../../theme/colorsTokens';
 
 const Login = () => {
   const [form] = Form.useForm();
@@ -29,95 +30,102 @@ const Login = () => {
     submit.mutate(values);
   };
 
+  useEffect(() => {
+    document.body.classList.remove('dark');
+    document.body.classList.add('light');
+  }, []);
+
   return (
-    <div className="min-h-screen w-full flex bg-white">
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-linear-to-br from-slate-900 via-slate-800 to-blue-950">
-        <GridPattern />
+    <ConfigProvider theme={{ algorithm: antdTheme.defaultAlgorithm, token: lightTokens }}>
+      <div className="min-h-screen w-full flex bg-white">
+        <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-linear-to-br from-slate-900 via-slate-800 to-blue-950">
+          <GridPattern />
 
-        <div className="relative z-10 flex flex-col justify-between w-full p-12">
-          <div className="flex items-center gap-3">
-            <img src={Logo} alt="Logo" className="h-16 w-16 rounded-full bg-blue-50 object-cover" />
-            <span className="text-slate-100 text-xl font-semibold tracking-wide">
-              Financial Management
-            </span>
-          </div>
-
-          <div className="max-w-md">
-            <h2 className="text-3xl font-semibold text-white leading-snug mb-4">
-              Organize your finances with clarity and simplicity
-            </h2>
-            <p className="text-slate-300 text-base">
-              Track bills, income and expenses in one place, with a clear view of your money.
-            </p>
-
-            <div className="flex gap-6 mt-8 text-slate-400">
-              <FaChartLine className="h-6 w-6" />
-              <FaCalculator className="h-6 w-6" />
-              <FaCoins className="h-6 w-6" />
-              <FaPen className="h-6 w-6" />
+          <div className="relative z-10 flex flex-col justify-between w-full p-12">
+            <div className="flex items-center gap-3">
+              <img src={Logo} alt="Logo" className="h-16 w-16 rounded-full bg-blue-50 object-cover" />
+              <span className="text-slate-100 text-xl font-semibold tracking-wide">
+                Financial Management
+              </span>
             </div>
-          </div>
 
-          <ChartIllustration />
+            <div className="max-w-md">
+              <h2 className="text-3xl font-semibold text-white leading-snug mb-4">
+                Organize your finances with clarity and simplicity
+              </h2>
+              <p className="text-slate-300 text-base">
+                Track bills, income and expenses in one place, with a clear view of your money.
+              </p>
+
+              <div className="flex gap-6 mt-8 text-slate-400">
+                <FaChartLine className="h-6 w-6" />
+                <FaCalculator className="h-6 w-6" />
+                <FaCoins className="h-6 w-6" />
+                <FaPen className="h-6 w-6" />
+              </div>
+            </div>
+
+            <ChartIllustration />
+          </div>
         </div>
-      </div>
 
-      <div className="flex flex-1 items-center justify-center px-6 py-12 sm:px-10">
-        <div className="w-full max-w-sm">
-          <div className="flex flex-col items-center lg:items-start mb-8">
-            <img src={Logo} alt="Logo" className="h-16 w-16 rounded-full bg-blue-50 lg:hidden mb-4" />
-            <h1 className="text-3xl font-semibold text-slate-800">Welcome back</h1>
-            <p className="text-slate-500 mt-1">Sign in to your account to continue</p>
-          </div>
-
-          <Form form={form} onFinish={handleSubmit} layout="vertical" className="w-full">
-            <Form.Item
-              name="email"
-              label="User Email"
-              rules={[
-                { required: true, message: 'Enter your email' },
-                { type: 'email', message: 'Enter a valid email' },
-              ]}
-            >
-              <Input autoFocus size="large" />
-            </Form.Item>
-            <Form.Item
-              name="password"
-              label="Password"
-              rules={[{ required: true, message: 'Enter your password' }]}
-            >
-              <Input.Password size="large" />
-            </Form.Item>
-
-            <div className="flex justify-between items-center mb-2">
-              <a onClick={() => setIsOpenForgotPassword(true)}>Forgot Password</a>
+        <div className="flex flex-1 items-center justify-center px-6 py-12 sm:px-10">
+          <div className="w-full max-w-sm">
+            <div className="flex flex-col items-center lg:items-start mb-8">
+              <img src={Logo} alt="Logo" className="h-16 w-16 rounded-full bg-blue-50 lg:hidden mb-4" />
+              <h1 className="text-3xl font-semibold text-slate-800">Welcome back</h1>
+              <p className="text-slate-500 mt-1">Sign in to your account to continue</p>
             </div>
 
-            <Form.Item className="mt-4">
-              <Button
-                htmlType="submit"
-                type="primary"
-                size="large"
-                block
-                disabled={submit.isPending}
-                loading={submit.isPending}
+            <Form form={form} onFinish={handleSubmit} layout="vertical" className="w-full">
+              <Form.Item
+                name="email"
+                label="User Email"
+                rules={[
+                  { required: true, message: 'Enter your email' },
+                  { type: 'email', message: 'Enter a valid email' },
+                ]}
               >
-                Login
-              </Button>
-            </Form.Item>
-          </Form>
+                <Input autoFocus size="large" />
+              </Form.Item>
+              <Form.Item
+                name="password"
+                label="Password"
+                rules={[{ required: true, message: 'Enter your password' }]}
+              >
+                <Input.Password size="large" />
+              </Form.Item>
 
-          <Divider>or</Divider>
+              <div className="flex justify-between items-center mb-2">
+                <a onClick={() => setIsOpenForgotPassword(true)}>Forgot Password</a>
+              </div>
 
-          <Button size="large" block onClick={() => setIsOpenCreateAccount(true)}>
-            Create an account
-          </Button>
+              <Form.Item className="mt-4">
+                <Button
+                  htmlType="submit"
+                  type="primary"
+                  size="large"
+                  block
+                  disabled={submit.isPending}
+                  loading={submit.isPending}
+                >
+                  Login
+                </Button>
+              </Form.Item>
+            </Form>
 
-          <CreateAccount isOpen={isOpenCreateAccount} setIsOpen={setIsOpenCreateAccount} />
-          <ForgotPassword isOpen={isOpenForgotPassword} setIsOpen={setIsOpenForgotPassword} />
+            <Divider>or</Divider>
+
+            <Button size="large" block onClick={() => setIsOpenCreateAccount(true)}>
+              Create an account
+            </Button>
+
+            <CreateAccount isOpen={isOpenCreateAccount} setIsOpen={setIsOpenCreateAccount} />
+            <ForgotPassword isOpen={isOpenForgotPassword} setIsOpen={setIsOpenForgotPassword} />
+          </div>
         </div>
       </div>
-    </div>
+    </ConfigProvider>
   );
 };
 
